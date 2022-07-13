@@ -81,7 +81,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="Email">
+        android:hint="Email"
+        app:hintTextColor="@color/white"
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditTextField"
@@ -118,7 +120,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/containedButton"
+        android:id="@+id/loginButton"
         android:layout_height="60dp"
         android:layout_width="match_parent"
         android:layout_marginRight="25dp"
