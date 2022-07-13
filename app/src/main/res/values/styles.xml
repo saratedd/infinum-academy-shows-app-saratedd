@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="customOutlinedBox" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColor">@color/white</item>
+        <item name="boxStrokeColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textCursorDrawable">@null</item>
+
+    </style>
+
+</resources>
