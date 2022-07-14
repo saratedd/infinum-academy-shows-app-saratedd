@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
-    android:background="#3D1D72">
+    android:background="@color/purple">
 
     <ImageView
         android:id="@+id/leftImage"
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:text="In order to continue please log in."
         android:textColor="#FFFFFF"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:layout_marginLeft="25dp"
         android:layout_marginTop="90dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -78,12 +78,12 @@
         android:layout_marginTop="210dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="Email"
-        app:hintTextColor="@color/white"
-        >
+
+        android:hint="Email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/emailEditTextField"
@@ -95,20 +95,20 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        style="@style/customOutlinedBox"
         android:id="@+id/passwordTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="360dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        app:boxStrokeColor="#FFFFFF"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+
         android:hint="Password"
-        app:endIconMode="password_toggle"
-        android:textColorHint="#FFFFFF"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/passwordEditTextField"
@@ -126,13 +126,13 @@
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"
         android:layout_marginBottom="20dp"
-
         android:text="Login"
-        android:textColor="#3D1D72"
+        android:textAllCaps="false"
+        android:textColor="@color/purple"
         android:textStyle="bold"
-        android:backgroundTint="#FFFFFF"
+        android:textSize="16sp"
+        android:backgroundTint="@color/white"
         app:cornerRadius="100dp"
-        android:enabled="false"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
