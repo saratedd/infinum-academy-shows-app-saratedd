@@ -28,42 +28,7 @@ class LoginActivity : AppCompatActivity() {
         var pass = binding.passwordEditTextField.text.toString()
         var emailBool = false
         var passBool = false
-        val intent = Intent(this, WelcomeActivity::class.java)
 
-//        binding.emailEditTextField.doAfterTextChanged {
-////            var email = binding.emailEditTextField.text.toString()
-//            val regex = Regex(".@")
-//
-//            if (regex.matches(email)) {
-////                email = email.substringBefore("@", "")
-//                emailBool = true
-//            }
-//        }
-//
-//
-//        binding.passwordEditTextField.doAfterTextChanged {
-//            if (pass.length >= 6) {
-//                passBool = true
-//            }
-//        }
-//
-//        if (emailBool && passBool) {
-//            binding.loginButton.setOnClickListener {
-//                val intent = Intent(this, WelcomeActivity::class.java)
-//                intent.putExtra("email", email.substringBefore("@", ""))
-//                startActivity(intent)
-//            }
-//        }
-
-//        val textWatcher = object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//            }
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//
-//            }
-//        }
 
         binding.emailEditTextField.addTextChangedListener (object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -71,21 +36,18 @@ class LoginActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                binding.loginButton.setOnClickListener {
-////                    val intent = Intent(this, WelcomeActivity::class.java)
-//                    intent.putExtra("email", s.toString().substringBefore("@", ""))
-//                    startActivity(intent)
-//                }
                 val regex = Patterns.EMAIL_ADDRESS.toRegex()
                 emailBool = regex.matches(s.toString())
 
-                if (emailBool && passBool) {
-                    binding.loginButton.setOnClickListener {
-                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
-                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-                        startActivity(intent)
-                    }
-                }
+                binding.loginButton.isEnabled = emailBool && passBool
+
+//                if (emailBool && passBool) {
+//                    binding.loginButton.setOnClickListener {
+//                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+//                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+//                        startActivity(intent)
+//                    }
+//                }
             }
         })
         binding.passwordEditTextField.addTextChangedListener (object : TextWatcher {
@@ -94,29 +56,31 @@ class LoginActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                binding.loginButton.setOnClickListener {
-////                    val intent = Intent(this, WelcomeActivity::class.java)
-//                    intent.putExtra("email", s.toString().substringBefore("@", ""))
-//                    startActivity(intent)
-//                }
                 passBool = s.toString().length >= 6
 
-                if (emailBool && passBool) {
-                    binding.loginButton.setOnClickListener {
-                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
-                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-                        startActivity(intent)
-                    }
-                }
+//                if (emailBool && passBool) {
+//                    binding.loginButton.setOnClickListener {
+//                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+//                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+//                        startActivity(intent)
+//                    }
+//                }
+                binding.loginButton.isEnabled = emailBool && passBool
             }
         })
 
-        if (emailBool && passBool) {
-            binding.loginButton.setOnClickListener {
-                val intent = Intent(this, WelcomeActivity::class.java)
-                intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-                startActivity(intent)
-            }
+//        if (emailBool && passBool) {
+//            binding.loginButton.setOnClickListener {
+//                val intent = Intent(this, WelcomeActivity::class.java)
+//                intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+//                startActivity(intent)
+//            }
+//        }
+
+        binding.loginButton.setOnClickListener {
+            val intent = Intent(this, WelcomeActivity::class.java)
+            intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+            startActivity(intent)
         }
 
     }
