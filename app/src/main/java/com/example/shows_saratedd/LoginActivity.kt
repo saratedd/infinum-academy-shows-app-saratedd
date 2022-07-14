@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.example.shows_saratedd.databinding.ActivityLoginBinding
@@ -75,8 +76,16 @@ class LoginActivity : AppCompatActivity() {
 //                    intent.putExtra("email", s.toString().substringBefore("@", ""))
 //                    startActivity(intent)
 //                }
-                val regex = Regex(".@")
+                val regex = Patterns.EMAIL_ADDRESS.toRegex()
                 emailBool = regex.matches(s.toString())
+
+                if (emailBool && passBool) {
+                    binding.loginButton.setOnClickListener {
+                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+                        startActivity(intent)
+                    }
+                }
             }
         })
         binding.passwordEditTextField.addTextChangedListener (object : TextWatcher {
@@ -91,6 +100,14 @@ class LoginActivity : AppCompatActivity() {
 //                    startActivity(intent)
 //                }
                 passBool = s.toString().length >= 6
+
+                if (emailBool && passBool) {
+                    binding.loginButton.setOnClickListener {
+                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
+                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+                        startActivity(intent)
+                    }
+                }
             }
         })
 
