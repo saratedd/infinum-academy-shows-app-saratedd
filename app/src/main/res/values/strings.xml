@@ -9,4 +9,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="shows">Shows</string>
+    <string name="empty_state_message">Your shows are not showing. Get it?</string>
 </resources>
