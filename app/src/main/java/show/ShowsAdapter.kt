@@ -6,7 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
 class ShowsAdapter (
-    private var items: List<Show>
+    private var items: List<Show>,
+    private val onItemClickCallback: (Show) -> Unit
 //    adapter treba viewholder
     ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
@@ -36,14 +37,15 @@ class ShowsAdapter (
 
     inner class ShowViewHolder(private var binding: ViewShowItemBinding)
             : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: Show) {
-            binding.showTitle.text = item.name
-            binding.showDesc.text = item.description
-            binding.showImage.setImageResource(item.imageResourceID)
+        fun bind(show: Show) {
+            binding.showTitle.text = show.name
+            binding.showDesc.text = show.description
+            binding.showImage.setImageResource(show.imageResourceID)
 
-//            binding.cardConatiner.setOnClickListener {
-////                treba prikazati podatke o showu
-//            }
+            binding.cardConatiner.setOnClickListener {
+//                treba prikazati podatke o showu
+                onItemClickCallback(show)
+            }
         }
     }
 }

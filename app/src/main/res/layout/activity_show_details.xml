@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ShowDetailsActivity">
+
+    <TextView
+        android:id="@+id/detailsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="The Office"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:fontFamily="sans-serif-medium"
+        android:layout_margin="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/detailsCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/detailsTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_office"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/detailsDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:textColor="@color/black"
+        tools:text="The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons."
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/detailsCard"
+        />
+
+    <TextView
+        android:id="@+id/detailsReviewsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="@string/reviews"
+        app:layout_constraintTop_toBottomOf="@+id/detailsDesc"
+        />
+    <TextView
+        android:id="@+id/detailsData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="3 reviews, 3.67 average"
+        android:textColor="@color/dark_grey"
+        android:textAllCaps="true"
+        android:layout_marginHorizontal="24dp"
+        app:layout_constraintTop_toBottomOf="@id/detailsReviewsTitle"
+        />
+<!--    zvijezde reviews-->
+<!--    recyclerview-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/detailsData"
+        tools:listitem="@layout/item_review"
+        />
+<!--        android:visibility="gone"-->
+
+<!--    empty state-->
+
+    <TextView
+        android:id="@+id/detailsReviewsMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_reviews_yet"
+        android:textColor="@color/dark_grey"
+        android:textSize="16sp"
+        android:layout_margin="48dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailsReviewsTitle"
+        android:visibility="gone"
+        />
+
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/purple"
+        android:layout_margin="16dp"
+        app:cornerRadius="100dp"
+        android:textSize="16sp"
+        android:text="@string/write_a_review_button"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

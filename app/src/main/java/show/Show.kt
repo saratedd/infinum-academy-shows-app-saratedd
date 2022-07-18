@@ -5,7 +5,7 @@ import androidx.annotation.DrawableRes
 data class Show(
 //    we need an id, a name, a desc and an image in the xml file
 //    id??? ono iz xmla?
-    val ID: String,
+//    val ID: String,
     val name: String,
     val description: String,
     @DrawableRes val imageResourceID: Int
