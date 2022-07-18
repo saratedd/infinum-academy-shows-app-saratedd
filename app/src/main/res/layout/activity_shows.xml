@@ -22,6 +22,19 @@
         android:layout_marginRight="24dp"
         android:layout_marginTop="36dp"/>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loadButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:backgroundTint="@color/purple"
+        android:layout_margin="16dp"
+        app:cornerRadius="100dp"
+        android:textSize="16sp"
+        android:text="@string/load_shows_text"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+<!--        android:visibility="gone"-->
     <ImageView
         android:id="@+id/emptyStateIcon"
         android:layout_width="wrap_content"
@@ -30,7 +43,9 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        />
+<!--        android:visibility="gone"-->
 <!-- recycleview -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecycler"
@@ -40,10 +55,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/view_show_item"
-        />
         android:visibility="gone"
+        />
 <!--empty state-->
     <TextView
+        android:id="@+id/emptyStateText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/empty_state_message"
@@ -53,7 +69,7 @@
         android:layout_margin="16dp"
         android:textSize="16dp"
         app:layout_constraintTop_toBottomOf="@+id/emptyStateIcon"
-        android:visibility="gone"
         />
+<!--        android:visibility="gone"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

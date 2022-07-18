@@ -3,6 +3,7 @@ package com.example.shows_saratedd
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shows_saratedd.databinding.ActivityShowsBinding
@@ -36,8 +37,10 @@ class ShowsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_shows)
 
         initShowsRecycler()
+        initLoadShowsButton()
 //        initEmptyStateButton()
     }
+
 
     private fun initShowsRecycler() {
         adapter = ShowsAdapter(emptyList()) // ovo ce se promijeniti kada dodam klikanje na show
@@ -48,6 +51,16 @@ class ShowsActivity : AppCompatActivity() {
         binding.showsRecycler.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
+    }
+    private fun initLoadShowsButton() {
+        binding.loadButton.setOnClickListener {
+            binding.loadButton.isVisible = false
+            binding.emptyStateIcon.isVisible = false
+            binding.emptyStateText.isVisible = false
+            binding.showsRecycler.isVisible = true
+            adapter.addAllShows(shows)
+
+        }
     }
 
 //    private fun initEmptyStateButton() {
