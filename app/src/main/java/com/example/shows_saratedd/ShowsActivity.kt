@@ -1,8 +1,10 @@
 package com.example.shows_saratedd
 
-import Show.Show
+import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.shows_saratedd.databinding.ActivityShowsBinding
+import show.ShowsAdapter
 
 class ShowsActivity : AppCompatActivity() {
 
@@ -21,9 +23,25 @@ class ShowsActivity : AppCompatActivity() {
             R.drawable.krv_nije_voda)
     )
 
+//    lateinit = declaring a property/variable wo definition
+    private lateinit var binding: ActivityShowsBinding
+    private lateinit var adapter: ShowsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        layout inflation = xml -> kotlin/java code
+        binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_shows)
+
+        initShowsrecycler()
+        initEmptyStateButton()
+    }
+
+    private fun initEmptyStateButton() {
+        TODO("Not yet implemented")
+    }
+
+    private fun initShowsrecycler() {
+        TODO("Not yet implemented")
     }
 }

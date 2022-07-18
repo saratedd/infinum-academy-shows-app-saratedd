@@ -17,9 +17,11 @@
     android:background="@color/white"
     android:layout_width="match_parent"
     android:layout_height="wrap_content" >
+<!--    sta ako sve slike nisu jednakih dimenzija-->
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardConatiner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="24dp">
