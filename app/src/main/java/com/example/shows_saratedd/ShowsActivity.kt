@@ -3,6 +3,8 @@ package com.example.shows_saratedd
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
 
@@ -33,15 +35,23 @@ class ShowsActivity : AppCompatActivity() {
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_shows)
 
-        initShowsrecycler()
-        initEmptyStateButton()
+        initShowsRecycler()
+//        initEmptyStateButton()
     }
 
-    private fun initEmptyStateButton() {
-        TODO("Not yet implemented")
+    private fun initShowsRecycler() {
+        adapter = ShowsAdapter(emptyList()) // ovo ce se promijeniti kada dodam klikanje na show
+//        binding.showsRecycler.layoutManager = LinearLayoutManager(this)
+        binding.showsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.showsRecycler.adapter = adapter
+
+        binding.showsRecycler.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        )
     }
 
-    private fun initShowsrecycler() {
-        TODO("Not yet implemented")
-    }
+//    private fun initEmptyStateButton() {
+//        TODO("Not yet implemented")
+//    }
+
 }

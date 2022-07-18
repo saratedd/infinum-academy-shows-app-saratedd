@@ -15,18 +15,19 @@ class ShowsAdapter (
 //        every view has a context
 //        ??? parent.context
             val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context))
+//            zasto predajemo binding
             return ShowViewHolder(binding)
         }
 
         override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {
-//        retrieve the correct superhero from the list and send it to the viewholder
+//        retrieve the correct show from the list and send it to the viewholder
 //        which knows how to connect the view with the data
             holder.bind(items[position])
         }
 
-        //        the adapter needs to know how many items are there in the list (starting and ending indices)
-        override fun getItemCount(): Int = items.count()
+//      the adapter needs to know how many items are there in the list (starting and ending indices)
 //    item.size
+        override fun getItemCount(): Int = items.count()
 
         inner class ShowViewHolder(private var binding: ViewShowItemBinding)
             : RecyclerView.ViewHolder(binding.root) {
