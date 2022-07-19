@@ -5,11 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
-import com.example.shows_saratedd.databinding.ItemReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import show.Review
+import show.ReviewsAdapter
 
 class ShowDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityShowDetailsBinding
+    lateinit var adapter: ReviewsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,9 +38,18 @@ class ShowDetailsActivity : AppCompatActivity() {
 //                if (zvijezde nisu oznacene) {
 //                    do nothing ili error da nisu oznacene, ili submitbutton disabled
 //                }
+                addReviewToList(
+                    "bezimeni",
+                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+                    3)
+//                treba nam ime oosbe i rating iz ratingbara
                 dialog.dismiss()
             }
             dialog.show()
         }
+    }
+
+    private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
+        adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
     }
 }

@@ -22,6 +22,11 @@ class ReviewsAdapter(
 
     override fun getItemCount(): Int = items.count()
 
+    fun addReview(review: Review) {
+        items = items + review
+        notifyDataSetChanged()
+    }
+
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(review: Review) {
