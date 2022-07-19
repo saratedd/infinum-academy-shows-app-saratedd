@@ -22,7 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         app:hintTextColor="@color/purple"
+        app:boxStrokeColor="@color/purple"
         android:hint="Comment"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         >
 
         <com.google.android.material.textfield.TextInputEditText
