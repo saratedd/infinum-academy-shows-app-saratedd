@@ -79,9 +79,13 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:numStars="5"
-        tools:rating="3.5"
+        android:rating="1"
+        android:stepSize="1"
+        android:progressTint="@color/purple"
+        android:progressBackgroundTint="@color/grey"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/detailsData"/>
+        app:layout_constraintTop_toBottomOf="@id/detailsData"
+        style="@style/RatingBar" />
 <!--    recyclerview-->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

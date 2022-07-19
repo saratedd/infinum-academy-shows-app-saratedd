@@ -18,12 +18,14 @@
         />
 <!--    zvijezde-->
     <RatingBar
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
-        android:numStars="2"
-        tools:rating="1"
-        />
+        android:numStars="5"
+        android:rating="1"
+        android:progressTint="@color/purple"
+        android:progressBackgroundTint="@color/grey"
+        style="@style/RatingBar" />
 
 
     <com.google.android.material.textfield.TextInputLayout
