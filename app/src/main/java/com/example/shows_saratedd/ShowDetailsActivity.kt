@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -50,11 +52,11 @@ class ShowDetailsActivity : AppCompatActivity() {
                 addReviewToList(
                     "bezimeni",
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                    bottomSheetBinding.dialogRating.numStars
+                    bottomSheetBinding.dialogRating.getRating().toInt()
                 )
 //                treba nam ime oosbe i rating iz ratingbara
                 dialog.dismiss()
-                binding.detailsDesc.isVisible = true
+                binding.detailsData.isVisible = true
                 binding.ratingBar.isVisible = true
                 binding.detailsRecycler.isVisible = true
                 binding.detailsReviewsMessage.isVisible = false
@@ -70,11 +72,16 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
+        binding.detailsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+        binding.detailsRecycler.adapter = adapter
+        binding.detailsRecycler.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        )
     }
 
     private fun updateRating() {
         rat = adapter.updateRating()
-        binding.ratingBar.numStars = rat
+        binding.ratingBar.setRating(rat.toFloat())
         binding.ratingBar.setIsIndicator(true)
 
         binding.detailsData.text = adapter.itemCount.toString() +" REVIEWS, " + rat.toString() + " AVERAGE"
