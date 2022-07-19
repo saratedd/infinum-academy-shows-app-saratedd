@@ -28,17 +28,22 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding.detailsTitle.text = intent.extras?.getString("showName")
         binding.detailsDesc.text = intent.extras?.getString("showDesc")
         intent.extras?.getInt("showImage")?.let { binding.detailsImg.setImageResource(it) }
+        val username = intent.extras?.getString("user")
 //        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
 
         binding.detailsBackButton.setOnClickListener {
             val intentBack = Intent(this, ShowsActivity::class.java)
             startActivity(intentBack)
         }
-        initDialog()
+        if (username != null) {
+            initDialog(username)
+        } else {
+            initDialog("jaja")
+        }
     }
 
 
-    private fun initDialog() {
+    private fun initDialog(username : String) {
         binding.detailsReviewsButton.setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -50,7 +55,7 @@ class ShowDetailsActivity : AppCompatActivity() {
 //                    do nothing ili error da nisu oznacene, ili submitbutton disabled
 //                }
                 addReviewToList(
-                    "bezimeni",
+                    username,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )

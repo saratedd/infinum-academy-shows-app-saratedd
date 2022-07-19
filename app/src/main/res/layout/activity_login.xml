@@ -121,7 +121,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loginButton"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         android:layout_width="match_parent"
         android:layout_marginRight="25dp"
         android:layout_marginLeft="25dp"

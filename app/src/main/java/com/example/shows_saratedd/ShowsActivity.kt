@@ -46,20 +46,24 @@ class ShowsActivity : AppCompatActivity() {
 //        layout inflation = xml -> kotlin/java code
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        var user = intent.extras?.getString("email")
 
-        initShowsRecycler()
+        if (user != null) {
+            initShowsRecycler(user)
+        } else initShowsRecycler("anoniman")
         initLoadShowsButton()
 //        initEmptyStateButton()
     }
 
 
-    private fun initShowsRecycler() {
+    private fun initShowsRecycler(user: String) {
 //        onitemclickcallback
         adapter = ShowsAdapter(emptyList()) { show ->
             val intent = Intent(this, ShowDetailsActivity::class.java)
             intent.putExtra("showName", show.name)
             intent.putExtra("showDesc", show.description)
             intent.putExtra("showImage", show.imageResourceID)
+            intent.putExtra("user", user)
             startActivity(intent)
         }
 //        binding.showsRecycler.layoutManager = LinearLayoutManager(this)
