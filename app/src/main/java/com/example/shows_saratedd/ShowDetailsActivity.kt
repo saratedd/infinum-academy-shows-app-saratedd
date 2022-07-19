@@ -89,6 +89,6 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding.ratingBar.setRating(rat.toFloat())
         binding.ratingBar.setIsIndicator(true)
 
-        binding.detailsData.text = adapter.itemCount.toString() +" REVIEWS, " + rat.toString() + " AVERAGE"
+        binding.detailsData.text = adapter.itemCount.toString() +" reviews, " + rat.toString() + " average"
     }
 }
