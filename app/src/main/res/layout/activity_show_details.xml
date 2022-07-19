@@ -70,17 +70,26 @@
         android:textAllCaps="true"
         android:layout_marginHorizontal="24dp"
         app:layout_constraintTop_toBottomOf="@id/detailsReviewsTitle"
-        android:visibility="gone"
         />
+<!--        android:visibility="gone"-->
 <!--    zvijezde reviews-->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:numStars="5"
+        tools:rating="3.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/detailsData"/>
 <!--    recyclerview-->
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/detailsData"
+        app:layout_constraintTop_toBottomOf="@id/ratingBar"
         tools:listitem="@layout/item_review"
-        android:visibility="gone"
         />
+<!--        android:visibility="gone"-->
 
 <!--    empty state-->
 

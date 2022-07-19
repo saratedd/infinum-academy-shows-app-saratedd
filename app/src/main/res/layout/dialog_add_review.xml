@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
     android:orientation="vertical">
 
@@ -16,6 +17,15 @@
         android:textStyle="bold"
         />
 <!--    zvijezde-->
+    <RatingBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:numStars="2"
+        tools:rating="1"
+        />
+
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dialogCommentInput"
         android:layout_width="match_parent"

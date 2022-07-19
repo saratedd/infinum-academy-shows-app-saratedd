@@ -27,13 +27,13 @@ class ShowsActivity : AppCompatActivity() {
 //            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
 //            R.drawable.krv_nije_voda)
         Show("The Office",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+            "The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons.",
             R.drawable.ic_office),
         Show("Stranger Things",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
             R.drawable.ic_stranger_things),
         Show("Krv nije voda",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
             R.drawable.krv_nije_voda)
     )
 
@@ -54,6 +54,7 @@ class ShowsActivity : AppCompatActivity() {
 
 
     private fun initShowsRecycler() {
+//        onitemclickcallback
         adapter = ShowsAdapter(emptyList()) { show ->
             val intent = Intent(this, ShowDetailsActivity::class.java)
             intent.putExtra("showName", show.name)

@@ -9,5 +9,9 @@
         <item name="colorControlActivated">@color/white</item>
         <item name="hintTextColor">@color/white</item>
     </style>
+    <style name="RatingBar" parent="Widget.AppCompat.RatingBar">
+        <item name="colorControlNormal">@color/grey</item>
+        <item name="colorControlActivated">@color/purple</item>
+    </style>
 
 </resources>

@@ -1,0 +1,4 @@
+package show
+
+class ReviewAdapter {
+}

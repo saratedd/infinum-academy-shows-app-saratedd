@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
+import com.example.shows_saratedd.databinding.ItemReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsActivity : AppCompatActivity() {
@@ -27,6 +28,9 @@ class ShowDetailsActivity : AppCompatActivity() {
             dialog.setContentView(bottomSheetBinding.root)
 
             bottomSheetBinding.submitButton.setOnClickListener {
+//                if (zvijezde nisu oznacene) {
+//                    do nothing ili error da nisu oznacene, ili submitbutton disabled
+//                }
                 dialog.dismiss()
             }
             dialog.show()
