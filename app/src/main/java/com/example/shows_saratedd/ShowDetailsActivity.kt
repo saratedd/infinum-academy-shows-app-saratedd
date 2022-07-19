@@ -3,15 +3,18 @@ package com.example.shows_saratedd
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.view.isVisible
 import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import show.Review
 import show.ReviewsAdapter
+import kotlin.properties.Delegates
 
 class ShowDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityShowDetailsBinding
     lateinit var adapter: ReviewsAdapter
+    var rat = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,11 +32,17 @@ class ShowDetailsActivity : AppCompatActivity() {
             val intentBack = Intent(this, ShowsActivity::class.java)
             startActivity(intentBack)
         }
+        initDialog()
+    }
+
+
+    private fun initDialog() {
         binding.detailsReviewsButton.setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
 
+            initReviewsRecycler()
             bottomSheetBinding.submitButton.setOnClickListener {
 //                if (zvijezde nisu oznacene) {
 //                    do nothing ili error da nisu oznacene, ili submitbutton disabled
@@ -41,15 +50,33 @@ class ShowDetailsActivity : AppCompatActivity() {
                 addReviewToList(
                     "bezimeni",
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                    3)
+                    bottomSheetBinding.dialogRating.numStars
+                )
 //                treba nam ime oosbe i rating iz ratingbara
                 dialog.dismiss()
+                binding.detailsDesc.isVisible = true
+                binding.ratingBar.isVisible = true
+                binding.detailsRecycler.isVisible = true
+                binding.detailsReviewsMessage.isVisible = false
+                updateRating()
+
             }
             dialog.show()
         }
     }
-
     private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
         adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
+    }
+
+    private fun initReviewsRecycler() {
+        adapter = ReviewsAdapter(emptyList())
+    }
+
+    private fun updateRating() {
+        rat = adapter.updateRating()
+        binding.ratingBar.numStars = rat
+        binding.ratingBar.setIsIndicator(true)
+
+        binding.detailsData.text = adapter.itemCount.toString() +" REVIEWS, " + rat.toString() + " AVERAGE"
     }
 }

@@ -24,7 +24,14 @@ class ReviewsAdapter(
 
     fun addReview(review: Review) {
         items = items + review
-        notifyDataSetChanged()
+        notifyItemInserted(items.lastIndex)
+    }
+
+    fun updateRating() : Int {
+        var rat = 0
+        for (item in items)
+            rat += item.rating
+        return rat / items.count()
     }
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
