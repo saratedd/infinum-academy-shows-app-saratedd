@@ -27,8 +27,8 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
-    fun updateRating() : Int {
-        var rat = 0
+    fun updateRating() : Float {
+        var rat = 0f
         for (item in items)
             rat += item.rating
         return rat / items.count()
@@ -39,8 +39,9 @@ class ReviewsAdapter(
         fun bind(review: Review) {
             binding.reviewProfileImg.setImageResource(R.drawable.ic_profile_placeholder)
             binding.reviewUsername.text = review.name
-//            binding.reviewRating. = review.rating
-            binding.reviewComment.text = review.comment //ali samo ako postoji
+            binding.reviewRating.text = review.rating.toString()
+            if (review.comment != "")
+                binding.reviewComment.text = review.comment //ali samo ako postoji
 
         }
 

@@ -16,7 +16,8 @@ import kotlin.properties.Delegates
 class ShowDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityShowDetailsBinding
     lateinit var adapter: ReviewsAdapter
-    var rat = 0
+    var rat = 0f
+    var recInit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,10 +27,10 @@ class ShowDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.detailsTitle.text = intent.extras?.getString("showName")
-        binding.detailsDesc.text = intent.extras?.getString("showDesc")
         intent.extras?.getInt("showImage")?.let { binding.detailsImg.setImageResource(it) }
-        val username = intent.extras?.getString("user")
 //        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
+        binding.detailsDesc.text = intent.extras?.getString("showDesc")
+        val username = intent.extras?.getString("user")
 
         binding.detailsBackButton.setOnClickListener {
             val intentBack = Intent(this, ShowsActivity::class.java)
@@ -38,7 +39,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         if (username != null) {
             initDialog(username)
         } else {
-            initDialog("jaja")
+            initDialog("anoniman")
         }
     }
 
@@ -48,8 +49,10 @@ class ShowDetailsActivity : AppCompatActivity() {
             val dialog = BottomSheetDialog(this)
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
-
-            initReviewsRecycler()
+            if (!recInit) {
+                initReviewsRecycler()
+                recInit = true
+            }
             bottomSheetBinding.submitButton.setOnClickListener {
 //                if (zvijezde nisu oznacene) {
 //                    do nothing ili error da nisu oznacene, ili submitbutton disabled
@@ -86,9 +89,9 @@ class ShowDetailsActivity : AppCompatActivity() {
 
     private fun updateRating() {
         rat = adapter.updateRating()
-        binding.ratingBar.setRating(rat.toFloat())
+        binding.ratingBar.setRating(rat)
         binding.ratingBar.setIsIndicator(true)
 
-        binding.detailsData.text = adapter.itemCount.toString() +" reviews, " + rat.toString() + " average"
+        binding.detailsData.text = adapter.itemCount.toString() +" reviews, " + String.format("%.2f", rat) + " average"
     }
 }

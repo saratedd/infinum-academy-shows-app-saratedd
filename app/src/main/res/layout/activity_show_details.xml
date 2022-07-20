@@ -110,7 +110,6 @@
             android:id="@+id/detailsRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="0dp"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintBottom_toTopOf="@id/detailsReviewsButton"
             tools:listitem="@layout/item_review"
