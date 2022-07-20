@@ -24,6 +24,7 @@
         android:numStars="5"
         android:progressBackgroundTint="@color/grey"
         android:progressTint="@color/purple"
+        android:secondaryProgressTint="@color/white"
         android:rating="1"
         android:stepSize="1" />
 
