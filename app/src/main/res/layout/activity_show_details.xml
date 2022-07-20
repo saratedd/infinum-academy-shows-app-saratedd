@@ -112,6 +112,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintBottom_toTopOf="@id/detailsReviewsButton"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:listitem="@layout/item_review"
             android:visibility="gone"
             />
