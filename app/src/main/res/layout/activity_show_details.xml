@@ -126,10 +126,10 @@
             android:text="@string/no_reviews_yet"
             android:textColor="@color/dark_grey"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/detailsReviewsButton"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailsReviewsTitle"
-            app:layout_constraintBottom_toTopOf="@id/detailsReviewsButton"/>
+            app:layout_constraintTop_toBottomOf="@+id/detailsReviewsTitle" />
         <!--        android:visibility="gone"-->
 
 

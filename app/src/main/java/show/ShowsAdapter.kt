@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
-class ShowsAdapter (
+class ShowsAdapter(
     private var items: List<Show>,
     private val onItemClickCallback: (Show) -> Unit
 //    adapter treba viewholder
-    ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
+) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int ): ShowViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
 //        layout inflation = xml -> kotlin/java code
 //        every view has a context
 //        ??? parent.context
@@ -26,7 +26,7 @@ class ShowsAdapter (
         holder.bind(items[position])
     }
 
-//      the adapter needs to know how many items are there in the list (starting and ending indices)
+    //      the adapter needs to know how many items are there in the list (starting and ending indices)
 //    item.size
     override fun getItemCount(): Int = items.count()
 
@@ -35,8 +35,8 @@ class ShowsAdapter (
         notifyDataSetChanged()
     }
 
-    inner class ShowViewHolder(private var binding: ViewShowItemBinding)
-            : RecyclerView.ViewHolder(binding.root) {
+    inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(show: Show) {
             binding.showTitle.text = show.name
             binding.showDesc.text = show.description

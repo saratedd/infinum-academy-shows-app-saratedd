@@ -27,7 +27,7 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
-    fun updateRating() : Float {
+    fun updateRating(): Float {
         var rat = 0f
         for (item in items)
             rat += item.rating

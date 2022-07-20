@@ -1,84 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ShowsActivity"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".ShowsActivity">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ShowsActivity"
-    android:background="@color/white">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".ShowsActivity">
 
-    <TextView
-        android:id="@+id/showsText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/shows"
-        android:textColor="@color/black"
-        android:textSize="32sp"
-        android:fontFamily="sans-serif-medium"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginStart="24dp"
-        android:layout_marginVertical="32dp"/>
+        <TextView
+            android:id="@+id/showsText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="32dp"
+            android:layout_marginStart="24dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/shows"
+            android:textColor="@color/black"
+            android:textSize="32sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-<!-- recycleview -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/showsRecycler"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/showsText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/view_show_item"
-        android:visibility="gone"
-        />
-<!--empty state-->
-    <ImageView
-        android:id="@+id/emptyStateIcon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_shows_empty_state"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        />
-<!--        android:visibility="gone"-->
-    <TextView
-        android:id="@+id/emptyStateText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/empty_state_message"
-        android:textColor="@color/dark_grey"
-        android:layout_margin="16dp"
-        android:textSize="16sp"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emptyStateIcon"
-        />
-<!--        android:visibility="gone"-->
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/loadButton"
-        android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:backgroundTint="@color/purple"
-        android:layout_margin="16dp"
-        app:cornerRadius="100dp"
-        android:textSize="16sp"
-        android:text="@string/load_shows_text"
-        android:textAllCaps="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
-<!--        android:visibility="gone"-->
+        <!-- recycleview -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/showsRecycler"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/showsText"
+            tools:listitem="@layout/view_show_item" />
+        <!--empty state-->
+        <ImageView
+            android:id="@+id/emptyStateIcon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_shows_empty_state"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--        android:visibility="gone"-->
+        <TextView
+            android:id="@+id/emptyStateText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:text="@string/empty_state_message"
+            android:textColor="@color/dark_grey"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/emptyStateIcon" />
+        <!--        android:visibility="gone"-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/loadButton"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_margin="16dp"
+            android:backgroundTint="@color/purple"
+            android:text="@string/load_shows_text"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            app:cornerRadius="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+        <!--        android:visibility="gone"-->
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

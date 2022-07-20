@@ -27,7 +27,8 @@ class ShowDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.detailsTitle.text = intent.extras?.getString(ShowsActivity.EXTRA_SHOW_NAME)
-        intent.extras?.getInt(ShowsActivity.EXTRA_SHOW_IMAGE)?.let { binding.detailsImg.setImageResource(it) }
+        intent.extras?.getInt(ShowsActivity.EXTRA_SHOW_IMAGE)
+            ?.let { binding.detailsImg.setImageResource(it) }
 //        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
         binding.detailsDesc.text = intent.extras?.getString(ShowsActivity.EXTRA_SHOW_DESC)
         val username = intent.extras?.getString(ShowsActivity.EXTRA_USER)
@@ -44,7 +45,7 @@ class ShowDetailsActivity : AppCompatActivity() {
     }
 
 
-    private fun initDialog(username : String) {
+    private fun initDialog(username: String) {
         binding.detailsReviewsButton.setOnClickListener {
             val dialog = BottomSheetDialog(this)
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -71,13 +72,15 @@ class ShowDetailsActivity : AppCompatActivity() {
             dialog.show()
         }
     }
+
     private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
         adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
     }
 
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
-        binding.detailsRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+        binding.detailsRecycler.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
         binding.detailsRecycler.adapter = adapter
         binding.detailsRecycler.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
@@ -89,6 +92,7 @@ class ShowDetailsActivity : AppCompatActivity() {
         binding.ratingBar.setRating(rat)
         binding.ratingBar.setIsIndicator(true)
 
-        binding.detailsData.text = adapter.itemCount.toString() +" reviews, " + String.format("%.2f", rat) + " average"
+        binding.detailsData.text =
+            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
     }
 }
