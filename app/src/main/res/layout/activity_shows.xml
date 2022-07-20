@@ -16,23 +16,21 @@
 
     <TextView
         android:id="@+id/showsText"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/shows"
         android:textColor="@color/black"
         android:textSize="32sp"
         android:fontFamily="sans-serif-medium"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginTop="32dp"/>
+        android:layout_marginStart="24dp"
+        android:layout_marginVertical="32dp"/>
 
 <!-- recycleview -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecycler"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/showsText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +41,7 @@
 <!--empty state-->
     <ImageView
         android:id="@+id/emptyStateIcon"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_shows_empty_state"
         app:layout_constraintTop_toTopOf="parent"
@@ -54,20 +52,21 @@
 <!--        android:visibility="gone"-->
     <TextView
         android:id="@+id/emptyStateText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/empty_state_message"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textColor="@color/dark_grey"
         android:layout_margin="16dp"
         android:textSize="16sp"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emptyStateIcon"
         />
 <!--        android:visibility="gone"-->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loadButton"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="56dp"
         android:backgroundTint="@color/purple"
         android:layout_margin="16dp"
@@ -75,6 +74,8 @@
         android:textSize="16sp"
         android:text="@string/load_shows_text"
         android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 <!--        android:visibility="gone"-->
