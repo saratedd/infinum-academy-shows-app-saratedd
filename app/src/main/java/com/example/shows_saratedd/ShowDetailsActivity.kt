@@ -26,11 +26,11 @@ class ShowDetailsActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        binding.detailsTitle.text = intent.extras?.getString("showName")
-        intent.extras?.getInt("showImage")?.let { binding.detailsImg.setImageResource(it) }
+        binding.detailsTitle.text = intent.extras?.getString(ShowsActivity.EXTRA_SHOW_NAME)
+        intent.extras?.getInt(ShowsActivity.EXTRA_SHOW_IMAGE)?.let { binding.detailsImg.setImageResource(it) }
 //        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
-        binding.detailsDesc.text = intent.extras?.getString("showDesc")
-        val username = intent.extras?.getString("user")
+        binding.detailsDesc.text = intent.extras?.getString(ShowsActivity.EXTRA_SHOW_DESC)
+        val username = intent.extras?.getString(ShowsActivity.EXTRA_USER)
 
         binding.detailsBackButton.setOnClickListener {
             val intentBack = Intent(this, ShowsActivity::class.java)
@@ -54,9 +54,6 @@ class ShowDetailsActivity : AppCompatActivity() {
                 recInit = true
             }
             bottomSheetBinding.submitButton.setOnClickListener {
-//                if (zvijezde nisu oznacene) {
-//                    do nothing ili error da nisu oznacene, ili submitbutton disabled
-//                }
                 addReviewToList(
                     username,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),

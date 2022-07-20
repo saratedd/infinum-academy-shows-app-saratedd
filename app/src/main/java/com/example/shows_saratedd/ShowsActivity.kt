@@ -12,6 +12,12 @@ import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
 
 class ShowsActivity : AppCompatActivity() {
+    companion object {
+        const val EXTRA_SHOW_NAME = "showName"
+        const val EXTRA_SHOW_DESC = "showDesc"
+        const val EXTRA_SHOW_IMAGE = "showImage"
+        const val EXTRA_USER = "user"
+    }
 
     private val shows = listOf(
 //        Show("0",
@@ -46,7 +52,7 @@ class ShowsActivity : AppCompatActivity() {
 //        layout inflation = xml -> kotlin/java code
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var user = intent.extras?.getString("email")
+        var user = intent.extras?.getString(LoginActivity.EXTRA_EMAIL)
 
         if (user != null) {
             initShowsRecycler(user)
@@ -60,10 +66,10 @@ class ShowsActivity : AppCompatActivity() {
 //        onitemclickcallback
         adapter = ShowsAdapter(emptyList()) { show ->
             val intent = Intent(this, ShowDetailsActivity::class.java)
-            intent.putExtra("showName", show.name)
-            intent.putExtra("showDesc", show.description)
-            intent.putExtra("showImage", show.imageResourceID)
-            intent.putExtra("user", user)
+            intent.putExtra(EXTRA_SHOW_NAME, show.name)
+            intent.putExtra(EXTRA_SHOW_DESC, show.description)
+            intent.putExtra(EXTRA_SHOW_IMAGE, show.imageResourceID)
+            intent.putExtra(EXTRA_USER, user)
             startActivity(intent)
         }
 //        binding.showsRecycler.layoutManager = LinearLayoutManager(this)
