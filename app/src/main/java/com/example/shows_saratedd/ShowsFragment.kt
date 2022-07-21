@@ -4,19 +4,32 @@ import android.content.Intent
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.shows_saratedd.databinding.ActivityShowsBinding
+import com.example.shows_saratedd.databinding.FragmentShowsBinding
+//import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
 
-class ShowsActivity : AppCompatActivity() {
+class ShowsFragment : Fragment() {
     companion object {
         const val EXTRA_SHOW_NAME = "showName"
         const val EXTRA_SHOW_DESC = "showDesc"
         const val EXTRA_SHOW_IMAGE = "showImage"
         const val EXTRA_USER = "user"
     }
+//    zasto je negdje : a negdje =
+//    private lateinit var binding: ActivityShowsBinding
+    private lateinit var adapter: ShowsAdapter
+    private var _binding: FragmentShowsBinding? = null
+    private val binding get() = _binding!!
+    private val args by navArgs<ShowsFragmentArgs>()
 
     private val shows = listOf(
 //        Show("0",
@@ -49,47 +62,92 @@ class ShowsActivity : AppCompatActivity() {
     )
 
     //    lateinit = declaring a property/variable wo definition
-    private lateinit var binding: ActivityShowsBinding
-    private lateinit var adapter: ShowsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        layout inflation = xml -> kotlin/java code
-        binding = ActivityShowsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
 
-        if (user != null) {
-            initShowsRecycler(user)
-        } else initShowsRecycler("anoniman")
-        initLoadShowsButton()
-
-        binding.showsLogout.setOnClickListener {
-            var intent = Intent(this, LoginFragment::class.java)
-            startActivity(intent)
-        }
-//        initEmptyStateButton()
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+////        layout inflation = xml -> kotlin/java code
+//        binding = ActivityShowsBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
+//----
+//        if (user != null) {
+//            initShowsRecycler(user)
+//        } else initShowsRecycler("anoniman")
+//        initLoadShowsButton()
+//---
+//        binding.showsLogout.setOnClickListener {
+//            var intent = Intent(this, LoginFragment::class.java)
+//            startActivity(intent)
+//        }
+////        initEmptyStateButton()
+//    }
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+//        sto je 'attachToParent'
+        _binding = FragmentShowsBinding.inflate(inflater, container, false)
+//    zasto vracamo binding a ne _binding (koja je razlika uopce)
+        return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        layout inflation = xml -> kotlin/java code
+//        binding = ActivityShowsBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
+        super.onViewCreated(view, savedInstanceState)
+        var user = args.username
+//        if (user != null) {
+//            initShowsRecycler(user)
+//        } else initShowsRecycler("anoniman")
+//        initLoadShowsButton()
+        if (user != null)
+            initShowsRecycler(user)
+        else
+            initShowsRecycler("anoniman")
+
+        initBackButton()
+        initLoadShowsButton()
+    }
+
 
 
     private fun initShowsRecycler(user: String) {
 //        onitemclickcallback
         adapter = ShowsAdapter(emptyList()) { show ->
-            val intent = Intent(this, ShowDetailsActivity::class.java)
-            intent.putExtra(EXTRA_SHOW_NAME, show.name)
-            intent.putExtra(EXTRA_SHOW_DESC, show.description)
-            intent.putExtra(EXTRA_SHOW_IMAGE, show.imageResourceID)
-            intent.putExtra(EXTRA_USER, user)
-            startActivity(intent)
+//            val intent = Intent(this, ShowDetailsActivity::class.java)
+//            intent.putExtra(EXTRA_SHOW_NAME, show.name)
+//            intent.putExtra(EXTRA_SHOW_DESC, show.description)
+//            intent.putExtra(EXTRA_SHOW_IMAGE, show.imageResourceID)
+//            intent.putExtra(EXTRA_USER, user)
+//            startActivity(intent)
+            var directions = ShowsFragmentDirections.toShowDetailsFragment(
+                show.name, show.description, show.imageResourceID, user
+            )
+            findNavController().navigate(directions)
+
         }
 //        binding.showsRecycler.layoutManager = LinearLayoutManager(this)
-//        binding.showsRecycler.layoutManager = ConstraintLayout(this)
+//        binding.showsRecycler.layoutManager =
+//            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+//        binding.showsRecycler.adapter = adapter
+//        binding.showsRecycler.addItemDecoration(
+//            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+//        )
         binding.showsRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.showsRecycler.adapter = adapter
         binding.showsRecycler.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
+    }
+    private fun initBackButton() {
+        binding.showsLogout.setOnClickListener {
+//      var intent = Intent(this, LoginFragment::class.java)
+//      startActivity(intent)
+        var directions = ShowsFragmentDirections.toLoginFragment()
+        findNavController().navigate(directions)
+        }
     }
 
     private fun initLoadShowsButton() {
@@ -99,12 +157,10 @@ class ShowsActivity : AppCompatActivity() {
             binding.emptyStateIcon.isVisible = false
             binding.emptyStateText.isVisible = false
             binding.loadButton.isVisible = false
-
         }
     }
-
-//    private fun initEmptyStateButton() {
-//        TODO("Not yet implemented")
-//    }
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

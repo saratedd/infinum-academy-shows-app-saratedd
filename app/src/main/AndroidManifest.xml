@@ -17,16 +17,16 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".ShowDetailsActivity"
+            android:name=".ShowDetailsFragment"
             android:exported="false" />
         <activity
-            android:name=".ShowsActivity"
+            android:name=".ShowsFragment"
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".LoginFragment"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
