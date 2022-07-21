@@ -4,7 +4,6 @@ import android.content.Intent
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,7 +57,7 @@ class ShowsActivity : AppCompatActivity() {
 //        layout inflation = xml -> kotlin/java code
         binding = ActivityShowsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        var user = intent.extras?.getString(LoginActivity.EXTRA_EMAIL)
+        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
 
         if (user != null) {
             initShowsRecycler(user)
@@ -66,7 +65,7 @@ class ShowsActivity : AppCompatActivity() {
         initLoadShowsButton()
 
         binding.showsLogout.setOnClickListener {
-            var intent = Intent(this, LoginActivity::class.java)
+            var intent = Intent(this, LoginFragment::class.java)
             startActivity(intent)
         }
 //        initEmptyStateButton()
