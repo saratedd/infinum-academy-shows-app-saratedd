@@ -41,10 +41,13 @@
             app:argType="string" />
         <argument
             android:name="showImage"
-            app:argType="Int" />
+            app:argType="integer" />
         <argument
             android:name="username"
             app:argType="string" />
+        <action
+            android:id="@+id/toShowsFragment"
+            app:destination="@id/showsFragment" />
     </fragment>
 
 </navigation>

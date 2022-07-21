@@ -96,11 +96,12 @@ class ShowsFragment : Fragment() {
 //        setContentView(binding.root)
 //        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
         super.onViewCreated(view, savedInstanceState)
-        var user = args.username
+        val user = args.username
 //        if (user != null) {
 //            initShowsRecycler(user)
 //        } else initShowsRecycler("anoniman")
 //        initLoadShowsButton()
+//        maknut if?
         if (user != null)
             initShowsRecycler(user)
         else
@@ -135,7 +136,7 @@ class ShowsFragment : Fragment() {
 //            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
 //        )
         binding.showsRecycler.layoutManager =
-            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.showsRecycler.adapter = adapter
         binding.showsRecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)

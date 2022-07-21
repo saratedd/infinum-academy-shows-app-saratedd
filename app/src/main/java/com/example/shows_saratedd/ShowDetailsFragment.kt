@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
@@ -24,6 +26,8 @@ class ShowDetailsFragment : Fragment() {
     private var _binding: FragmentShowDetailsBinding? = null
     private val binding get() = _binding!!
     lateinit var adapter: ReviewsAdapter
+
+    private val args by navArgs<ShowDetailsFragmentArgs>()
 
     var rat = 0f
     var recInit = false
@@ -59,12 +63,35 @@ class ShowDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        binding.detailsTitle.text = args.showName
+        binding.detailsDesc.text = args.showDescription
+        binding.detailsImg.setImageResource(args.showImage)
+
+        val user = args.username
+        initBackButton(user)
+
+//        maknut if?
+        if (user != null) {
+            initDialog(user)
+        } else {
+            initDialog("anoniman")
+        }
+    }
+
+    private fun initBackButton(user: String) {
+        binding.detailsBackButton.setOnClickListener {
+//            val intentBack = Intent(this, ShowsFragment::class.java)
+//            startActivity(intentBack)
+            var directions = ShowDetailsFragmentDirections.toShowsFragment(user)
+            findNavController().navigate(directions)
+        }
     }
 
 
-    private fun initDialog(username: String) {
+    private fun initDialog(user: String) {
         binding.detailsReviewsButton.setOnClickListener {
-            val dialog = BottomSheetDialog(this)
+            val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
             if (!recInit) {
@@ -73,7 +100,7 @@ class ShowDetailsFragment : Fragment() {
             }
             bottomSheetBinding.submitButton.setOnClickListener {
                 addReviewToList(
-                    username,
+                    user,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )
@@ -97,10 +124,11 @@ class ShowDetailsFragment : Fragment() {
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true)
+//            zasto ovdje radi samo 'context' a na 91 treba 'requierConetxt()'
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.detailsRecycler.adapter = adapter
         binding.detailsRecycler.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+            DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
 
@@ -111,5 +139,7 @@ class ShowDetailsFragment : Fragment() {
 
         binding.detailsData.text =
             adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
+//        binding.detailsData.text =
+    //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }
 }
