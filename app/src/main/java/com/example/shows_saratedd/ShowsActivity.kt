@@ -64,6 +64,11 @@ class ShowsActivity : AppCompatActivity() {
             initShowsRecycler(user)
         } else initShowsRecycler("anoniman")
         initLoadShowsButton()
+
+        binding.showsLogout.setOnClickListener {
+            var intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 //        initEmptyStateButton()
     }
 
