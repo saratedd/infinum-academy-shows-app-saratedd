@@ -142,4 +142,8 @@ class ShowDetailsFragment : Fragment() {
 //        binding.detailsData.text =
     //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }
