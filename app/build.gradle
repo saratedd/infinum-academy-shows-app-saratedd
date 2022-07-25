@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
 //    koristit cemo ove pluginove u projektu
+//    module build
 }
 
 android {
