@@ -1,5 +1,7 @@
 package com.example.shows_saratedd
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
@@ -13,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
+import com.google.android.material.bottomsheet.BottomSheetDialog
 //import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
 
@@ -96,18 +100,19 @@ class ShowsFragment : Fragment() {
 //        setContentView(binding.root)
 //        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
         super.onViewCreated(view, savedInstanceState)
-        val user = args.email
+        val email = args.email
+        val user = email.substringBefore("@", "")
 //        if (user != null) {
 //            initShowsRecycler(user)
 //        } else initShowsRecycler("anoniman")
 //        initLoadShowsButton()
 //        maknut if?
         if (user != null)
-            initShowsRecycler(user.substringBefore("@", ""))
+            initShowsRecycler(user)
         else
             initShowsRecycler("anoniman")
 
-        initLogoutButton()
+        initUserButton(email)
         initLoadShowsButton()
     }
 
@@ -142,14 +147,49 @@ class ShowsFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
-    private fun initLogoutButton() {
-        binding.showsLogout.setOnClickListener {
+    private fun initUserButton(email: String) {
+        binding.showsUser.setOnClickListener {
 //      var intent = Intent(this, LoginFragment::class.java)
 //      startActivity(intent)
+            val dialog = BottomSheetDialog(requireContext())
+            val bottomSheetBinding = DialogUserBinding.inflate(layoutInflater)
+            dialog.setContentView(bottomSheetBinding.root)
 
+            bottomSheetBinding.userEmail.text = email
+
+            bottomSheetBinding.userChangePicture.setOnClickListener {
+                TODO()
+                dialog.dismiss()
+            }
+
+            bottomSheetBinding.userLogout.setOnClickListener {
+                initAlertDialog()
+//                namjerno nema dialog.dismiss() ovdje
+            }
+
+            dialog.show()
+
+        }
+    }
+
+    private fun initAlertDialog() {
+        val builder: AlertDialog.Builder? = activity?.let {
+            AlertDialog.Builder(it)
+        }
+        builder?.setMessage(R.string.logout_alert_message)
+//        builder?.setPositiveButton(R.string.logout, object : DialogInterface.OnClickListener {
+//            override fun onClick(p0: DialogInterface?, p1: Int) {
+//            }
+//        })
+        builder?.setPositiveButton(R.string.logout) { p0, p1 ->
             var directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
+        builder?.setNegativeButton(R.string.cancel) { p0, p1 ->
+            // nista
+        }
+        val alertDialog : AlertDialog? = builder?.create()
+        alertDialog?.show()
     }
 
     private fun initLoadShowsButton() {

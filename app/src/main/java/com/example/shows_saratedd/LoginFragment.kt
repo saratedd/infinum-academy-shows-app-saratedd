@@ -85,16 +85,8 @@ class LoginFragment : Fragment() {
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
 //      (un)checkiram remember me s obzirom na to kako je u storageu
         binding.loginRememberMe.isChecked = isRememberMe
-//        if (isRememberMe) {
-////            ova logika nema logike
-//            initLogin()
-//        } else {
-//            initTextListers()
-//            initRememberMe()
-//            initLogin()
-//        }
+
         initTextListers()
-        initRememberMe()
         initLogin()
 
     }
@@ -112,14 +104,6 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun initRememberMe() {
-        //      mijenjam u storageu jel remember me (un)checkan s obzirom na novi input
-        binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
-            sharedPreferences.edit {
-                putBoolean(IS_REMEMBER_ME, isChecked)
-            }
-        }
-    }
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
@@ -129,13 +113,21 @@ class LoginFragment : Fragment() {
 //                binding.emailEditTextField.text.toString().substringBefore("@", "")
 //            )
 //            startActivity(intent)
-//            u useru je samo dio prije @
+            initRememberMe()
             var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
             var directions = LoginFragmentDirections.toShowsFragment(user)
             findNavController().navigate(directions)
         }
     }
 
+    private fun initRememberMe() {
+        //      mijenjam u storageu jel remember me (un)checkan s obzirom na novi input
+        binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
+            sharedPreferences.edit {
+                putBoolean(IS_REMEMBER_ME, isChecked)
+            }
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
