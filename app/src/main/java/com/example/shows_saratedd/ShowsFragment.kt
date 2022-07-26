@@ -96,18 +96,18 @@ class ShowsFragment : Fragment() {
 //        setContentView(binding.root)
 //        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
         super.onViewCreated(view, savedInstanceState)
-        val user = args.username
+        val user = args.email
 //        if (user != null) {
 //            initShowsRecycler(user)
 //        } else initShowsRecycler("anoniman")
 //        initLoadShowsButton()
 //        maknut if?
         if (user != null)
-            initShowsRecycler(user)
+            initShowsRecycler(user.substringBefore("@", ""))
         else
             initShowsRecycler("anoniman")
 
-        initBackButton()
+        initLogoutButton()
         initLoadShowsButton()
     }
 
@@ -142,12 +142,13 @@ class ShowsFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
-    private fun initBackButton() {
+    private fun initLogoutButton() {
         binding.showsLogout.setOnClickListener {
 //      var intent = Intent(this, LoginFragment::class.java)
 //      startActivity(intent)
-        var directions = ShowsFragmentDirections.toLoginFragment()
-        findNavController().navigate(directions)
+
+            var directions = ShowsFragmentDirections.toLoginFragment()
+            findNavController().navigate(directions)
         }
     }
 

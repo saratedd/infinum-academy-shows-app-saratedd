@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/userPicture"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:src="@drawable/ic_profile_placeholder"
+        android:layout_marginVertical="16dp"
+        />
+
+    <TextView
+        android:id="@+id/userEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        tools:text="your.mail@mail.com"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/userChangePicture"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/purple"
+        android:text="@string/change_profile_photo"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        app:cornerRadius="100dp"
+        app:strokeColor="@color/purple" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/userLogout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginHorizontal="16dp"
+        android:textColor="@color/white"
+        android:text="@string/logout"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        app:cornerRadius="100dp"
+        android:backgroundTint="@color/purple"/>
+
+
+
+</LinearLayout>

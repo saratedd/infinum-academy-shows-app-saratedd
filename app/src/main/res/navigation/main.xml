@@ -19,7 +19,7 @@
         android:name="com.example.shows_saratedd.ShowsFragment"
         tools:layout="@layout/fragment_shows">
         <argument
-            android:name="username"
+            android:name="email"
             app:argType="string" />
         <action
             android:id="@+id/toShowDetailsFragment"
