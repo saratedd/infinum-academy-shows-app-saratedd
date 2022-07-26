@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,6 +29,7 @@ class ShowDetailsFragment : Fragment() {
     lateinit var adapter: ReviewsAdapter
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
+    private val viewModel by viewModels<ShowsDetailsViewModel>()
 
     var rat = 0f
     var recInit = false
@@ -71,7 +73,7 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
-//        maknut if?
+//        maknuti if?
         if (email != null) {
             initDialog(email)
         } else {
@@ -87,7 +89,6 @@ class ShowDetailsFragment : Fragment() {
             findNavController().navigate(directions)
         }
     }
-
 
     private fun initDialog(email: String) {
         binding.detailsReviewsButton.setOnClickListener {

@@ -23,7 +23,8 @@ class ShowsViewModel: ViewModel() {
             R.drawable.krv_nije_voda
         )
     )
-//  casts mutable livedata to immutable livedata
+//    casts mutable livedata to immutable livedata
+//    jesam li mogla u muteablelivedata samo ubaciti 'shows'?
     private val _showsLiveData = MutableLiveData<List<Show>>()
     val showsLiveData: LiveData<List<Show>> = _showsLiveData
 

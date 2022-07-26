@@ -28,10 +28,10 @@ class ReviewsAdapter(
     }
 
     fun updateRating(): Float {
-        var rat = 0f
+        var rating = 0f
         for (item in items)
-            rat += item.rating
-        return rat / items.count()
+            rating += item.rating
+        return rating / items.count()
     }
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
