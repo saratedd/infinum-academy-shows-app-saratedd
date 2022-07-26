@@ -1,11 +1,13 @@
 package com.example.shows_saratedd
 
 import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.DialogInterface
 import android.content.Intent
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,6 +31,7 @@ class ShowsFragment : Fragment() {
         const val EXTRA_SHOW_DESC = "showDesc"
         const val EXTRA_SHOW_IMAGE = "showImage"
         const val EXTRA_USER = "user"
+        const val REQUEST_IMAGE_CAPTURE = 1
     }
 //    zasto je negdje : a negdje =
 //    private lateinit var binding: ActivityShowsBinding
@@ -162,6 +165,7 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
+                dispatchTakePictureIntent()
                 TODO()
                 dialog.dismiss()
             }
@@ -199,6 +203,15 @@ class ShowsFragment : Fragment() {
         alertDialog?.show()
     }
 
+    private fun dispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            // display error state to the user
+        }
+    }
+
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
 //            adapter.addAllShows(shows)
@@ -211,6 +224,7 @@ class ShowsFragment : Fragment() {
             binding.loadButton.isVisible = false
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
