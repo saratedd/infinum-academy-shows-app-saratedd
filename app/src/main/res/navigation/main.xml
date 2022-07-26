@@ -43,7 +43,7 @@
             android:name="showImage"
             app:argType="integer" />
         <argument
-            android:name="username"
+            android:name="email"
             app:argType="string" />
         <action
             android:id="@+id/toShowsFragment"

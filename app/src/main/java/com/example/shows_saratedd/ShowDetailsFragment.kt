@@ -68,28 +68,28 @@ class ShowDetailsFragment : Fragment() {
         binding.detailsDesc.text = args.showDescription
         binding.detailsImg.setImageResource(args.showImage)
 
-        val user = args.username
-        initBackButton(user)
+        val email = args.email
+        initBackButton(email)
 
 //        maknut if?
-        if (user != null) {
-            initDialog(user)
+        if (email != null) {
+            initDialog(email)
         } else {
             initDialog("anoniman")
         }
     }
 
-    private fun initBackButton(user: String) {
+    private fun initBackButton(email: String) {
         binding.detailsBackButton.setOnClickListener {
 //            val intentBack = Intent(this, ShowsFragment::class.java)
 //            startActivity(intentBack)
-            var directions = ShowDetailsFragmentDirections.toShowsFragment(user)
+            var directions = ShowDetailsFragmentDirections.toShowsFragment(email)
             findNavController().navigate(directions)
         }
     }
 
 
-    private fun initDialog(user: String) {
+    private fun initDialog(email: String) {
         binding.detailsReviewsButton.setOnClickListener {
             val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
@@ -100,7 +100,7 @@ class ShowDetailsFragment : Fragment() {
             }
             bottomSheetBinding.submitButton.setOnClickListener {
                 addReviewToList(
-                    user,
+                    email.substringBefore("@", ""),
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )

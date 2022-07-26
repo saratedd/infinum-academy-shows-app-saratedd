@@ -24,6 +24,10 @@ class ShowsViewModel: ViewModel() {
         )
     )
 //  casts mutable livedata to immutable livedata
-    private val _showsLiveData = MutableLiveData<Show>()
-    val showsLiveData: LiveData<Show> = _showsLiveData
+    private val _showsLiveData = MutableLiveData<List<Show>>()
+    val showsLiveData: LiveData<List<Show>> = _showsLiveData
+
+    init {
+        _showsLiveData.value = shows
+    }
 }

@@ -105,14 +105,14 @@ class ShowsFragment : Fragment() {
 //        var user = intent.extras?.getString(LoginFragment.EXTRA_EMAIL)
         super.onViewCreated(view, savedInstanceState)
         val email = args.email
-        val user = email.substringBefore("@", "")
+//        val user = email.substringBefore("@", "")
 //        if (user != null) {
 //            initShowsRecycler(user)
 //        } else initShowsRecycler("anoniman")
 //        initLoadShowsButton()
 //        maknut if?
-        if (user != null)
-            initShowsRecycler(user)
+        if (email != null)
+            initShowsRecycler(email)
         else
             initShowsRecycler("anoniman")
 
@@ -122,7 +122,7 @@ class ShowsFragment : Fragment() {
 
 
 
-    private fun initShowsRecycler(user: String) {
+    private fun initShowsRecycler(email: String) {
 //        onitemclickcallback
         adapter = ShowsAdapter(emptyList()) { show ->
 //            val intent = Intent(this, ShowDetailsActivity::class.java)
@@ -132,7 +132,7 @@ class ShowsFragment : Fragment() {
 //            intent.putExtra(EXTRA_USER, user)
 //            startActivity(intent)
             var directions = ShowsFragmentDirections.toShowDetailsFragment(
-                show.name, show.description, show.imageResourceID, user
+                show.name, show.description, show.imageResourceID, email
             )
             findNavController().navigate(directions)
 
@@ -202,8 +202,8 @@ class ShowsFragment : Fragment() {
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
 //            adapter.addAllShows(shows)
-            viewModel.showsLiveData.observe(viewLifecycleOwner) { show ->
-                adapter.addShow(show)
+            viewModel.showsLiveData.observe(viewLifecycleOwner) { shows ->
+                adapter.addAllShows(shows)
             }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false
