@@ -35,6 +35,11 @@ class ShowsAdapter(
         notifyDataSetChanged()
     }
 
+    fun addShow(show: Show) {
+        items = items + show
+        notifyItemInserted(items.lastIndex)
+    }
+
     inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(show: Show) {

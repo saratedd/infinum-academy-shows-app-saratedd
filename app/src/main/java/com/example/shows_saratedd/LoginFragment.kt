@@ -24,6 +24,7 @@ class LoginFragment : Fragment() {
         const val EXTRA_EMAIL = "email"
         const val REMEMBER_ME = "remember_me"
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
+        const val IS_USER = "IS_USER"
     }
 //zasto nam treba ovo ? = null
 //    !! sta?
@@ -83,9 +84,13 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 //      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
+        val isUser = sharedPreferences.getString(IS_USER, null)
 //      (un)checkiram remember me s obzirom na to kako je u storageu
         binding.loginRememberMe.isChecked = isRememberMe
-
+        if (isUser != null) {
+            var directions = LoginFragmentDirections.toShowsFragment(isUser)
+            findNavController().navigate(directions)
+        }
         initTextListers()
         initLogin()
 
@@ -95,9 +100,9 @@ class LoginFragment : Fragment() {
         binding.emailEditTextField.doAfterTextChanged {
             val regex = Patterns.EMAIL_ADDRESS.toRegex()
             emailBool = regex.matches(binding.emailEditTextField.text.toString())
-
             binding.loginButton.isEnabled = emailBool && passBool
         }
+
         binding.passwordEditTextField.doAfterTextChanged {
             passBool = binding.passwordEditTextField.text.toString().length >= 6
             binding.loginButton.isEnabled = emailBool && passBool
@@ -113,18 +118,20 @@ class LoginFragment : Fragment() {
 //                binding.emailEditTextField.text.toString().substringBefore("@", "")
 //            )
 //            startActivity(intent)
-            initRememberMe()
             var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+            initRememberMe(user)
+
             var directions = LoginFragmentDirections.toShowsFragment(user)
             findNavController().navigate(directions)
         }
     }
 
-    private fun initRememberMe() {
+    private fun initRememberMe(user : String) {
         //      mijenjam u storageu jel remember me (un)checkan s obzirom na novi input
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
                 putBoolean(IS_REMEMBER_ME, isChecked)
+                putString(IS_USER, user)
             }
         }
     }

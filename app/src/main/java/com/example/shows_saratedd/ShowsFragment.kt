@@ -9,8 +9,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -33,37 +35,39 @@ class ShowsFragment : Fragment() {
     private lateinit var adapter: ShowsAdapter
     private var _binding: FragmentShowsBinding? = null
     private val binding get() = _binding!!
-    private val args by navArgs<ShowsFragmentArgs>()
 
-    private val shows = listOf(
-//        Show("0",
+    private val args by navArgs<ShowsFragmentArgs>()
+    private val viewModel by viewModels<ShowsViewModel>()
+
+//    private val shows = listOf(
+////        Show("0",
+////            "The Office",
+////            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+////            R.drawable.ic_office),
+////        Show("1",
+////            "Stranger Things",
+////            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+////            R.drawable.ic_stranger_things),
+////        Show("2",
+////            "Krv nije voda",
+////            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
+////            R.drawable.krv_nije_voda)
+//        Show(
 //            "The Office",
-//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
-//            R.drawable.ic_office),
-//        Show("1",
+//            "The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons.",
+//            R.drawable.ic_office
+//        ),
+//        Show(
 //            "Stranger Things",
-//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
-//            R.drawable.ic_stranger_things),
-//        Show("2",
+//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
+//            R.drawable.ic_stranger_things
+//        ),
+//        Show(
 //            "Krv nije voda",
-//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor",
-//            R.drawable.krv_nije_voda)
-        Show(
-            "The Office",
-            "The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons.",
-            R.drawable.ic_office
-        ),
-        Show(
-            "Stranger Things",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
-            R.drawable.ic_stranger_things
-        ),
-        Show(
-            "Krv nije voda",
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
-            R.drawable.krv_nije_voda
-        )
-    )
+//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
+//            R.drawable.krv_nije_voda
+//        )
+//    )
 
     //    lateinit = declaring a property/variable wo definition
 
@@ -164,7 +168,7 @@ class ShowsFragment : Fragment() {
 
             bottomSheetBinding.userLogout.setOnClickListener {
                 initAlertDialog()
-//                namjerno nema dialog.dismiss() ovdje
+                dialog.dismiss()
             }
 
             dialog.show()
@@ -182,6 +186,9 @@ class ShowsFragment : Fragment() {
 //            }
 //        })
         builder?.setPositiveButton(R.string.logout) { p0, p1 ->
+//            LoginFragment.sharedPreferences.edit {
+//                putBoolean(LoginFragment.IS_REMEMBER_ME, isChecked)
+//            }
             var directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
@@ -194,7 +201,10 @@ class ShowsFragment : Fragment() {
 
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
-            adapter.addAllShows(shows)
+//            adapter.addAllShows(shows)
+            viewModel.showsLiveData.observe(viewLifecycleOwner) { show ->
+                adapter.addShow(show)
+            }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false
             binding.emptyStateText.isVisible = false
