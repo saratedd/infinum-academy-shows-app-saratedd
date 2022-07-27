@@ -205,7 +205,8 @@ class ShowsFragment : Fragment() {
                 putString(LoginFragment.USER, null)
                 putBoolean(LoginFragment.IS_REMEMBER_ME, false)
             }
-            var directions = ShowsFragmentDirections.toLoginFragment()
+//            pazi na ovaj email
+            var directions = ShowsFragmentDirections.toLoginFragment(false)
             findNavController().navigate(directions)
         }
         builder?.setNegativeButton(R.string.cancel) { p0, p1 ->

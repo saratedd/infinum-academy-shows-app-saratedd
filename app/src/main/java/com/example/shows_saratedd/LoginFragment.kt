@@ -12,10 +12,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 //import com.example.shows_saratedd.databinding.ActivityLoginBinding
 import com.example.shows_saratedd.databinding.FragmentLoginBinding
 
@@ -32,7 +34,9 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
+    private val args by navArgs<LoginFragmentArgs>()
     private lateinit var sharedPreferences: SharedPreferences
+
 
     var emailBool = false
     var passBool = false
@@ -85,6 +89,11 @@ class LoginFragment : Fragment() {
 //      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
+        val isRegistration = args.registration
+        if (isRegistration) {
+            binding.loginText.text = R.string.registration_successful.toString()
+            binding.registerButton.isVisible = false
+        }
 
 //      (un)checkiram remember me s obzirom na to kako je u storageu
         binding.loginRememberMe.isChecked = isRememberMe
@@ -94,8 +103,10 @@ class LoginFragment : Fragment() {
         }
         initTextListers()
         initLogin()
+        initRegisterListener()
 
     }
+
 
     private fun initTextListers() {
         binding.emailEditTextField.doAfterTextChanged {
@@ -110,6 +121,12 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun initRegisterListener() {
+        binding.registerButton.setOnClickListener {
+            var directions = LoginFragmentDirections.toRegisterFragment()
+            findNavController().navigate(directions)
+        }
+    }
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {

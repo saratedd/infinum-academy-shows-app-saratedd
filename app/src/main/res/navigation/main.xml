@@ -15,6 +15,9 @@
         <action
             android:id="@+id/toRegisterFragment"
             app:destination="@id/registerFragment" />
+        <argument
+            android:name="registration"
+            app:argType="boolean" />
     </fragment>
 
     <fragment
@@ -22,7 +25,7 @@
         android:name="com.example.shows_saratedd.RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
-            android:id="@+id/tologinFragment"
+            android:id="@+id/toLoginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
 
