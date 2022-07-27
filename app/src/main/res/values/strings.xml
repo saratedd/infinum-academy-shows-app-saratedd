@@ -26,4 +26,6 @@
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
     <string name="logout_alert_message">Are you sure you want to logout?</string>
+    <string name="register">Register</string>
+    <string name="repeat_password">Repeat password</string>
 </resources>
