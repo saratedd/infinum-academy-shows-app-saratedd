@@ -88,7 +88,7 @@ class LoginFragment : Fragment() {
 
 //      (un)checkiram remember me s obzirom na to kako je u storageu
         binding.loginRememberMe.isChecked = isRememberMe
-        if (isUser != null) {
+        if (isUser != null && isRememberMe) {
             var directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }

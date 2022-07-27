@@ -1,9 +1,7 @@
 package com.example.shows_saratedd
 
 import android.app.AlertDialog
-import android.content.ActivityNotFoundException
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -19,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shows_saratedd.LoginFragment.Companion.REMEMBER_ME
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -41,6 +40,8 @@ class ShowsFragment : Fragment() {
 
     private val args by navArgs<ShowsFragmentArgs>()
     private val viewModel by viewModels<ShowsViewModel>()
+
+    private lateinit var sharedPreferences: SharedPreferences
 
 //    private val shows = listOf(
 ////        Show("0",
@@ -93,6 +94,13 @@ class ShowsFragment : Fragment() {
 //        }
 ////        initEmptyStateButton()
 //    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 //        sto je 'attachToParent'
         _binding = FragmentShowsBinding.inflate(inflater, container, false)
@@ -193,6 +201,10 @@ class ShowsFragment : Fragment() {
 //            LoginFragment.sharedPreferences.edit {
 //                putBoolean(LoginFragment.IS_REMEMBER_ME, isChecked)
 //            }
+            sharedPreferences.edit {
+                putString(LoginFragment.USER, null)
+                putBoolean(LoginFragment.IS_REMEMBER_ME, false)
+            }
             var directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
