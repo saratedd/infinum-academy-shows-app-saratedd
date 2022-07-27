@@ -12,6 +12,18 @@
         <action
             android:id="@+id/toShowsFragment"
             app:destination="@id/showsFragment" />
+        <action
+            android:id="@+id/toRegisterFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.shows_saratedd.RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/tologinFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
