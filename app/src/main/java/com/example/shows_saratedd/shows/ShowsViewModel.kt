@@ -24,7 +24,7 @@ class ShowsViewModel: ViewModel() {
         )
     )
 //    casts mutable livedata to immutable livedata
-//    jesam li mogla u muteablelivedata samo ubaciti 'shows'?
+//    jesam li mogla u mutablelivedata samo ubaciti 'shows'?
     private val _showsLiveData = MutableLiveData<List<Show>>()
     val showsLiveData: LiveData<List<Show>> = _showsLiveData
 
