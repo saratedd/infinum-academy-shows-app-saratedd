@@ -15,9 +15,6 @@
         <action
             android:id="@+id/toRegisterFragment"
             app:destination="@id/registerFragment" />
-        <argument
-            android:name="registration"
-            app:argType="boolean" />
     </fragment>
 
     <fragment

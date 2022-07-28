@@ -1,30 +1,23 @@
 package com.example.shows_saratedd
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 //import com.example.shows_saratedd.databinding.ActivityLoginBinding
 import com.example.shows_saratedd.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
     companion object {
-        const val EXTRA_EMAIL = "email"
-        const val REMEMBER_ME = "remember_me"
+        const val LOGIN = "LOGIN"
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
         const val USER = "USER"
     }
@@ -34,8 +27,8 @@ class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
-    private val args by navArgs<LoginFragmentArgs>()
     private lateinit var sharedPreferences: SharedPreferences
+
 
 
     var emailBool = false
@@ -43,7 +36,7 @@ class LoginFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
     }
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -89,9 +82,9 @@ class LoginFragment : Fragment() {
 //      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
-        val isRegistration = args.registration
+        val isRegistration = sharedPreferences.getBoolean(RegisterFragment.IS_REGISTRATION, false)
         if (isRegistration) {
-            binding.loginText.text = R.string.registration_successful.toString()
+            binding.loginText.text = getString(R.string.registration_successful)
             binding.registerButton.isVisible = false
         }
 

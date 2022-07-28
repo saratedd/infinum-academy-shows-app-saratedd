@@ -22,7 +22,7 @@ class RegisterFragment : Fragment() {
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
-//    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sharedPreferences: SharedPreferences
 
     private var emailBool = false
     private var passBool = false
@@ -32,6 +32,7 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        sharedPreferences = requireContext().getSharedPreferences(REGISTRATION, Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
@@ -83,11 +84,11 @@ class RegisterFragment : Fragment() {
     private fun initRegister() {
         binding.registerButton.setOnClickListener {
 //
-//            sharedPreferences.edit {
-//                putBoolean(IS_REGISTRATION, true)
-//            }
+            sharedPreferences.edit {
+                putBoolean(IS_REGISTRATION, true)
+            }
 
-            var directions = RegisterFragmentDirections.toLoginFragment(true)
+            var directions = RegisterFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
     }

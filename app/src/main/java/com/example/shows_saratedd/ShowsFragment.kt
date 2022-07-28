@@ -2,8 +2,6 @@ package com.example.shows_saratedd
 
 import android.app.AlertDialog
 import android.content.*
-import show.Show
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -17,7 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.shows_saratedd.LoginFragment.Companion.REMEMBER_ME
+import com.example.shows_saratedd.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -98,7 +96,7 @@ class ShowsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -204,9 +202,10 @@ class ShowsFragment : Fragment() {
             sharedPreferences.edit {
                 putString(LoginFragment.USER, null)
                 putBoolean(LoginFragment.IS_REMEMBER_ME, false)
+                putBoolean(RegisterFragment.IS_REGISTRATION, false)
             }
-//            pazi na ovaj email
-            var directions = ShowsFragmentDirections.toLoginFragment(false)
+
+            var directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
         builder?.setNegativeButton(R.string.cancel) { p0, p1 ->

@@ -138,7 +138,7 @@
             android:layout_height="56dp"
             android:layout_margin="16dp"
             android:backgroundTint="@color/purple"
-            android:text="@string/write_a_review_button"
+            android:text="@string/write_a_review"
             android:textAllCaps="false"
             android:textSize="16sp"
             app:cornerRadius="100dp"
