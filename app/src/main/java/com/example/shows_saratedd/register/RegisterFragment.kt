@@ -107,7 +107,7 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun displayRegistrationMessage(isSuccessful: Boolean?) {
+    private fun displayRegistrationMessage(registrationSuccessful: Boolean?) {
         // na neki nacin dati feedback korisniku?
     }
 

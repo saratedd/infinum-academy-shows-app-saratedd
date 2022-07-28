@@ -11,7 +11,9 @@ import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.R
 import com.example.shows_saratedd.register.RegisterFragment
 //import com.example.shows_saratedd.databinding.ActivityLoginBinding
@@ -30,7 +32,7 @@ class LoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var sharedPreferences: SharedPreferences
-
+    private val viewModel: LoginViewModel by viewModels()
 
 
     var emailBool = false
@@ -81,6 +83,9 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        ApiModule.initRetrofit(requireContext())
+
 //      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
@@ -101,6 +106,7 @@ class LoginFragment : Fragment() {
         initRegisterListener()
 
     }
+
 
 
     private fun initTextListers() {
@@ -125,20 +131,43 @@ class LoginFragment : Fragment() {
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
+            viewModel.onloginButtonClicked(
+                username = binding.emailEditTextField.text.toString(),
+                password = binding.passwordEditTextField.text.toString()
+            )
+            viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
+                initLoginResult(loginSuccessful)
+
+            }
 //            val intent = Intent(this, ShowsActivity::class.java)
 //            intent.putExtra(
 //                EXTRA_EMAIL,
 //                binding.emailEditTextField.text.toString().substringBefore("@", "")
 //            )
 //            startActivity(intent)
+//            var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+//            initRememberMe(user)
+//            sharedPreferences.edit {
+//                putString(USER, user)
+//            }
+//
+//            var directions = LoginFragmentDirections.toShowsFragment(user)
+//            findNavController().navigate(directions)
+        }
+    }
+
+    private fun initLoginResult(loginSuccessful: Boolean) {
+        if (loginSuccessful) {
             var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
             initRememberMe(user)
-            sharedPreferences.edit {
-                putString(USER, user)
-            }
+//            sharedPreferences.edit {
+//                putString(USER, user)
+//            }
 
             var directions = LoginFragmentDirections.toShowsFragment(user)
             findNavController().navigate(directions)
+        } else {
+            // na neki nacin dati feedback korisniku?
         }
     }
 
@@ -147,7 +176,7 @@ class LoginFragment : Fragment() {
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
                 putBoolean(IS_REMEMBER_ME, isChecked)
-//                putString(USER, user)
+                putString(USER, user)
             }
         }
     }
