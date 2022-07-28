@@ -15,11 +15,11 @@ class RegistrationViewModel : ViewModel() {
         return registrationResultLiveData
     }
 
-    fun onRegisterButtonClicked(username: String, password: String) {
+    fun onRegisterButtonClicked(username: String, password: String, passConfirmation: String) {
         val registerRequest = RegisterRequest(
             email = username,
             password = password,
-            passConfirmation = password
+            passConfirmation = passConfirmation
         )
         ApiModule.retrofit.register(registerRequest)
             .enqueue(object: Callback<RegisterResponse> {

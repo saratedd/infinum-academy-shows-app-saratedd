@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.core.content.edit
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.shows_saratedd.databinding.FragmentRegisterBinding
 
@@ -23,6 +24,7 @@ class RegisterFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var sharedPreferences: SharedPreferences
+    private val viewModel: RegistrationViewModel by viewModels()
 
     private var emailBool = false
     private var passBool = false
@@ -50,6 +52,11 @@ class RegisterFragment : Fragment() {
 //            var directions = LoginFragmentDirections.toShowsFragment(isUser)
 //            findNavController().navigate(directions)
 //        }
+        ApiModule.initRetrofit(requireContext())
+
+        viewModel.getRegistrationResultLiveData().observe(viewLifecycleOwner) { registrationSuccessful ->
+            displayRegistrationMessage(registrationSuccessful)
+        }
         initTextListers()
         initRegister()
 
@@ -83,6 +90,11 @@ class RegisterFragment : Fragment() {
 
     private fun initRegister() {
         binding.registerButton.setOnClickListener {
+            viewModel.onRegisterButtonClicked(
+                username = binding.emailEditTextField.text.toString(),
+                password = binding.passwordEditTextField.text.toString(),
+                passConfirmation = binding.repeatPasswordEditTextField.text.toString()
+            )
 //
             sharedPreferences.edit {
                 putBoolean(IS_REGISTRATION, true)
@@ -91,6 +103,10 @@ class RegisterFragment : Fragment() {
             var directions = RegisterFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
+    }
+
+    private fun displayRegistrationMessage(isSuccessful: Boolean?) {
+        // na neki nacin dati feedback korisniku?
     }
 
     override fun onDestroyView() {
