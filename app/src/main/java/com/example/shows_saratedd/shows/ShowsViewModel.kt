@@ -1,9 +1,9 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.shows
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import show.Show
+import com.example.shows_saratedd.R
 
 class ShowsViewModel: ViewModel() {
     private val shows = listOf<Show>(

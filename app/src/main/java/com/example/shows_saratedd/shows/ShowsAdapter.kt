@@ -1,4 +1,4 @@
-package show
+package com.example.shows_saratedd.shows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

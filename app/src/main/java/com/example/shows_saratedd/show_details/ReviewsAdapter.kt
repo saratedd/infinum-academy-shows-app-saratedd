@@ -1,11 +1,10 @@
-package show
+package com.example.shows_saratedd.show_details
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shows_saratedd.R
 import com.example.shows_saratedd.databinding.ItemReviewBinding
-import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
 class ReviewsAdapter(
     private var items: List<Review>

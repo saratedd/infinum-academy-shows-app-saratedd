@@ -1,4 +1,4 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.login
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,6 +12,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.shows_saratedd.R
+import com.example.shows_saratedd.register.RegisterFragment
 //import com.example.shows_saratedd.databinding.ActivityLoginBinding
 import com.example.shows_saratedd.databinding.FragmentLoginBinding
 

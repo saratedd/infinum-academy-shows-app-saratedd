@@ -1,4 +1,4 @@
-package show
+package com.example.shows_saratedd.show_details
 
 import androidx.annotation.DrawableRes
 

@@ -1,9 +1,6 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.show_details
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import show.Review
 
 class ShowsDetailsViewModel : ViewModel() {
 

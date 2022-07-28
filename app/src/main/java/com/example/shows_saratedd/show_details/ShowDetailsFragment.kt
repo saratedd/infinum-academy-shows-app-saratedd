@@ -1,10 +1,6 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.show_details
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +11,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shows_saratedd.R
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import show.Review
-import show.ReviewsAdapter
 
 class ShowDetailsFragment : Fragment() {
 //    lateinit var binding: ActivityShowDetailsBinding

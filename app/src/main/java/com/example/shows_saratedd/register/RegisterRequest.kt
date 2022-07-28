@@ -1,4 +1,4 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.register
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

@@ -1,4 +1,4 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.register
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -12,7 +12,9 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.databinding.FragmentRegisterBinding
+import com.example.shows_saratedd.login.LoginFragment
 
 class RegisterFragment : Fragment() {
     companion object {

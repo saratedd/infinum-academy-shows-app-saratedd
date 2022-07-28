@@ -1,8 +1,10 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.shows_saratedd.ApiModule
+import com.example.shows_saratedd.RegisterResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

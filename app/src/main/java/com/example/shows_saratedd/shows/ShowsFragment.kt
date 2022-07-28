@@ -1,4 +1,4 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.shows
 
 import android.app.AlertDialog
 import android.content.*
@@ -15,12 +15,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.shows_saratedd.LoginFragment.Companion.LOGIN
+import com.example.shows_saratedd.R
+import com.example.shows_saratedd.login.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
+import com.example.shows_saratedd.login.LoginFragment
+import com.example.shows_saratedd.register.RegisterFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 //import com.example.shows_saratedd.databinding.ActivityShowsBinding
-import show.ShowsAdapter
 
 class ShowsFragment : Fragment() {
     companion object {
