@@ -2,13 +2,16 @@ package com.example.shows_saratedd
 
 import android.app.AlertDialog
 import android.content.*
+import android.content.ContentValues.TAG
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -173,7 +176,15 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
-                dispatchTakePictureIntent()
+//                FileUtil.createImageFile(requireContext())
+//                val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+//                    if (success) {
+//                        Log.i(TAG, "Got image at: \$uri")
+//                        //Do something with the image uri, go nuts!
+//                    }
+//                }
+////                getCameraImage.launch(uri)
+//                getCameraImage.launch(FileUtil.createImageFile(requireContext()))
                 TODO()
                 dialog.dismiss()
             }
@@ -213,15 +224,6 @@ class ShowsFragment : Fragment() {
         }
         val alertDialog : AlertDialog? = builder?.create()
         alertDialog?.show()
-    }
-
-    private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
-        }
     }
 
     private fun initLoadShowsButton() {

@@ -73,6 +73,10 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
+        viewModel.showReview.observe(viewLifecycleOwner) { review ->
+            adapter.addReview(review)
+        }
+
 //        maknuti if?
         if (email != null) {
             initDialog(email)
@@ -100,12 +104,17 @@ class ShowDetailsFragment : Fragment() {
                 recInit = true
             }
             bottomSheetBinding.submitButton.setOnClickListener {
-                addReviewToList(
-                    email.substringBefore("@", ""),
+//                addReviewToList(
+//                    email.substringBefore("@", ""),
+//                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+//                    bottomSheetBinding.dialogRating.getRating().toInt()
+//                )
+                viewModel.createNewReview(
+                    email,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )
-//                treba nam ime oosbe i rating iz ratingbara
+//                treba nam ime osobe i rating iz ratingbara
                 dialog.dismiss()
                 binding.detailsData.isVisible = true
                 binding.ratingBar.isVisible = true
@@ -118,9 +127,9 @@ class ShowDetailsFragment : Fragment() {
         }
     }
 
-    private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
-        adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
-    }
+//    private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
+//        adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
+//    }
 
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
