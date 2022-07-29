@@ -11,6 +11,9 @@ import androidx.core.widget.doAfterTextChanged
 import com.example.shows_saratedd.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
+    companion object {
+        const val EXTRA_EMAIL = "email"
+    }
 
     lateinit var binding: ActivityLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,69 +22,30 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.loginButton.setOnClickListener {
-//            val intent = Intent(this, WelcomeActivity::class.java)
-//            intent.putExtra("email", binding.emailEditTextField.text.toString())
-//            startActivity(intent)
-//        }
-        var email = binding.emailEditTextField.text.toString()
-        var pass = binding.passwordEditTextField.text.toString()
         var emailBool = false
         var passBool = false
 
 
-        binding.emailEditTextField.addTextChangedListener (object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val regex = Patterns.EMAIL_ADDRESS.toRegex()
-                emailBool = regex.matches(s.toString())
+        binding.emailEditTextField.doAfterTextChanged {
+            val regex = Patterns.EMAIL_ADDRESS.toRegex()
+            emailBool = regex.matches(binding.emailEditTextField.text.toString())
 
-                binding.loginButton.isEnabled = emailBool && passBool
-
-//                if (emailBool && passBool) {
-//                    binding.loginButton.setOnClickListener {
-//                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
-//                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-//                        startActivity(intent)
-//                    }
-//                }
-            }
-        })
-        binding.passwordEditTextField.addTextChangedListener (object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-            }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                passBool = s.toString().length >= 6
-
-//                if (emailBool && passBool) {
-//                    binding.loginButton.setOnClickListener {
-//                        val intent = Intent(this@LoginActivity, WelcomeActivity::class.java)
-//                        intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-//                        startActivity(intent)
-//                    }
-//                }
-                binding.loginButton.isEnabled = emailBool && passBool
-            }
-        })
-
-//        if (emailBool && passBool) {
-//            binding.loginButton.setOnClickListener {
-//                val intent = Intent(this, WelcomeActivity::class.java)
-//                intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
-//                startActivity(intent)
-//            }
-//        }
+            binding.loginButton.isEnabled = emailBool && passBool
+        }
+        binding.passwordEditTextField.doAfterTextChanged {
+            passBool = binding.passwordEditTextField.text.toString().length >= 6
+            binding.loginButton.isEnabled = emailBool && passBool
+        }
 
         binding.loginButton.setOnClickListener {
-            val intent = Intent(this, WelcomeActivity::class.java)
-            intent.putExtra("email", binding.emailEditTextField.text.toString().substringBefore("@", ""))
+            val intent = Intent(this, ShowsActivity::class.java)
+            intent.putExtra(
+                EXTRA_EMAIL,
+                binding.emailEditTextField.text.toString().substringBefore("@", "")
+            )
             startActivity(intent)
         }
 
     }
 }
+//bla
