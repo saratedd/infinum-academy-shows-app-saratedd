@@ -1,10 +1,6 @@
 package com.example.shows_saratedd
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import show.Review
 import show.ReviewsAdapter
 
 class ShowDetailsFragment : Fragment() {
@@ -31,7 +26,7 @@ class ShowDetailsFragment : Fragment() {
     private val args by navArgs<ShowDetailsFragmentArgs>()
     private val viewModel by viewModels<ShowsDetailsViewModel>()
 
-    var recInit = false
+    var recyclerViewInitialized = false
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
@@ -108,37 +103,28 @@ class ShowDetailsFragment : Fragment() {
             val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
+
             bottomSheetBinding.submitButton.setOnClickListener {
-                if (!recInit) {
+                if (!recyclerViewInitialized) {
                     initReviewsRecycler()
-                    recInit = true
+                    recyclerViewInitialized = true
+                    binding.detailsData.isVisible = true
+                    binding.ratingBar.isVisible = true
+                    binding.detailsRecycler.isVisible = true
+                    binding.detailsReviewsMessage.isVisible = false
                 }
-//                addReviewToList(
-//                    email.substringBefore("@", ""),
-//                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-//                    bottomSheetBinding.dialogRating.getRating().toInt()
-//                )
+
                 viewModel.createNewReview(
                     email,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )
-//                treba nam ime osobe i rating iz ratingbara
                 dialog.dismiss()
-                binding.detailsData.isVisible = true
-                binding.ratingBar.isVisible = true
-                binding.detailsRecycler.isVisible = true
-                binding.detailsReviewsMessage.isVisible = false
                 updateRating()
-
             }
             dialog.show()
         }
     }
-
-//    private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
-//        adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
-//    }
 
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
@@ -153,14 +139,8 @@ class ShowDetailsFragment : Fragment() {
 
     private fun updateRating() {
         viewModel.updateRating(adapter.getReviews())
-//        rat = adapter.updateRating()
-//        binding.ratingBar.setRating(rat)
-//        binding.ratingBar.setIsIndicator(true)
-//        binding.detailsData.text =
-//            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
-//        binding.detailsData.text =
-    //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
