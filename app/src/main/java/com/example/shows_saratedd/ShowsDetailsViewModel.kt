@@ -14,6 +14,9 @@ class ShowsDetailsViewModel : ViewModel() {
     private val _detailsData = MutableLiveData<String>()
     val detailsData: LiveData<String> = _detailsData
 
+    private val _averageRating = MutableLiveData<Float>()
+    val averageRating: LiveData<Float> = _averageRating
+
 //    nemam pojma sto bi ovdje trebalo ici
 
 
@@ -27,8 +30,18 @@ class ShowsDetailsViewModel : ViewModel() {
         )
     }
 
-    fun updateDetailsData (itemCount: Int, rating: Float) {
+    fun updateRating (items: List<Review>) {
+        var sum = 0f
+        for (item in items) sum += item.rating
+        _averageRating.value = sum / items.count()
         _detailsData.value =
-            itemCount.toString() + " reviews, " + String.format("%.2f", rating) + " average"
+            items.count().toString() + " reviews, " + String.format("%.2f", _averageRating.value) + " average"
     }
 }
+
+//fun updateRating(): Float {
+//    var rating = 0f
+//    for (item in items)
+//        rating += item.rating
+//    return rating / items.count()
+//}

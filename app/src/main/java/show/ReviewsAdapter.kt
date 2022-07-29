@@ -27,6 +27,10 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
+    fun getReviews(): List<Review> {
+        return items
+    }
+
     fun updateRating(): Float {
         var rating = 0f
         for (item in items)

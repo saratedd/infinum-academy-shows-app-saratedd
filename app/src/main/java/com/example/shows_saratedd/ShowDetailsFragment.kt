@@ -31,7 +31,6 @@ class ShowDetailsFragment : Fragment() {
     private val args by navArgs<ShowDetailsFragmentArgs>()
     private val viewModel by viewModels<ShowsDetailsViewModel>()
 
-    var rat = 0f
     var recInit = false
 
 //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,9 +76,15 @@ class ShowDetailsFragment : Fragment() {
             adapter.addReview(review)
         }
 
+        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
+            binding.ratingBar.setRating(averageRating)
+            binding.ratingBar.setIsIndicator(true)
+        }
+
         viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
             binding.detailsData.text = detailsData
         }
+
 
 //        maknuti if?
         if (email != null) {
@@ -103,11 +108,11 @@ class ShowDetailsFragment : Fragment() {
             val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
-            if (!recInit) {
-                initReviewsRecycler()
-                recInit = true
-            }
             bottomSheetBinding.submitButton.setOnClickListener {
+                if (!recInit) {
+                    initReviewsRecycler()
+                    recInit = true
+                }
 //                addReviewToList(
 //                    email.substringBefore("@", ""),
 //                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
@@ -147,11 +152,10 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun updateRating() {
-        rat = adapter.updateRating()
-        binding.ratingBar.setRating(rat)
-        binding.ratingBar.setIsIndicator(true)
-
-        viewModel.updateDetailsData(adapter.itemCount, rat)
+        viewModel.updateRating(adapter.getReviews())
+//        rat = adapter.updateRating()
+//        binding.ratingBar.setRating(rat)
+//        binding.ratingBar.setIsIndicator(true)
 //        binding.detailsData.text =
 //            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
 //        binding.detailsData.text =
