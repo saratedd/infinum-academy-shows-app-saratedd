@@ -83,8 +83,9 @@ class ShowDetailsFragment : Fragment() {
         binding.detailsBackButton.setOnClickListener {
 //            val intentBack = Intent(this, ShowsFragment::class.java)
 //            startActivity(intentBack)
-            var directions = ShowDetailsFragmentDirections.toShowsFragment(user)
-            findNavController().navigate(directions)
+//            var directions = ShowDetailsFragmentDirections.toShowsFragment(user)
+//            findNavController().navigate(directions)
+            findNavController().popBackStack()
         }
     }
 

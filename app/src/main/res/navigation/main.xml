@@ -26,7 +26,8 @@
             app:destination="@id/showDetailsFragment" />
         <action
             android:id="@+id/toLoginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -45,9 +46,10 @@
         <argument
             android:name="username"
             app:argType="string" />
-        <action
-            android:id="@+id/toShowsFragment"
-            app:destination="@id/showsFragment" />
+<!--        <action-->
+<!--            android:id="@+id/toShowsFragment"-->
+<!--            app:destination="@id/showsFragment" />-->
+<!--        imamo popBackStack u kodu pa nam ne treba ovo-->
     </fragment>
 
 </navigation>
