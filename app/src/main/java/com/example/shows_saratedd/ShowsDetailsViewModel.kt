@@ -11,6 +11,9 @@ class ShowsDetailsViewModel : ViewModel() {
     private val _showReview = MutableLiveData<Review>()
     val showReview: LiveData<Review> = _showReview
 
+    private val _detailsData = MutableLiveData<String>()
+    val detailsData: LiveData<String> = _detailsData
+
 //    nemam pojma sto bi ovdje trebalo ici
 
 
@@ -22,6 +25,10 @@ class ShowsDetailsViewModel : ViewModel() {
             rating,
             R.drawable.ic_profile_placeholder
         )
+    }
 
+    fun updateDetailsData (itemCount: Int, rating: Float) {
+        _detailsData.value =
+            itemCount.toString() + " reviews, " + String.format("%.2f", rating) + " average"
     }
 }

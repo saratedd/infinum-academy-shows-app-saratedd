@@ -77,6 +77,10 @@ class ShowDetailsFragment : Fragment() {
             adapter.addReview(review)
         }
 
+        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
+            binding.detailsData.text = detailsData
+        }
+
 //        maknuti if?
         if (email != null) {
             initDialog(email)
@@ -147,8 +151,9 @@ class ShowDetailsFragment : Fragment() {
         binding.ratingBar.setRating(rat)
         binding.ratingBar.setIsIndicator(true)
 
-        binding.detailsData.text =
-            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
+        viewModel.updateDetailsData(adapter.itemCount, rat)
+//        binding.detailsData.text =
+//            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
 //        binding.detailsData.text =
     //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }
