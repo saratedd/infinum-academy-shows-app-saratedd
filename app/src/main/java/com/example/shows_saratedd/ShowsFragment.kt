@@ -3,6 +3,7 @@ package com.example.shows_saratedd
 import android.app.AlertDialog
 import android.content.*
 import android.content.ContentValues.TAG
+import android.net.Uri
 import show.Show
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -26,6 +28,7 @@ import com.example.shows_saratedd.databinding.FragmentShowsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 //import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
+import java.io.File
 
 class ShowsFragment : Fragment() {
     companion object {
@@ -40,6 +43,9 @@ class ShowsFragment : Fragment() {
     private lateinit var adapter: ShowsAdapter
     private var _binding: FragmentShowsBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var getCameraImage: ActivityResultLauncher<Uri>
+    lateinit var uri: Uri
 
     private val args by navArgs<ShowsFragmentArgs>()
     private val viewModel by viewModels<ShowsViewModel>()
@@ -100,6 +106,14 @@ class ShowsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        uri = Uri.fromFile(FileUtil.createImageFile(requireContext()))
+        getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success) {
+                Log.i(TAG, "Got image at: $uri")
+                //Do something with the image uri, go nuts!
+            }
+        }
 
         sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
     }
@@ -176,15 +190,15 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
-//                FileUtil.createImageFile(requireContext())
+//                var uri = Uri.fromFile(FileUtil.createImageFile(requireContext()))
 //                val getCameraImage = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
 //                    if (success) {
-//                        Log.i(TAG, "Got image at: \$uri")
+//                        Log.i(TAG, "Got image at: $uri")
 //                        //Do something with the image uri, go nuts!
 //                    }
 //                }
-////                getCameraImage.launch(uri)
-//                getCameraImage.launch(FileUtil.createImageFile(requireContext()))
+                getCameraImage.launch(uri)
+//                getCameraImage.launch(uri)
                 TODO()
                 dialog.dismiss()
             }
