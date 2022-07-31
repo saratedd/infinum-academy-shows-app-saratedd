@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.R
 import com.example.shows_saratedd.login.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
@@ -109,7 +110,8 @@ class ShowsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
+        super.onCreate(savedInstanceState)
+        ApiModule.initRetrofit(requireContext())
 //        layout inflation = xml -> kotlin/java code
 //        binding = ActivityShowsBinding.inflate(layoutInflater)
 //        setContentView(binding.root)
@@ -143,7 +145,8 @@ class ShowsFragment : Fragment() {
 //            intent.putExtra(EXTRA_USER, user)
 //            startActivity(intent)
             var directions = ShowsFragmentDirections.toShowDetailsFragment(
-                show.name, show.description, show.imageResourceID, email
+//                show.name, show.description, show.imageResourceID, email
+                show.title, show.description, R.drawable.ic_office, email
             )
             findNavController().navigate(directions)
 
@@ -197,7 +200,7 @@ class ShowsFragment : Fragment() {
 //            override fun onClick(p0: DialogInterface?, p1: Int) {
 //            }
 //        })
-        builder?.setPositiveButton(R.string.logout) { p0, p1 ->
+        builder?.setPositiveButton(R.string.logout) { _, _ ->
 //            LoginFragment.sharedPreferences.edit {
 //                putBoolean(LoginFragment.IS_REMEMBER_ME, isChecked)
 //            }
@@ -207,10 +210,10 @@ class ShowsFragment : Fragment() {
                 putBoolean(RegisterFragment.IS_REGISTRATION, false)
             }
 
-            var directions = ShowsFragmentDirections.toLoginFragment()
+            val directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
-        builder?.setNegativeButton(R.string.cancel) { p0, p1 ->
+        builder?.setNegativeButton(R.string.cancel) { _, _ ->
             // nista
         }
         val alertDialog : AlertDialog? = builder?.create()
@@ -218,19 +221,23 @@ class ShowsFragment : Fragment() {
     }
 
     private fun dispatchTakePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            // display error state to the user
-        }
+//        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//        try {
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//        } catch (e: ActivityNotFoundException) {
+//            // display error state to the user
+//        }
     }
 
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
 //            adapter.addAllShows(shows)
-            viewModel.showsLiveData.observe(viewLifecycleOwner) { shows ->
-                adapter.addAllShows(shows)
+//            viewModel.showsLiveData.observe(viewLifecycleOwner) { shows ->
+//                adapter.addAllShows(shows)
+//            }
+            viewModel.onLoadShowsButtonClicked()
+            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+
             }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false

@@ -43,9 +43,11 @@ class ShowsAdapter(
     inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(show: Show) {
-            binding.showTitle.text = show.name
+//            binding.showTitle.text = show.name
+            binding.showTitle.text = show.title
             binding.showDesc.text = show.description
-            binding.showImage.setImageResource(show.imageResourceID)
+//            binding.showImage.setImageResource(show.imageResourceID)
+//            binding.showImage.setImageResource(show.image_url)
 
             binding.cardConatiner.setOnClickListener {
 //                treba prikazati podatke o showu
