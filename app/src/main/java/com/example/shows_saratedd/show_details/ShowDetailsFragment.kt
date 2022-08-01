@@ -28,32 +28,8 @@ class ShowDetailsFragment : Fragment() {
     private val viewModel by viewModels<ShowsDetailsViewModel>()
 
     var rat = 0f
-    var recInit = false
+    var recyclerViewInitialized = false
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityShowDetailsBinding.inflate(layoutInflater)
-//
-//        setContentView(binding.root)
-//
-//        binding.detailsTitle.text = intent.extras?.getString(ShowsFragment.EXTRA_SHOW_NAME)
-//        intent.extras?.getInt(ShowsFragment.EXTRA_SHOW_IMAGE)
-//            ?.let { binding.detailsImg.setImageResource(it) }
-////        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
-//        binding.detailsDesc.text = intent.extras?.getString(ShowsFragment.EXTRA_SHOW_DESC)
-//        val username = intent.extras?.getString(ShowsFragment.EXTRA_USER)
-//
-//        binding.detailsBackButton.setOnClickListener {
-//            val intentBack = Intent(this, ShowsFragment::class.java)
-//            startActivity(intentBack)
-//        }
-//        if (username != null) {
-//            initDialog(username)
-//        } else {
-//            initDialog("anoniman")
-//        }
-//    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -74,6 +50,19 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
+        viewModel.showReview.observe(viewLifecycleOwner) { review ->
+            adapter.addReview(review)
+        }
+
+        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
+            binding.ratingBar.setRating(averageRating)
+            binding.ratingBar.setIsIndicator(true)
+        }
+
+        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
+            binding.detailsData.text = detailsData
+        }
+
         initDialog(email)
     }
 
@@ -89,31 +78,28 @@ class ShowDetailsFragment : Fragment() {
             val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
-            if (!recInit) {
-                initReviewsRecycler()
-                recInit = true
-            }
+
             bottomSheetBinding.submitButton.setOnClickListener {
-                addReviewToList(
-                    email.substringBefore("@", ""),
+                if (!recyclerViewInitialized) {
+                    initReviewsRecycler()
+                    recyclerViewInitialized = true
+                    binding.detailsData.isVisible = true
+                    binding.ratingBar.isVisible = true
+                    binding.detailsRecycler.isVisible = true
+                    binding.detailsReviewsMessage.isVisible = false
+                }
+
+                viewModel.createNewReview(
+                    email,
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     bottomSheetBinding.dialogRating.getRating().toInt()
                 )
-//                treba nam ime oosbe i rating iz ratingbara
-                dialog.dismiss()
-                binding.detailsData.isVisible = true
-                binding.ratingBar.isVisible = true
-                binding.detailsRecycler.isVisible = true
-                binding.detailsReviewsMessage.isVisible = false
-                updateRating()
 
+                dialog.dismiss()
+                updateRating()
             }
             dialog.show()
         }
-    }
-
-    private fun addReviewToList(name: String, comment: String, ratingNum: Int) {
-        adapter.addReview(Review(name, comment, ratingNum, R.drawable.ic_profile_placeholder))
     }
 
     private fun initReviewsRecycler() {
@@ -128,12 +114,13 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun updateRating() {
-        rat = adapter.updateRating()
-        binding.ratingBar.setRating(rat)
-        binding.ratingBar.setIsIndicator(true)
-
-        binding.detailsData.text =
-            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
+        viewModel.updateRating(adapter.getReviews())
+//        rat = adapter.updateRating()
+//        binding.ratingBar.setRating(rat)
+//        binding.ratingBar.setIsIndicator(true)
+//
+//        binding.detailsData.text =
+//            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
 //        binding.detailsData.text =
     //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }

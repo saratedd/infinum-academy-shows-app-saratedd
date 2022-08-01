@@ -26,12 +26,16 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
-    fun updateRating(): Float {
-        var rating = 0f
-        for (item in items)
-            rating += item.rating
-        return rating / items.count()
+    fun getReviews(): List<Review> {
+        return items
     }
+
+//    fun updateRating(): Float {
+//        var rating = 0f
+//        for (item in items)
+//            rating += item.rating
+//        return rating / items.count()
+//    }
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
