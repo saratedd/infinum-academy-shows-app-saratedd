@@ -35,7 +35,6 @@ class RegisterFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        sharedPreferences = requireContext().getSharedPreferences(REGISTRATION, Context.MODE_PRIVATE)
         sharedPreferences = requireContext().getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
     }
 
@@ -47,18 +46,22 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val isRegistration = sharedPreferences.getBoolean(IS_REGISTRATION, true)
-
-//        binding.loginRememberMe.isChecked = isRememberMe
-//        if (isUser != null && isRememberMe) {
-//            var directions = LoginFragmentDirections.toShowsFragment(isUser)
-//            findNavController().navigate(directions)
-//        }
         ApiModule.initRetrofit(requireContext())
 
         viewModel.getRegistrationResultLiveData().observe(viewLifecycleOwner) { registrationSuccessful ->
             displayRegistrationMessage(registrationSuccessful)
+
+            if (registrationSuccessful) {
+                sharedPreferences.edit {
+                    putBoolean(IS_REGISTRATION, true)
+                }
+
+                val directions = RegisterFragmentDirections.toLoginFragment()
+                findNavController().navigate(directions)
+            }
+
         }
+
         initTextListers()
         initRegister()
 
@@ -89,7 +92,6 @@ class RegisterFragment : Fragment() {
         }
     }
 
-
     private fun initRegister() {
         binding.registerButton.setOnClickListener {
             viewModel.onRegisterButtonClicked(
@@ -97,18 +99,11 @@ class RegisterFragment : Fragment() {
                 password = binding.passwordEditTextField.text.toString(),
                 passConfirmation = binding.repeatPasswordEditTextField.text.toString()
             )
-//
-            sharedPreferences.edit {
-                putBoolean(IS_REGISTRATION, true)
-            }
-
-            var directions = RegisterFragmentDirections.toLoginFragment()
-            findNavController().navigate(directions)
         }
     }
 
     private fun displayRegistrationMessage(registrationSuccessful: Boolean?) {
-        // na neki nacin dati feedback korisniku?
+        // na neki nacin dati feedback korisniku ako registracija nije uspjela
     }
 
     override fun onDestroyView() {

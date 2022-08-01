@@ -42,43 +42,10 @@ class LoginFragment : Fragment() {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
     }
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityLoginBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        var emailBool = false
-//        var passBool = false
-//
-//
-//        binding.emailEditTextField.doAfterTextChanged {
-//            val regex = Patterns.EMAIL_ADDRESS.toRegex()
-//            emailBool = regex.matches(binding.emailEditTextField.text.toString())
-//
-//            binding.loginButton.isEnabled = emailBool && passBool
-//        }
-//        binding.passwordEditTextField.doAfterTextChanged {
-//            passBool = binding.passwordEditTextField.text.toString().length >= 6
-//            binding.loginButton.isEnabled = emailBool && passBool
-//        }
-//
-//        binding.loginButton.setOnClickListener {
-//            val intent = Intent(this, ShowsActivity::class.java)
-//            intent.putExtra(
-//                EXTRA_EMAIL,
-//                binding.emailEditTextField.text.toString().substringBefore("@", "")
-//            )
-//            startActivity(intent)
-//        }
-//
-//    }
-//    sta se uopce radi u onCreateView kad tad jos nemam nista
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
-//      binding = ActivityLoginBinding.inflate(layoutInflater)
-//      setContentView(binding.root)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,22 +53,21 @@ class LoginFragment : Fragment() {
 
         ApiModule.initRetrofit(requireContext())
 
-//      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
         val isRegistration = sharedPreferences.getBoolean(RegisterFragment.IS_REGISTRATION, false)
+
         if (isRegistration) {
             binding.loginText.text = getString(R.string.registration_successful)
             binding.registerButton.isVisible = false
         }
 
-//      (un)checkiram remember me s obzirom na to kako je u storageu
-        binding.loginRememberMe.isChecked = isRememberMe
         if (isUser != null && isRememberMe) {
             var directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }
         initTextListers()
+        initRememberMe()
         initLogin()
         initRegisterListener()
 
@@ -135,48 +101,32 @@ class LoginFragment : Fragment() {
                 username = binding.emailEditTextField.text.toString(),
                 password = binding.passwordEditTextField.text.toString()
             )
+
             viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
                 initLoginResult(loginSuccessful)
-
             }
-//            val intent = Intent(this, ShowsActivity::class.java)
-//            intent.putExtra(
-//                EXTRA_EMAIL,
-//                binding.emailEditTextField.text.toString().substringBefore("@", "")
-//            )
-//            startActivity(intent)
-//            var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-//            initRememberMe(user)
-//            sharedPreferences.edit {
-//                putString(USER, user)
-//            }
-//
-//            var directions = LoginFragmentDirections.toShowsFragment(user)
-//            findNavController().navigate(directions)
         }
     }
 
     private fun initLoginResult(loginSuccessful: Boolean) {
         if (loginSuccessful) {
             var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-            initRememberMe(user)
-//            sharedPreferences.edit {
-//                putString(USER, user)
-//            }
+
+            sharedPreferences.edit {
+                putString(USER, user)
+            }
 
             var directions = LoginFragmentDirections.toShowsFragment(user)
             findNavController().navigate(directions)
         } else {
-            // na neki nacin dati feedback korisniku?
+            // na neki nacin dati feedback korisniku
         }
     }
 
-    private fun initRememberMe(user : String) {
-        //      mijenjam u storageu jel remember me (un)checkan s obzirom na novi input
+    private fun initRememberMe() {
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
                 putBoolean(IS_REMEMBER_ME, isChecked)
-                putString(USER, user)
             }
         }
     }
