@@ -25,9 +25,7 @@ class LoginFragment : Fragment() {
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
         const val USER = "USER"
     }
-//zasto nam treba ovo ? = null
-//    !! sta?
-//    _binding i binding difference?
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
@@ -103,26 +101,22 @@ class LoginFragment : Fragment() {
             )
 
             viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
-                initLoginResult(loginSuccessful)
+                if (loginSuccessful) {
+                    val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+
+                    sharedPreferences.edit {
+                        putString(USER, user)
+                    }
+
+                    val directions = LoginFragmentDirections.toShowsFragment(user)
+                    findNavController().navigate(directions)
+                } else {
+                // na neki nacin dati feedback korisniku
+                }
             }
         }
     }
-
-    private fun initLoginResult(loginSuccessful: Boolean) {
-        if (loginSuccessful) {
-            var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-
-            sharedPreferences.edit {
-                putString(USER, user)
-            }
-
-            var directions = LoginFragmentDirections.toShowsFragment(user)
-            findNavController().navigate(directions)
-        } else {
-            // na neki nacin dati feedback korisniku
-        }
-    }
-
+    
     private fun initRememberMe() {
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
@@ -136,4 +130,3 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 }
-//bla
