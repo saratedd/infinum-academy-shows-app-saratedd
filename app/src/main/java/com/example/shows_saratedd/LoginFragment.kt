@@ -22,11 +22,11 @@ import com.example.shows_saratedd.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
     companion object {
-        const val EXTRA_EMAIL = "email"
+//        const val EXTRA_EMAIL = "email"
         const val REMEMBER_ME = "remember_me"
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
         const val USER = "USER"
-        const val PICTURE = "PICTURE"
+//        const val PICTURE = "PICTURE"
     }
 //zasto nam treba ovo ? = null
 //    !! sta?
@@ -84,7 +84,6 @@ class LoginFragment : Fragment() {
             val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
             sharedPreferences.edit {
                 putString(USER, user)
-                putBoolean(PICTURE, false)
             }
 
             val directions = LoginFragmentDirections.toShowsFragment(user)

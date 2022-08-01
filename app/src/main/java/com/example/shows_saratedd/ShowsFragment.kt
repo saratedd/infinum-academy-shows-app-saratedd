@@ -4,10 +4,7 @@ import android.app.AlertDialog
 import android.content.*
 import android.content.ContentValues.TAG
 import android.net.Uri
-import show.Show
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,22 +23,19 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.shows_saratedd.LoginFragment.Companion.PICTURE
 import com.example.shows_saratedd.LoginFragment.Companion.REMEMBER_ME
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-//import com.example.shows_saratedd.databinding.ActivityShowsBinding
 import show.ShowsAdapter
-import java.io.File
 
 class ShowsFragment : Fragment() {
     companion object {
-        const val EXTRA_SHOW_NAME = "showName"
-        const val EXTRA_SHOW_DESC = "showDesc"
-        const val EXTRA_SHOW_IMAGE = "showImage"
-        const val EXTRA_USER = "user"
-        const val REQUEST_IMAGE_CAPTURE = 1
+//        const val EXTRA_SHOW_NAME = "showName"
+//        const val EXTRA_SHOW_DESC = "showDesc"
+//        const val EXTRA_SHOW_IMAGE = "showImage"
+//        const val EXTRA_USER = "user"
+//        const val REQUEST_IMAGE_CAPTURE = 1
     }
 //    zasto je negdje : a negdje =
 //    private lateinit var binding: ActivityShowsBinding
@@ -69,10 +63,6 @@ class ShowsFragment : Fragment() {
             if (success) {
                 Log.i(TAG, "Got image at: $uri")
                 loadImage(binding.showsUser, uri)
-
-                sharedPreferences.edit {
-                    putBoolean(PICTURE, true)
-                }
             }
         }
         sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
@@ -95,15 +85,14 @@ class ShowsFragment : Fragment() {
         initLoadShowsButton()
     }
 
-
     private fun initShowsRecycler(email: String) {
         adapter = ShowsAdapter(emptyList()) { show ->
-            var directions = ShowsFragmentDirections.toShowDetailsFragment(
+            val directions = ShowsFragmentDirections.toShowDetailsFragment(
                 show.name, show.description, show.imageResourceID, email
             )
             findNavController().navigate(directions)
-
         }
+
         binding.showsRecycler.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.showsRecycler.adapter = adapter
@@ -133,7 +122,6 @@ class ShowsFragment : Fragment() {
             }
 
             dialog.show()
-
         }
     }
 
@@ -143,7 +131,7 @@ class ShowsFragment : Fragment() {
         }
         builder?.setMessage(R.string.logout_alert_message)
 
-        builder?.setPositiveButton(R.string.logout) { p0, p1 ->
+        builder?.setPositiveButton(R.string.logout) { _, _ ->
             sharedPreferences.edit {
                 putString(LoginFragment.USER, null)
                 putBoolean(LoginFragment.IS_REMEMBER_ME, false)
@@ -167,7 +155,6 @@ class ShowsFragment : Fragment() {
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .centerCrop()
             .into(view)
-
     }
 
     private fun initLoadShowsButton() {
