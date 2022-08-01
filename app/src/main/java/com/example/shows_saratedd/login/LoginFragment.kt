@@ -93,9 +93,10 @@ class LoginFragment : Fragment() {
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
-            viewModel.onloginButtonClicked(
+            viewModel.onLoginButtonClicked(
                 username = binding.emailEditTextField.text.toString(),
-                password = binding.passwordEditTextField.text.toString()
+                password = binding.passwordEditTextField.text.toString(),
+                requireContext()
             )
 
             viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
@@ -104,13 +105,18 @@ class LoginFragment : Fragment() {
                     sharedPreferences.edit {
                         putString(USER, user)
                     }
+
                     val directions = LoginFragmentDirections.toShowsFragment(user)
                     findNavController().navigate(directions)
 
                 } else {
-                // dati feedback korisniku
+                    // dati feedback korisniku
                 }
             }
+
+//            viewModel.getResponseLiveData().observe(viewLifecycleOwner) { response ->
+////                val accessToken = response.headers().get()
+//            }
         }
     }
 
