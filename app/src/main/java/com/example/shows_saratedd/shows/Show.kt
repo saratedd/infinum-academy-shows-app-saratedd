@@ -13,9 +13,9 @@ data class Show(
 //    @DrawableRes val imageResourceID: Int
 
     @SerialName("id") val id: String,
-    @SerialName("average_rating") val average_rating: Float,
+    @SerialName("average_rating") val averageRating: Float,
     @SerialName("description") val description: String,
-    @SerialName("image_url") val image_url: String,
-    @SerialName("no_of_reviews") val no_of_reviews: Int,
+    @SerialName("image_url") val imageUrl: String,
+    @SerialName("no_of_reviews") val noOfReviews: Int,
     @SerialName("title") val title: String
 )

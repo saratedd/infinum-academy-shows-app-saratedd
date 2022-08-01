@@ -68,18 +68,11 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
-//        maknuti if?
-        if (email != null) {
-            initDialog(email)
-        } else {
-            initDialog("anoniman")
-        }
+        initDialog(email)
     }
 
     private fun initBackButton(email: String) {
         binding.detailsBackButton.setOnClickListener {
-//            val intentBack = Intent(this, ShowsFragment::class.java)
-//            startActivity(intentBack)
             var directions = ShowDetailsFragmentDirections.toShowsFragment(email)
             findNavController().navigate(directions)
         }

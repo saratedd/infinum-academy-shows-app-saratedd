@@ -3,6 +3,8 @@ package com.example.shows_saratedd.shows
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.shows_saratedd.R
 import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
 class ShowsAdapter(
@@ -32,6 +34,7 @@ class ShowsAdapter(
 
     fun addAllShows(shows: List<Show>) {
         items = shows
+
         notifyDataSetChanged()
     }
 
@@ -43,11 +46,13 @@ class ShowsAdapter(
     inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(show: Show) {
-//            binding.showTitle.text = show.name
             binding.showTitle.text = show.title
+            Glide
+                .with(binding.root)
+                .load(show.imageUrl)
+                .placeholder(R.drawable.ic_office)
+                .into(binding.showImage)
             binding.showDesc.text = show.description
-//            binding.showImage.setImageResource(show.imageResourceID)
-//            binding.showImage.setImageResource(show.image_url)
 
             binding.cardConatiner.setOnClickListener {
 //                treba prikazati podatke o showu
