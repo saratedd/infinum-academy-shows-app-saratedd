@@ -12,27 +12,10 @@ import retrofit2.Response
 import retrofit2.http.Tag
 
 class ShowsViewModel: ViewModel() {
-//    private val shows = listOf<Show>(
-//        Show(
-//            "The Office",
-//            "The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons.",
-//            R.drawable.ic_office
-//        ),
-//        Show(
-//            "Stranger Things",
-//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
-//            R.drawable.ic_stranger_things
-//        ),
-//        Show(
-//            "Krv nije voda",
-//            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam non rutrum felis. Quisque dignissim tellus a velit vehicula, non malesuada lorem eleifend. Maecenas vitae varius metus, a mollis sem. Mauris ut urna nulla. Suspendisse eget magna in ex luctus porttitor sit amet id odio. Cras in tincidunt erat, sed rutrum erat. Integer mattis, turpis id suscipit vestibulum, neque justo venenatis ligula, maximus auctor augue urna ut ipsum.",
-//            R.drawable.krv_nije_voda
-//        )
-//    )
-//    casts mutable livedata to immutable livedata
-//    jesam li mogla u mutablelivedata samo ubaciti 'shows'?
-    private val _showsLiveData = MutableLiveData<List<Show>>()
-    val showsLiveData: LiveData<List<Show>> = _showsLiveData
+
+    private val showsLiveData: MutableLiveData<List<Show>> by lazy {
+        MutableLiveData<List<Show>>()
+}
 
     private val showsResultLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -42,7 +25,7 @@ class ShowsViewModel: ViewModel() {
         return showsResultLiveData
     }
 
-    fun initShows() : LiveData<List<Show>> {
+    fun getShowsLiveData() : LiveData<List<Show>> {
         return showsLiveData
     }
 
@@ -55,7 +38,7 @@ class ShowsViewModel: ViewModel() {
         ApiModule.retrofit.getShowsAlpha()
             .enqueue(object : Callback<ShowsResponse> {
                 override fun onResponse(call: Call<ShowsResponse>, response: Response<ShowsResponse>) {
-                    val responseBody = response.body()
+                    showsLiveData.value = response.body()?.shows
                     showsResultLiveData.value = response.isSuccessful
                 }
 

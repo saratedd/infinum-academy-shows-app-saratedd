@@ -33,17 +33,24 @@ object ApiModule {
     }
 }
 
-class AuthInterceptor(sharedPreferences: SharedPreferences): Interceptor {
+class AuthInterceptor(private val sharedPreferences: SharedPreferences): Interceptor {
     companion object {
-        private const val TOKEN_TYPE = "Bearer"
+            private const val BEARER = "Bearer"
     }
-    override fun intercept(chain: Interceptor.Chain): Response {
+    override fun intercept(chain: Interceptor.Chain ): Response {
         val builder = chain.request().newBuilder()
 //        builder.addHeader("uid", /* citam iz pref*/)
-        builder.addHeader("token-type", TOKEN_TYPE)
-        builder.addHeader("access-token", "7LDzAqivNbPjTy5eXGawTA")
-        builder.addHeader("client", "0Eqd0YnW1TlDgWV88Va9QQ")
-        builder.addHeader("uid", "aa@aa.hr")
+//        builder.addHeader("access-token", "7LDzAqivNbPjTy5eXGawTA")
+//        builder.addHeader("client", "0Eqd0YnW1TlDgWV88Va9QQ")
+//        builder.addHeader("uid", "aa@aa.hr")
+
+        builder.addHeader("token-type", BEARER)
+        builder.addHeader("access-token",
+            sharedPreferences.getString("access_token", "").toString())
+        builder.addHeader("client",
+            sharedPreferences.getString("client", "").toString())
+        builder.addHeader("uid",
+            sharedPreferences.getString("uid", "").toString())
         return chain.proceed(builder.build())
     }
 

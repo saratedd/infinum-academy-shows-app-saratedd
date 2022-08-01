@@ -134,7 +134,11 @@ class ShowsFragment : Fragment() {
         binding.loadButton.setOnClickListener {
             viewModel.onLoadShowsButtonClicked()
             viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-
+                if (showsSuccessful) {
+                    viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
+                        adapter.addAllShows(shows)
+                    }
+                }
             }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false
