@@ -1,6 +1,7 @@
 package com.example.shows_saratedd.show_details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,13 +67,20 @@ class ShowDetailsFragment : Fragment() {
             binding.detailsData.text = detailsData
         }
 
+        initReviewsRecycler()
         viewModel.loadReviews(args.showId)
         viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
             if (reviewsSuccessful) {
+                recyclerViewInitialized = true
+                binding.detailsData.isVisible = true
+                binding.ratingBar.isVisible = true
+                binding.detailsRecycler.isVisible = true
+                binding.detailsReviewsMessage.isVisible = false
                 viewModel.getResponseLiveData().observe(viewLifecycleOwner) { reviews ->
                     adapter.getAllReviews(reviews)
                 }
-
+            } else {
+                Log.d("a", "a")
             }
         }
 
@@ -95,11 +103,6 @@ class ShowDetailsFragment : Fragment() {
             bottomSheetBinding.submitButton.setOnClickListener {
                 if (!recyclerViewInitialized) {
                     initReviewsRecycler()
-                    recyclerViewInitialized = true
-                    binding.detailsData.isVisible = true
-                    binding.ratingBar.isVisible = true
-                    binding.detailsRecycler.isVisible = true
-                    binding.detailsReviewsMessage.isVisible = false
                 }
 
                 viewModel.createNewReview(
@@ -118,6 +121,12 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewsRecycler() {
+//        recyclerViewInitialized = true
+//        binding.detailsData.isVisible = true
+//        binding.ratingBar.isVisible = true
+//        binding.detailsRecycler.isVisible = true
+//        binding.detailsReviewsMessage.isVisible = false
+
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)

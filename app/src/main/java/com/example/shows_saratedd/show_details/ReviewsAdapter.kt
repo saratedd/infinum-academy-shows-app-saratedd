@@ -44,7 +44,7 @@ class ReviewsAdapter(
             Glide
                 .with(binding.root)
                 .load(review.user.imageUrl)
-                .placeholder(R.drawable.ic_office)
+                .placeholder(R.drawable.ic_profile_placeholder)
                 .into(binding.reviewProfileImg)
             binding.reviewUsername.text = review.user.email.substringBefore("@", "")
             binding.reviewRating.text = review.rating.toString()

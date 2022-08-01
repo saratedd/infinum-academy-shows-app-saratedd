@@ -64,13 +64,13 @@ class ShowsDetailsViewModel : ViewModel() {
         ApiModule.retrofit.getShowReviews(showId)
             .enqueue(object : Callback<ReviewResponse> {
                 override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                    reviewsResultLiveData.value = response.isSuccessful
                     responseLiveData.value = response.body()?.reviews
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
                     Log.d("shows", "onfailure: " + t.message)
                 }
-
             })
     }
 }
