@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.R
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
@@ -27,7 +28,6 @@ class ShowDetailsFragment : Fragment() {
     private val args by navArgs<ShowDetailsFragmentArgs>()
     private val viewModel by viewModels<ShowsDetailsViewModel>()
 
-    var rat = 0f
     var recyclerViewInitialized = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -38,6 +38,8 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ApiModule.initRetrofit(requireContext())
+
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
         Glide
@@ -45,6 +47,7 @@ class ShowDetailsFragment : Fragment() {
             .load(args.showImage)
             .placeholder(R.drawable.ic_office)
             .into(binding.detailsImg)
+
 //        binding.detailsImg.setImageResource(args.showImage)
 
         val email = args.email
@@ -61,6 +64,16 @@ class ShowDetailsFragment : Fragment() {
 
         viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
             binding.detailsData.text = detailsData
+        }
+
+        viewModel.loadReviews(args.showId)
+        viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
+            if (reviewsSuccessful) {
+                viewModel.getResponseLiveData().observe(viewLifecycleOwner) { reviews ->
+                    adapter.getAllReviews(reviews)
+                }
+
+            }
         }
 
         initDialog(email)
@@ -90,9 +103,11 @@ class ShowDetailsFragment : Fragment() {
                 }
 
                 viewModel.createNewReview(
-                    email,
+                    "100",
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                    bottomSheetBinding.dialogRating.getRating().toInt()
+                    bottomSheetBinding.dialogRating.getRating().toInt(),
+                    args.showId,
+                    User("100", email, "")
                 )
 
                 dialog.dismiss()
@@ -105,7 +120,6 @@ class ShowDetailsFragment : Fragment() {
     private fun initReviewsRecycler() {
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
-//            zasto ovdje radi samo 'context' a na 91 treba 'requierConetxt()'
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.detailsRecycler.adapter = adapter
         binding.detailsRecycler.addItemDecoration(
@@ -115,15 +129,8 @@ class ShowDetailsFragment : Fragment() {
 
     private fun updateRating() {
         viewModel.updateRating(adapter.getReviews())
-//        rat = adapter.updateRating()
-//        binding.ratingBar.setRating(rat)
-//        binding.ratingBar.setIsIndicator(true)
-//
-//        binding.detailsData.text =
-//            adapter.itemCount.toString() + " reviews, " + String.format("%.2f", rat) + " average"
-//        binding.detailsData.text =
-    //        getString(R.string.blalbla, adapter.itemCount.toString(), String.format("%.2f", rat))
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

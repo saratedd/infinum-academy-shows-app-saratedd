@@ -30,23 +30,21 @@ class ReviewsAdapter(
         return items
     }
 
-//    fun updateRating(): Float {
-//        var rating = 0f
-//        for (item in items)
-//            rating += item.rating
-//        return rating / items.count()
-//    }
+    fun getAllReviews(reviews: List<Review>) {
+        items = reviews
+        notifyDataSetChanged()
+    }
+
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(review: Review) {
             binding.reviewProfileImg.setImageResource(R.drawable.ic_profile_placeholder)
-            binding.reviewUsername.text = review.name
+            binding.reviewUsername.text = /*review.name*/ "anoniman"
             binding.reviewRating.text = review.rating.toString()
             if (review.comment != "")
-                binding.reviewComment.text = review.comment //ali samo ako postoji
+                binding.reviewComment.text = review.comment
 
         }
-
     }
 }

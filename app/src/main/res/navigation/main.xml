@@ -57,6 +57,9 @@
         <argument
             android:name="email"
             app:argType="string" />
+        <argument
+            android:name="showId"
+            app:argType="string" />
         <action
             android:id="@+id/toShowsFragment"
             app:destination="@id/showsFragment" />

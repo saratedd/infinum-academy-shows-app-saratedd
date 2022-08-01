@@ -23,7 +23,6 @@ import com.example.shows_saratedd.databinding.FragmentShowsBinding
 import com.example.shows_saratedd.login.LoginFragment
 import com.example.shows_saratedd.register.RegisterFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
-//import com.example.shows_saratedd.databinding.ActivityShowsBinding
 
 class ShowsFragment : Fragment() {
     companion object {
@@ -74,7 +73,7 @@ class ShowsFragment : Fragment() {
             val directions = ShowsFragmentDirections.toShowDetailsFragment(
 //                show.name, show.description, show.imageResourceID, email
 //                show.title, show.description, R.drawable.ic_office, email
-                show.title, show.description, show.imageUrl, email
+                show.title, show.description, show.imageUrl, email, show.id
             )
             findNavController().navigate(directions)
 
