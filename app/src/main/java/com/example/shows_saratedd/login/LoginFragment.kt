@@ -32,7 +32,6 @@ class LoginFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val viewModel: LoginViewModel by viewModels()
 
-
     var emailBool = false
     var passBool = false
 
@@ -64,14 +63,13 @@ class LoginFragment : Fragment() {
             var directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }
+
         initTextListers()
         initRememberMe()
         initLogin()
         initRegisterListener()
 
     }
-
-
 
     private fun initTextListers() {
         binding.emailEditTextField.doAfterTextChanged {
@@ -103,20 +101,19 @@ class LoginFragment : Fragment() {
             viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
                 if (loginSuccessful) {
                     val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-
                     sharedPreferences.edit {
                         putString(USER, user)
                     }
-
                     val directions = LoginFragmentDirections.toShowsFragment(user)
                     findNavController().navigate(directions)
+
                 } else {
-                // na neki nacin dati feedback korisniku
+                // dati feedback korisniku
                 }
             }
         }
     }
-    
+
     private fun initRememberMe() {
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
