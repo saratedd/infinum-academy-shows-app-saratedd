@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.shows_saratedd.R
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
@@ -63,7 +64,12 @@ class ShowDetailsFragment : Fragment() {
 
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
-        binding.detailsImg.setImageResource(args.showImage)
+        Glide
+            .with(binding.root)
+            .load(args.showImage)
+            .placeholder(R.drawable.ic_office)
+            .into(binding.detailsImg)
+//        binding.detailsImg.setImageResource(args.showImage)
 
         val email = args.email
         initBackButton(email)

@@ -73,7 +73,8 @@ class ShowsFragment : Fragment() {
         adapter = ShowsAdapter(emptyList()) { show ->
             val directions = ShowsFragmentDirections.toShowDetailsFragment(
 //                show.name, show.description, show.imageResourceID, email
-                show.title, show.description, R.drawable.ic_office, email
+//                show.title, show.description, R.drawable.ic_office, email
+                show.title, show.description, show.imageUrl, email
             )
             findNavController().navigate(directions)
 

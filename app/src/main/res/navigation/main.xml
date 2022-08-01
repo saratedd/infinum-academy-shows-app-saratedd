@@ -53,7 +53,7 @@
             app:argType="string" />
         <argument
             android:name="showImage"
-            app:argType="integer" />
+            app:argType="string" />
         <argument
             android:name="email"
             app:argType="string" />
