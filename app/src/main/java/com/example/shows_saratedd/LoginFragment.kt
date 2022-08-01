@@ -60,6 +60,7 @@ class LoginFragment : Fragment() {
             findNavController().navigate(directions)
         }
         initTextListers()
+        initRememberMe()
         initLogin()
 
     }
@@ -80,14 +81,13 @@ class LoginFragment : Fragment() {
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
-            var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-            initRememberMe()
+            val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
             sharedPreferences.edit {
                 putString(USER, user)
                 putBoolean(PICTURE, false)
             }
 
-            var directions = LoginFragmentDirections.toShowsFragment(user)
+            val directions = LoginFragmentDirections.toShowsFragment(user)
             findNavController().navigate(directions)
         }
     }

@@ -142,17 +142,14 @@ class ShowsFragment : Fragment() {
             AlertDialog.Builder(it)
         }
         builder?.setMessage(R.string.logout_alert_message)
-//        builder?.setPositiveButton(R.string.logout, object : DialogInterface.OnClickListener {
-//            override fun onClick(p0: DialogInterface?, p1: Int) {
-//            }
-//        })
+
         builder?.setPositiveButton(R.string.logout) { p0, p1 ->
             sharedPreferences.edit {
                 putString(LoginFragment.USER, null)
                 putBoolean(LoginFragment.IS_REMEMBER_ME, false)
             }
 
-            var directions = ShowsFragmentDirections.toLoginFragment()
+            val directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
         builder?.setNegativeButton(R.string.cancel) { _, _ -> }
