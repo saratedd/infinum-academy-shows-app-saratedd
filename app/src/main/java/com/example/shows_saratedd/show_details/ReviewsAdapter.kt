@@ -3,6 +3,7 @@ package com.example.shows_saratedd.show_details
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.shows_saratedd.R
 import com.example.shows_saratedd.databinding.ItemReviewBinding
 
@@ -40,7 +41,12 @@ class ReviewsAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(review: Review) {
             binding.reviewProfileImg.setImageResource(R.drawable.ic_profile_placeholder)
-            binding.reviewUsername.text = /*review.name*/ "anoniman"
+            Glide
+                .with(binding.root)
+                .load(review.user.imageUrl)
+                .placeholder(R.drawable.ic_office)
+                .into(binding.reviewProfileImg)
+            binding.reviewUsername.text = review.user.email.substringBefore("@", "")
             binding.reviewRating.text = review.rating.toString()
             if (review.comment != "")
                 binding.reviewComment.text = review.comment
