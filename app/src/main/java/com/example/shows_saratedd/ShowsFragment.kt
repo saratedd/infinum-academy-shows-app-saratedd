@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.example.shows_saratedd.LoginFragment.Companion.PICTURE
 import com.example.shows_saratedd.LoginFragment.Companion.REMEMBER_ME
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
@@ -68,7 +69,10 @@ class ShowsFragment : Fragment() {
             if (success) {
                 Log.i(TAG, "Got image at: $uri")
                 loadImage(binding.showsUser, uri)
-                loadImage(binding.)
+
+                sharedPreferences.edit {
+                    putBoolean(PICTURE, true)
+                }
             }
         }
         sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
@@ -81,11 +85,11 @@ class ShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val email = args.email
-        if (email != null)
-            initShowsRecycler(email)
-        else
-            initShowsRecycler("anoniman")
+        initShowsRecycler(email)
+
+        loadImage(binding.showsUser, uri)
 
         initUserButton(email)
         initLoadShowsButton()
@@ -107,11 +111,14 @@ class ShowsFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
+
     private fun initUserButton(email: String) {
         binding.showsUser.setOnClickListener {
             val dialog = BottomSheetDialog(requireContext())
             val bottomSheetBinding = DialogUserBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
+
+            loadImage(bottomSheetBinding.userPicture, uri)
 
             bottomSheetBinding.userEmail.text = email
 
@@ -144,10 +151,11 @@ class ShowsFragment : Fragment() {
                 putString(LoginFragment.USER, null)
                 putBoolean(LoginFragment.IS_REMEMBER_ME, false)
             }
+
             var directions = ShowsFragmentDirections.toLoginFragment()
             findNavController().navigate(directions)
         }
-        builder?.setNegativeButton(R.string.cancel) { p0, p1 -> }
+        builder?.setNegativeButton(R.string.cancel) { _, _ -> }
 
         val alertDialog : AlertDialog? = builder?.create()
         alertDialog?.show()

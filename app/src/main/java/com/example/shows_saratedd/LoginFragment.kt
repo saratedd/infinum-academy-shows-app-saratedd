@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -25,6 +26,7 @@ class LoginFragment : Fragment() {
         const val REMEMBER_ME = "remember_me"
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
         const val USER = "USER"
+        const val PICTURE = "PICTURE"
     }
 //zasto nam treba ovo ? = null
 //    !! sta?
@@ -34,62 +36,27 @@ class LoginFragment : Fragment() {
 
     private lateinit var sharedPreferences: SharedPreferences
 
-    var emailBool = false
-    var passBool = false
+    private var emailBool = false
+    private var passBool = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
     }
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityLoginBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        var emailBool = false
-//        var passBool = false
-//
-//
-//        binding.emailEditTextField.doAfterTextChanged {
-//            val regex = Patterns.EMAIL_ADDRESS.toRegex()
-//            emailBool = regex.matches(binding.emailEditTextField.text.toString())
-//
-//            binding.loginButton.isEnabled = emailBool && passBool
-//        }
-//        binding.passwordEditTextField.doAfterTextChanged {
-//            passBool = binding.passwordEditTextField.text.toString().length >= 6
-//            binding.loginButton.isEnabled = emailBool && passBool
-//        }
-//
-//        binding.loginButton.setOnClickListener {
-//            val intent = Intent(this, ShowsActivity::class.java)
-//            intent.putExtra(
-//                EXTRA_EMAIL,
-//                binding.emailEditTextField.text.toString().substringBefore("@", "")
-//            )
-//            startActivity(intent)
-//        }
-//
-//    }
-//    sta se uopce radi u onCreateView kad tad jos nemam nista
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
-//      binding = ActivityLoginBinding.inflate(layoutInflater)
-//      setContentView(binding.root)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//      uzimam boolean iz storagea, zas se ne mijenja stavila ovdje true il false, cemu sluzi to
+
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
 
-//      (un)checkiram remember me s obzirom na to kako je u storageu
-        binding.loginRememberMe.isChecked = isRememberMe
         if (isUser != null && isRememberMe) {
-            var directions = LoginFragmentDirections.toShowsFragment(isUser)
+            val directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }
         initTextListers()
@@ -113,16 +80,11 @@ class LoginFragment : Fragment() {
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
-//            val intent = Intent(this, ShowsActivity::class.java)
-//            intent.putExtra(
-//                EXTRA_EMAIL,
-//                binding.emailEditTextField.text.toString().substringBefore("@", "")
-//            )
-//            startActivity(intent)
             var user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-            initRememberMe(user)
+            initRememberMe()
             sharedPreferences.edit {
                 putString(USER, user)
+                putBoolean(PICTURE, false)
             }
 
             var directions = LoginFragmentDirections.toShowsFragment(user)
@@ -130,12 +92,10 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun initRememberMe(user : String) {
-        //      mijenjam u storageu jel remember me (un)checkan s obzirom na novi input
+    private fun initRememberMe() {
         binding.loginRememberMe.setOnCheckedChangeListener { _, isChecked ->
             sharedPreferences.edit {
                 putBoolean(IS_REMEMBER_ME, isChecked)
-//                putString(USER, user)
             }
         }
     }
