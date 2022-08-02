@@ -43,10 +43,6 @@ class ShowsViewModel: ViewModel() {
         return showsLiveData
     }
 
-    fun checkInternetConnection() : LiveData<Boolean> {
-        return internetLiveData
-    }
-
     fun onLoadShowsButtonClicked () {
         ApiModule.retrofit.getShowsAlpha()
             .enqueue(object : Callback<ShowsResponse> {

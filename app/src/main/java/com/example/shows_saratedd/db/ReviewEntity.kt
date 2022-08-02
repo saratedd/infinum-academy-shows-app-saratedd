@@ -14,7 +14,7 @@ data class ReviewEntity(
 //    @ColumnInfo(name = "user") val user: User
     @ColumnInfo(name = "user_id") val userId: String,
     @ColumnInfo(name = "email") val email: String,
-    @ColumnInfo(name = "image_url") val imageUrl: String
+    @ColumnInfo(name = "user_image_url") val userImageUrl: String
 )
 
 //@Serializable
