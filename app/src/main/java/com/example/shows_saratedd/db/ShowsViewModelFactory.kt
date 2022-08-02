@@ -10,7 +10,7 @@ class ShowsViewModelFactory(val database: ShowsDatabase): ViewModelProvider.NewI
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
         if (modelClass.isAssignableFrom(ShowsViewModel::class.java))
-            return super.create(modelClass)
+            return ShowsViewModel(database) as T
 
         throw IllegalArgumentException("i'm an error. you got me.")
     }

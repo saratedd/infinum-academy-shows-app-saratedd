@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.RegisterResponse
+import com.example.shows_saratedd.db.ShowsDatabase
 import com.example.shows_saratedd.register.RegisterRequest
 import com.example.shows_saratedd.shows.Show
 import com.example.shows_saratedd.shows.ShowResponse
@@ -13,7 +14,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ShowDetailsViewModel : ViewModel() {
+class ShowDetailsViewModel(
+    private val database: ShowsDatabase
+) : ViewModel() {
 
     private val _showReview = MutableLiveData<Review>()
     val showReview: LiveData<Review> = _showReview

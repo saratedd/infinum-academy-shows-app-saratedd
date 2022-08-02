@@ -29,6 +29,8 @@ import com.example.shows_saratedd.*
 import com.example.shows_saratedd.login.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
+import com.example.shows_saratedd.db.ShowEntity
+import com.example.shows_saratedd.db.ShowsDatabase
 import com.example.shows_saratedd.db.ShowsViewModelFactory
 import com.example.shows_saratedd.login.LoginFragment
 import com.example.shows_saratedd.register.RegisterFragment
@@ -175,32 +177,62 @@ class ShowsFragment : Fragment() {
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
 
-//            viewModel.checkInternetConnection().observe() {
-//
-//            }
+            if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+                binding.showsProgressBar.isVisible = true
 
-
-            binding.showsProgressBar.isVisible = true
-
-
-
-            viewModel.onLoadShowsButtonClicked()
-            // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
-            // ako je failure onda drugu (failurelivedata)
-            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-                if (showsSuccessful) {
-                    binding.showsProgressBar.isVisible = false
+                viewModel.onLoadShowsButtonClicked()
+                // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+                // ako je failure onda drugu (failurelivedata)
+                viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+                    if (showsSuccessful) {
+                        binding.showsProgressBar.isVisible = false
+                    }
                 }
+                viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
+                    adapter.addAllShows(shows)
+                    viewModel.insertAllShowsToDB(shows.map { show ->
+                        ShowEntity(
+                            show.id,
+                            show.averageRating,
+                            show.description,
+                            show.imageUrl,
+                            show.noOfReviews,
+                            show.title
+                        )
+                    })
+                }
+
+                showUI()
+
+            } else {
+                // no internet connection toast
+//                val database: ShowsDatabase
+//
+//                if (database.showDao().getAllShows() == null) {
+//
+//                }
+                viewModel.getShowsFromDB().observe(viewLifecycleOwner) { showEntities ->
+                    adapter.addAllShows(showEntities.map { showEntity ->
+                        Show(
+                            showEntity.id,
+                            showEntity.averageRating,
+                            showEntity.description,
+                            showEntity.imageUrl,
+                            showEntity.noOfReviews,
+                            showEntity.title
+                        )
+                    })
+                }
+                showUI()
             }
-            viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
-                adapter.addAllShows(shows)
-            }
-            binding.showsRecycler.isVisible = true
-            binding.emptyStateIcon.isVisible = false
-            binding.emptyStateText.isVisible = false
-            binding.loadButton.isVisible = false
-//            binding.showsProgressBar.isVisible = false
         }
+    }
+
+    private fun showUI() {
+        binding.showsRecycler.isVisible = true
+        binding.emptyStateIcon.isVisible = false
+        binding.emptyStateText.isVisible = false
+        binding.loadButton.isVisible = false
     }
 
     override fun onDestroyView() {
