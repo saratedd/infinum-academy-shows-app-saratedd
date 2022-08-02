@@ -180,7 +180,8 @@ class ShowDetailsFragment : Fragment() {
                     )
                     viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
                         adapter.addReview(review)
-                        viewModel.insertReviewToDB(ReviewEntity(
+                        viewModel.insertReviewToDB(
+                            ReviewEntity(
                             review.id,
                             review.comment,
                             review.rating,
@@ -210,6 +211,7 @@ class ShowDetailsFragment : Fragment() {
                     if (!recyclerViewInitialized) {
                         initReviewsRecycler()
                     }
+                    dialog.dismiss()
                 }
             }
             dialog.show()
