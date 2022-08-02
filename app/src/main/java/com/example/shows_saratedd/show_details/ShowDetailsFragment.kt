@@ -1,7 +1,6 @@
 package com.example.shows_saratedd.show_details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,7 @@ class ShowDetailsFragment : Fragment() {
     lateinit var adapter: ReviewsAdapter
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
-    private val viewModel by viewModels<ShowsDetailsViewModel>()
+    private val viewModel by viewModels<ShowDetailsViewModel>()
 
     var recyclerViewInitialized = false
 

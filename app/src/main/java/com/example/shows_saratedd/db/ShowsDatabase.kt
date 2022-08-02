@@ -1,8 +1,17 @@
 package com.example.shows_saratedd.db
 
 import android.content.Context
+import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+
+@Database(
+    entities = [
+        ShowEntity::class,
+        ReviewEntity::class
+    ],
+    version = 1
+)
 
 abstract class ShowsDatabase : RoomDatabase() {
 
