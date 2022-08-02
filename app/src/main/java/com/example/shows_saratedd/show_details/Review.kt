@@ -21,7 +21,7 @@ data class Review(
 data class User(
     @SerialName("id") val id: String,
     @SerialName("email") val email: String,
-    @SerialName("image_url") val imageUrl: String
+    @SerialName("image_url") val imageUrl: String?
 )
 
 @Serializable

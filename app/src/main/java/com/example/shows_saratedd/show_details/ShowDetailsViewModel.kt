@@ -90,7 +90,7 @@ class ShowDetailsViewModel(
 
     fun getShowFromDB(showId: String): LiveData<ShowEntity> {
 //        Executors.newSingleThreadExecutor().execute {
-            return database.showDao().getShow(showId)
+        return database.showDao().getShow(showId)
 //        }
     }
 
@@ -110,9 +110,7 @@ class ShowDetailsViewModel(
                     reviewsResponseLiveData.value = response.body()?.reviews
                 }
 
-                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {
-//                    reviewsResultLiveData.value = true
-                }
+                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {  }
             })
     }
 
@@ -125,7 +123,8 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
-//                    showResultLiveData.value = true
+                    showResultLiveData.value = true
+//                    ????
                 }
 
             })
@@ -152,3 +151,4 @@ class ShowDetailsViewModel(
             })
     }
 }
+

@@ -57,6 +57,11 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
+        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
+            if (createReviewSuccessful) {
+            }
+        }
+
         initReviewsRecycler()
 
         if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
@@ -67,7 +72,7 @@ class ShowDetailsFragment : Fragment() {
                 }
             }
             viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
-//                setShowUI(showDetails.averageRating, showDetails.noOfReviews)
+    //                setShowUI(showDetails.averageRating, showDetails.noOfReviews)
                 binding.ratingBar.setRating(showDetails.averageRating)
                 binding.detailsData.text =
                     showDetails.noOfReviews.toString() + " reviews, " +
@@ -88,17 +93,17 @@ class ShowDetailsFragment : Fragment() {
 
             viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
                 adapter.getAllReviews(reviews)
-//                viewModel.insertAllReviewsToDB(reviews.map { review ->
-//                    ReviewEntity(
-//                        review.id,
-//                        review.comment,
-//                        review.rating,
-//                        review.showId,
-//                        review.user.id,
-//                        review.user.email,
-//                        review.user.imageUrl
-//                    )
-//                })
+                    viewModel.insertAllReviewsToDB(reviews.map { review ->
+                        ReviewEntity(
+                            review.id,
+                            review.comment,
+                            review.rating,
+                            review.showId,
+                            review.user.id,
+                            review.user.email,
+                            review.user.imageUrl
+                        )
+                    })
             }
 
         } else {
@@ -107,20 +112,30 @@ class ShowDetailsFragment : Fragment() {
                 setShowUI(showEntity.averageRating, showEntity.noOfReviews)
             }
             viewModel.getAllReviewsFromDB(args.showId.toInt()).observe(viewLifecycleOwner) { reviewEntities ->
-                for (review in reviewEntities)
-                    adapter.addReview(Review(
-                        review.id, review.comment, review.rating, review.showId,
-                    User(review.userId, review.email, review.userImageUrl))
+                adapter.getAllReviews(reviewEntities.map { reviewEntity ->
+                    Review(
+                        reviewEntity.id,
+                        reviewEntity.comment,
+                        reviewEntity.rating,
+                        reviewEntity.showId,
+                        User(reviewEntity.userId, reviewEntity.email, reviewEntity.userImageUrl)
                     )
+                })
             }
+            recyclerViewInitialized = true
+            binding.detailsData.isVisible = true
+            binding.ratingBar.isVisible = true
+            binding.ratingBar.setIsIndicator(true)
+            binding.detailsRecycler.isVisible = true
+            binding.detailsReviewsMessage.isVisible = false
 
         }
-        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
-        // ako je failure onda drugu (failurelivedata)
-//        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
-//            if (createReviewSuccessful) {
-//            }
-//        }
+//         u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+//         ako je failure onda drugu (failurelivedata)
+        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
+            if (createReviewSuccessful) {
+            }
+        }
 
 
 

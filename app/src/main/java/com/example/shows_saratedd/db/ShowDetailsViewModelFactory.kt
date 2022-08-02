@@ -9,8 +9,9 @@ import java.lang.IllegalArgumentException
 class ShowDetailsViewModelFactory(val database: ShowsDatabase): ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-        if (modelClass.isAssignableFrom(ShowDetailsViewModel::class.java))
+        if (modelClass.isAssignableFrom(ShowDetailsViewModel::class.java)) {
             return ShowDetailsViewModel(database) as T
+        }
 
         throw IllegalArgumentException("i'm an error. you got me.")
     }
