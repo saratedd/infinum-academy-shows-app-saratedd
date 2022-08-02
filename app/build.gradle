@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'kotlin-kapt'
 
 //    koristit cemo ove pluginove u projektu
 //    module build
@@ -69,4 +70,10 @@ dependencies {
     //Chucker
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+
+    //Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
 }
