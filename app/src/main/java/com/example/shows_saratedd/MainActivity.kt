@@ -2,6 +2,7 @@ package com.example.shows_saratedd
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.fragment.app.viewModels
 import com.example.shows_saratedd.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

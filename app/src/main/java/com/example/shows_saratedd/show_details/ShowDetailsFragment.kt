@@ -14,9 +14,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.R
+import com.example.shows_saratedd.ShowsApplication
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
+import com.example.shows_saratedd.db.ShowDetailsViewModelFactory
+import com.example.shows_saratedd.db.ShowsViewModelFactory
+import com.example.shows_saratedd.shows.ShowsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsFragment : Fragment() {
@@ -26,7 +30,9 @@ class ShowDetailsFragment : Fragment() {
     lateinit var adapter: ReviewsAdapter
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
-    private val viewModel by viewModels<ShowDetailsViewModel>()
+    private val viewModel: ShowDetailsViewModel by viewModels {
+        ShowDetailsViewModelFactory((activity?.application as ShowsApplication).database)
+    }
 
     var recyclerViewInitialized = false
 

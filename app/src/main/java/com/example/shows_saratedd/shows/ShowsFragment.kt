@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -24,13 +25,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.shows_saratedd.ApiModule
-import com.example.shows_saratedd.BuildConfig
-import com.example.shows_saratedd.FileUtil
-import com.example.shows_saratedd.R
+import com.example.shows_saratedd.*
 import com.example.shows_saratedd.login.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
+import com.example.shows_saratedd.db.ShowsViewModelFactory
 import com.example.shows_saratedd.login.LoginFragment
 import com.example.shows_saratedd.register.RegisterFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -52,7 +51,10 @@ class ShowsFragment : Fragment() {
     lateinit var uri: Uri
 
     private val args by navArgs<ShowsFragmentArgs>()
-    private val viewModel by viewModels<ShowsViewModel>()
+    private val viewModel: ShowsViewModel by viewModels {
+        ShowsViewModelFactory((activity?.application as ShowsApplication).database)
+    }
+
 
     private lateinit var sharedPreferences: SharedPreferences
 
