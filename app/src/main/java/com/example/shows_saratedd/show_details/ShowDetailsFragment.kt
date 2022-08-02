@@ -63,16 +63,17 @@ class ShowDetailsFragment : Fragment() {
         initReviewsRecycler()
 
         viewModel.loadShowDetails(args.showId)
-//        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
-//            if (showDetailsSuccessful) {
-                viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
-                    binding.ratingBar.setRating(showDetails.averageRating)
-                    binding.detailsData.text =
-                        showDetails.noOfReviews.toString() + " reviews, " +
-                                String.format("%.2f", showDetails.averageRating) + " average"
-                }
-//            }
-//        }
+        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
+            if (showDetailsSuccessful) {
+                binding.detailsProgressBar.isVisible = false
+            }
+        }
+        viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
+            binding.ratingBar.setRating(showDetails.averageRating)
+            binding.detailsData.text =
+                showDetails.noOfReviews.toString() + " reviews, " +
+                        String.format("%.2f", showDetails.averageRating) + " average"
+        }
 
         viewModel.loadReviews(args.showId)
         viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->

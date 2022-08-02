@@ -131,20 +131,23 @@ class ShowsFragment : Fragment() {
 
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
+            binding.showsProgressBar.isVisible = true
             viewModel.onLoadShowsButtonClicked()
             // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
             // ako je failure onda drugu (failurelivedata)
-//            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-//                if (showsSuccessful) {
-                    viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
-                        adapter.addAllShows(shows)
-                    }
-//                }
-//            }
+            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+                if (showsSuccessful) {
+                    binding.showsProgressBar.isVisible = false
+                }
+            }
+            viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
+                adapter.addAllShows(shows)
+            }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false
             binding.emptyStateText.isVisible = false
             binding.loadButton.isVisible = false
+//            binding.showsProgressBar.isVisible = false
         }
     }
 
