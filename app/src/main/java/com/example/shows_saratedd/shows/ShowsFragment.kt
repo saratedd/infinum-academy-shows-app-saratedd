@@ -66,7 +66,6 @@ class ShowsFragment : Fragment() {
     }
 
 
-
     private fun initShowsRecycler(email: String) {
 
         adapter = ShowsAdapter(emptyList()) { show ->
@@ -96,7 +95,7 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
-                // kamera, assignment5
+                // kamera, obavljeno u assignment5
                 dialog.dismiss()
             }
 
@@ -133,13 +132,15 @@ class ShowsFragment : Fragment() {
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
             viewModel.onLoadShowsButtonClicked()
-            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-                if (showsSuccessful) {
+            // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+            // ako je failure onda drugu (failurelivedata)
+//            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+//                if (showsSuccessful) {
                     viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
                         adapter.addAllShows(shows)
                     }
-                }
-            }
+//                }
+//            }
             binding.showsRecycler.isVisible = true
             binding.emptyStateIcon.isVisible = false
             binding.emptyStateText.isVisible = false

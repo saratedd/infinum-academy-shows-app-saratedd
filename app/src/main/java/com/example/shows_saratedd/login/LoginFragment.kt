@@ -113,10 +113,6 @@ class LoginFragment : Fragment() {
                     // dati feedback korisniku
                 }
             }
-
-//            viewModel.getResponseLiveData().observe(viewLifecycleOwner) { response ->
-////                val accessToken = response.headers().get()
-//            }
         }
     }
 
