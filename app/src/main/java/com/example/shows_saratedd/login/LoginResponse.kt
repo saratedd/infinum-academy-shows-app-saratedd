@@ -14,3 +14,8 @@ data class User(
     @SerialName("email") val email: String,
     @SerialName("image_url") val imageUrl: String?
 )
+
+@Serializable
+data class ProfilePhotoResponse(
+    @SerialName("user") val user: User
+)

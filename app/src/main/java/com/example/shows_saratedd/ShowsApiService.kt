@@ -2,6 +2,7 @@ package com.example.shows_saratedd
 
 import com.example.shows_saratedd.login.LoginRequest
 import com.example.shows_saratedd.login.LoginResponse
+import com.example.shows_saratedd.login.ProfilePhotoResponse
 import com.example.shows_saratedd.register.RegisterRequest
 import com.example.shows_saratedd.show_details.ReviewRequest
 import com.example.shows_saratedd.show_details.ReviewResponse
@@ -9,16 +10,18 @@ import com.example.shows_saratedd.show_details.ReviewsResponse
 import com.example.shows_saratedd.shows.Show
 import com.example.shows_saratedd.shows.ShowResponse
 import com.example.shows_saratedd.shows.ShowsResponse
+import okhttp3.MultipartBody
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface ShowsApiService {
 
     @POST("/users")
     fun register(@Body request: RegisterRequest) : Call<RegisterResponse>
+
+    @PUT("/users")
+    @Multipart
+    fun updateProfilePhoto(@Part image : MultipartBody.Part) : Call<ProfilePhotoResponse>
 
     @POST("/users/sign_in")
     fun login(@Body request: LoginRequest) : Call<LoginResponse>
