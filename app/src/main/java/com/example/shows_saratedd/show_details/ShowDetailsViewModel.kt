@@ -88,10 +88,14 @@ class ShowDetailsViewModel(
         }
     }
 
+    fun insertReviewToDB(review: ReviewEntity) {
+        Executors.newSingleThreadExecutor().execute {
+            database.reviewDao().createNewReview(review)
+        }
+    }
+
     fun getShowFromDB(showId: String): LiveData<ShowEntity> {
-//        Executors.newSingleThreadExecutor().execute {
         return database.showDao().getShow(showId)
-//        }
     }
 
     fun updateRating(items: List<Review>) {
@@ -123,8 +127,7 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
-                    showResultLiveData.value = true
-//                    ????
+//                    showResultLiveData.value = false
                 }
 
             })
@@ -145,7 +148,7 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-                    createReviewResultLiveData.value = false
+//                    createReviewResultLiveData.value = false
                 }
 
             })

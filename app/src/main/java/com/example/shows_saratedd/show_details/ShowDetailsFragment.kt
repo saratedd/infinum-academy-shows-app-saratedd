@@ -1,9 +1,12 @@
 package com.example.shows_saratedd.show_details
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.shows_saratedd.*
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
@@ -20,6 +24,7 @@ import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
 import com.example.shows_saratedd.db.ReviewEntity
 import com.example.shows_saratedd.db.ShowDetailsViewModelFactory
 import com.example.shows_saratedd.db.ShowsViewModelFactory
+import com.example.shows_saratedd.shows.ShowsFragment
 import com.example.shows_saratedd.shows.ShowsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -28,6 +33,7 @@ class ShowDetailsFragment : Fragment() {
     private var _binding: FragmentShowDetailsBinding? = null
     private val binding get() = _binding!!
     lateinit var adapter: ReviewsAdapter
+    lateinit var uri: Uri
 
     private val args by navArgs<ShowDetailsFragmentArgs>()
     private val viewModel: ShowDetailsViewModel by viewModels {
@@ -82,28 +88,23 @@ class ShowDetailsFragment : Fragment() {
             viewModel.loadReviews(args.showId)
             viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
                 if (reviewsSuccessful) {
-                    recyclerViewInitialized = true
-                    binding.detailsData.isVisible = true
-                    binding.ratingBar.isVisible = true
-                    binding.ratingBar.setIsIndicator(true)
-                    binding.detailsRecycler.isVisible = true
-                    binding.detailsReviewsMessage.isVisible = false
+                    setReviewsUI()
                 }
             }
 
             viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
                 adapter.getAllReviews(reviews)
-                    viewModel.insertAllReviewsToDB(reviews.map { review ->
-                        ReviewEntity(
-                            review.id,
-                            review.comment,
-                            review.rating,
-                            review.showId,
-                            review.user.id,
-                            review.user.email,
-                            review.user.imageUrl
-                        )
-                    })
+                viewModel.insertAllReviewsToDB(reviews.map { review ->
+                    ReviewEntity(
+                        review.id,
+                        review.comment,
+                        review.rating,
+                        review.showId,
+                        review.user.id,
+                        review.user.email,
+                        review.user.imageUrl
+                    )
+                })
             }
 
         } else {
@@ -122,12 +123,7 @@ class ShowDetailsFragment : Fragment() {
                     )
                 })
             }
-            recyclerViewInitialized = true
-            binding.detailsData.isVisible = true
-            binding.ratingBar.isVisible = true
-            binding.ratingBar.setIsIndicator(true)
-            binding.detailsRecycler.isVisible = true
-            binding.detailsReviewsMessage.isVisible = false
+            setReviewsUI()
 
         }
 //         u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
@@ -137,8 +133,6 @@ class ShowDetailsFragment : Fragment() {
             }
         }
 
-
-
         initDialog(email)
     }
 
@@ -147,6 +141,15 @@ class ShowDetailsFragment : Fragment() {
         binding.detailsData.text =
             noOfReviews.toString() + " reviews, " +
                     String.format("%.2f", averageRating) + " average"
+    }
+
+    private fun setReviewsUI() {
+        recyclerViewInitialized = true
+        binding.detailsData.isVisible = true
+        binding.ratingBar.isVisible = true
+        binding.ratingBar.setIsIndicator(true)
+        binding.detailsRecycler.isVisible = true
+        binding.detailsReviewsMessage.isVisible = false
     }
 
     private fun initBackButton(email: String) {
@@ -162,21 +165,52 @@ class ShowDetailsFragment : Fragment() {
             val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
             dialog.setContentView(bottomSheetBinding.root)
 
-            bottomSheetBinding.submitButton.setOnClickListener {
-                viewModel.onSubmitButtonClicked(
-                    args.showId,
-                    bottomSheetBinding.dialogRating.getRating().toInt(),
-                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                )
-                viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
-                    adapter.addReview(review)
-                }
-                if (!recyclerViewInitialized) {
-                    initReviewsRecycler()
-                }
+            val file = FileUtil.getImageFile(requireContext())
+            file?.let {
+                uri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", it)
+            }
 
-                dialog.dismiss()
-                updateRating()
+            bottomSheetBinding.submitButton.setOnClickListener {
+
+                if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+                    viewModel.onSubmitButtonClicked(
+                        args.showId,
+                        bottomSheetBinding.dialogRating.getRating().toInt(),
+                        bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+                    )
+                    viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
+                        adapter.addReview(review)
+                        viewModel.insertReviewToDB(ReviewEntity(
+                            review.id,
+                            review.comment,
+                            review.rating,
+                            review.showId,
+                            review.user.id,
+                            review.user.email,
+                            review.user.imageUrl
+                        ))
+                    }
+                    if (!recyclerViewInitialized) {
+                        initReviewsRecycler()
+                    }
+
+                    dialog.dismiss()
+                    updateRating()
+
+                } else {
+                    viewModel.insertReviewToDB(ReviewEntity(
+                        "123",
+                        bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+                        bottomSheetBinding.dialogRating.getRating().toInt(),
+                        args.showId.toInt(),
+                        "123",
+                        args.email,
+                        uri.toString()
+                    ))
+                    if (!recyclerViewInitialized) {
+                        initReviewsRecycler()
+                    }
+                }
             }
             dialog.show()
         }
@@ -200,6 +234,17 @@ class ShowDetailsFragment : Fragment() {
 
     private fun updateRating() {
         viewModel.updateRating(adapter.getReviews())
+    }
+
+    private fun loadImage(view: ImageView, url: Uri?) {
+        Glide
+            .with(requireContext())
+            .load(url)
+            .placeholder(R.drawable.ic_profile_placeholder)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .centerCrop()
+            .into(view)
     }
 
     override fun onDestroyView() {

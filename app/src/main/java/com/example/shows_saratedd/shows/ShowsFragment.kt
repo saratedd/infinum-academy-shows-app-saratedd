@@ -206,11 +206,7 @@ class ShowsFragment : Fragment() {
 
             } else {
                 // 'no internet connection' toast
-//                val database: ShowsDatabase
-//
-//                if (database.showDao().getAllShows() == null) {
-//
-//                }
+
                 viewModel.getShowsFromDB().observe(viewLifecycleOwner) { showEntities ->
                     adapter.addAllShows(showEntities.map { showEntity ->
                         Show(
@@ -222,8 +218,9 @@ class ShowsFragment : Fragment() {
                             showEntity.title
                         )
                     })
+                    if (showEntities != null)
+                        showUI()
                 }
-                showUI()
             }
         }
     }
