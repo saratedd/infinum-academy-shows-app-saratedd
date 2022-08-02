@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.RegisterResponse
+import com.example.shows_saratedd.db.ReviewEntity
+import com.example.shows_saratedd.db.ShowEntity
 import com.example.shows_saratedd.db.ShowsDatabase
 import com.example.shows_saratedd.register.RegisterRequest
 import com.example.shows_saratedd.shows.Show
@@ -13,6 +15,7 @@ import com.example.shows_saratedd.shows.ShowResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executors
 
 class ShowDetailsViewModel(
     private val database: ShowsDatabase
@@ -75,18 +78,21 @@ class ShowDetailsViewModel(
         return createReviewResponseLiveData
     }
 
-//    fun createNewReview(id: String, comment: String, rating: Int, showId: String, user: User) {
-//        _showReview.value = Review(
-//            id,
-//            comment,
-//            rating,
-//            showId.toInt(),
-////            email.substringBefore("@", ""),
-////            R.drawable.ic_profile_placeholder
-//            user
-//        // fali user
-//        )
-//    }
+    fun getAllReviewsFromDB(showId: Int): LiveData<List<ReviewEntity>> {
+        return database.reviewDao().getAllReviews(showId)
+    }
+
+    fun insertAllReviewsToDB(reviews: List<ReviewEntity>) {
+        Executors.newSingleThreadExecutor().execute {
+            database.reviewDao().insertAllReviews(reviews)
+        }
+    }
+
+    fun getShowFromDB(showId: String): LiveData<ShowEntity> {
+//        Executors.newSingleThreadExecutor().execute {
+            return database.showDao().getShow(showId)
+//        }
+    }
 
     fun updateRating(items: List<Review>) {
         var sum = 0f
@@ -104,7 +110,9 @@ class ShowDetailsViewModel(
                     reviewsResponseLiveData.value = response.body()?.reviews
                 }
 
-                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) { }
+                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {
+//                    reviewsResultLiveData.value = true
+                }
             })
     }
 
@@ -117,7 +125,7 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
-                    showResultLiveData.value = true
+//                    showResultLiveData.value = true
                 }
 
             })

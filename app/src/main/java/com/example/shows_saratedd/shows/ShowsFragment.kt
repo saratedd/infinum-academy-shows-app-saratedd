@@ -205,7 +205,7 @@ class ShowsFragment : Fragment() {
                 showUI()
 
             } else {
-                // no internet connection toast
+                // 'no internet connection' toast
 //                val database: ShowsDatabase
 //
 //                if (database.showDao().getAllShows() == null) {

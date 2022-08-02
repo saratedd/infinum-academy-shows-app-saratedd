@@ -11,14 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.shows_saratedd.ApiModule
-import com.example.shows_saratedd.MainActivity
-import com.example.shows_saratedd.R
-import com.example.shows_saratedd.ShowsApplication
+import com.example.shows_saratedd.*
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
+import com.example.shows_saratedd.db.ReviewEntity
 import com.example.shows_saratedd.db.ShowDetailsViewModelFactory
 import com.example.shows_saratedd.db.ShowsViewModelFactory
 import com.example.shows_saratedd.shows.ShowsViewModel
@@ -58,46 +57,81 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
-
-        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
-        // ako je failure onda drugu (failurelivedata)
-        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
-            if (createReviewSuccessful) {
-            }
-        }
-
         initReviewsRecycler()
 
-        viewModel.loadShowDetails(args.showId)
-        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
-            if (showDetailsSuccessful) {
-                binding.detailsProgressBar.isVisible = false
+        if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+            viewModel.loadShowDetails(args.showId)
+            viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
+                if (showDetailsSuccessful) {
+                    binding.detailsProgressBar.isVisible = false
+                }
             }
-        }
-        viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
-            binding.ratingBar.setRating(showDetails.averageRating)
-            binding.detailsData.text =
-                showDetails.noOfReviews.toString() + " reviews, " +
-                        String.format("%.2f", showDetails.averageRating) + " average"
-        }
-
-        viewModel.loadReviews(args.showId)
-        viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
-            if (reviewsSuccessful) {
-                recyclerViewInitialized = true
-                binding.detailsData.isVisible = true
-                binding.ratingBar.isVisible = true
-                binding.ratingBar.setIsIndicator(true)
-                binding.detailsRecycler.isVisible = true
-                binding.detailsReviewsMessage.isVisible = false
+            viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
+//                setShowUI(showDetails.averageRating, showDetails.noOfReviews)
+                binding.ratingBar.setRating(showDetails.averageRating)
+                binding.detailsData.text =
+                    showDetails.noOfReviews.toString() + " reviews, " +
+                            String.format("%.2f", showDetails.averageRating) + " average"
             }
-        }
 
-        viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
-            adapter.getAllReviews(reviews)
+            viewModel.loadReviews(args.showId)
+            viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
+                if (reviewsSuccessful) {
+                    recyclerViewInitialized = true
+                    binding.detailsData.isVisible = true
+                    binding.ratingBar.isVisible = true
+                    binding.ratingBar.setIsIndicator(true)
+                    binding.detailsRecycler.isVisible = true
+                    binding.detailsReviewsMessage.isVisible = false
+                }
+            }
+
+            viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
+                adapter.getAllReviews(reviews)
+//                viewModel.insertAllReviewsToDB(reviews.map { review ->
+//                    ReviewEntity(
+//                        review.id,
+//                        review.comment,
+//                        review.rating,
+//                        review.showId,
+//                        review.user.id,
+//                        review.user.email,
+//                        review.user.imageUrl
+//                    )
+//                })
+            }
+
+        } else {
+            binding.detailsProgressBar.isVisible = false
+            viewModel.getShowFromDB(args.showId).observe(viewLifecycleOwner) { showEntity ->
+                setShowUI(showEntity.averageRating, showEntity.noOfReviews)
+            }
+            viewModel.getAllReviewsFromDB(args.showId.toInt()).observe(viewLifecycleOwner) { reviewEntities ->
+                for (review in reviewEntities)
+                    adapter.addReview(Review(
+                        review.id, review.comment, review.rating, review.showId,
+                    User(review.userId, review.email, review.userImageUrl))
+                    )
+            }
+
         }
+        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+        // ako je failure onda drugu (failurelivedata)
+//        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
+//            if (createReviewSuccessful) {
+//            }
+//        }
+
+
 
         initDialog(email)
+    }
+
+    private fun setShowUI(averageRating: Float, noOfReviews: Int) {
+        binding.ratingBar.setRating(averageRating)
+        binding.detailsData.text =
+            noOfReviews.toString() + " reviews, " +
+                    String.format("%.2f", averageRating) + " average"
     }
 
     private fun initBackButton(email: String) {

@@ -27,7 +27,7 @@ class ShowsViewModel(
     private val database: ShowsDatabase
 ): ViewModel() {
 
-    private lateinit var sharedPreferences: SharedPreferences
+//    private lateinit var sharedPreferences: SharedPreferences
 
     private val showsLiveData: MutableLiveData<List<Show>> by lazy {
         MutableLiveData<List<Show>>()
