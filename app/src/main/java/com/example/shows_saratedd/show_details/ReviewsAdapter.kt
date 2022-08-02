@@ -12,7 +12,7 @@ class ReviewsAdapter(
 ) : RecyclerView.Adapter<ReviewsAdapter.ReviewViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewViewHolder {
-        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ItemReviewBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ReviewViewHolder(binding)
     }
 
@@ -27,9 +27,9 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
-    fun addReview() {
+//    fun addReview() {
 //        notifyItemInserted()
-    }
+//    }
 
     fun getReviews(): List<Review> {
         return items

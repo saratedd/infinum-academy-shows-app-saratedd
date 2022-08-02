@@ -59,18 +59,11 @@ class ShowDetailsFragment : Fragment() {
 //        }
         viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
             if (createReviewSuccessful) {
-                adapter.addReview()
+//                adapter.addReview()
             }
         }
-
-//        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
-//            binding.ratingBar.setRating(averageRating)
-////            binding.ratingBar.setIsIndicator(true)
-//        }
-
-//        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
-//            binding.detailsData.text = detailsData
-//        }
+        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+        // ako je failure onda drugu (failurelivedata)
 
         initReviewsRecycler()
 
@@ -125,6 +118,9 @@ class ShowDetailsFragment : Fragment() {
                     bottomSheetBinding.dialogRating.getRating().toInt(),
                     bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                 )
+                viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
+                    adapter.addReview(review)
+                }
                 if (!recyclerViewInitialized) {
                     initReviewsRecycler()
                 }

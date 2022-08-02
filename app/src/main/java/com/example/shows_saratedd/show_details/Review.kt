@@ -23,3 +23,8 @@ data class User(
     @SerialName("email") val email: String,
     @SerialName("image_url") val imageUrl: String?
 )
+
+@Serializable
+data class ReviewResponse(
+    @SerialName("review") val review: Review
+)

@@ -8,6 +8,7 @@ import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.RegisterResponse
 import com.example.shows_saratedd.register.RegisterRequest
 import com.example.shows_saratedd.shows.Show
+import com.example.shows_saratedd.shows.ShowResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,6 +44,10 @@ class ShowsDetailsViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
 
+    private val createReviewResponseLiveData: MutableLiveData<Review> by lazy {
+        MutableLiveData<Review>()
+    }
+
     fun getReviewsResultLiveData(): LiveData<Boolean> {
         return reviewsResultLiveData
     }
@@ -63,18 +68,22 @@ class ShowsDetailsViewModel : ViewModel() {
         return createReviewResultLiveData
     }
 
-    fun createNewReview(id: String, comment: String, rating: Int, showId: String, user: User) {
-        _showReview.value = Review(
-            id,
-            comment,
-            rating,
-            showId.toInt(),
-//            email.substringBefore("@", ""),
-//            R.drawable.ic_profile_placeholder
-            user
-        // fali user
-        )
+    fun getCreateReviewResponseLiveData(): LiveData<Review> {
+        return createReviewResponseLiveData
     }
+
+//    fun createNewReview(id: String, comment: String, rating: Int, showId: String, user: User) {
+//        _showReview.value = Review(
+//            id,
+//            comment,
+//            rating,
+//            showId.toInt(),
+////            email.substringBefore("@", ""),
+////            R.drawable.ic_profile_placeholder
+//            user
+//        // fali user
+//        )
+//    }
 
     fun updateRating(items: List<Review>) {
         var sum = 0f
@@ -86,25 +95,27 @@ class ShowsDetailsViewModel : ViewModel() {
 
     fun loadReviews(showId: String) {
         ApiModule.retrofit.getShowReviews(showId)
-            .enqueue(object : Callback<ReviewResponse> {
-                override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+            .enqueue(object : Callback<ReviewsResponse> {
+                override fun onResponse(call: Call<ReviewsResponse>, response: Response<ReviewsResponse>) {
                     reviewsResultLiveData.value = response.isSuccessful
                     reviewsResponseLiveData.value = response.body()?.reviews
                 }
 
-                override fun onFailure(call: Call<ReviewResponse>, t: Throwable) { }
+                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) { }
             })
     }
 
     fun loadShowDetails(showId: String) {
         ApiModule.retrofit.displayShow(showId)
-            .enqueue(object : Callback<Show> {
-                override fun onResponse(call: Call<Show>, response: Response<Show>) {
+            .enqueue(object : Callback<ShowResponse> {
+                override fun onResponse(call: Call<ShowResponse>, response: Response<ShowResponse>) {
                     showResultLiveData.value = response.isSuccessful
-                    showResponseLiveData.value = response.body()
+                    showResponseLiveData.value = response.body()?.show
                 }
 
-                override fun onFailure(call: Call<Show>, t: Throwable) { }
+                override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
+                    showResultLiveData.value = true
+                }
 
             })
     }
@@ -120,6 +131,7 @@ class ShowsDetailsViewModel : ViewModel() {
             .enqueue(object: Callback<ReviewResponse> {
                 override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
                     createReviewResultLiveData.value = response.isSuccessful
+                    createReviewResponseLiveData.value = response.body()?.review
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {

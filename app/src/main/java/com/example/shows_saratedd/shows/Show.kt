@@ -19,3 +19,8 @@ data class Show(
     @SerialName("no_of_reviews") val noOfReviews: Int,
     @SerialName("title") val title: String
 )
+
+@Serializable
+data class ShowResponse(
+    @SerialName("show") val show: Show
+)
