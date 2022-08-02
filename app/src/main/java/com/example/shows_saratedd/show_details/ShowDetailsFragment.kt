@@ -54,29 +54,48 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
-        viewModel.showReview.observe(viewLifecycleOwner) { review ->
-            adapter.addReview(review)
+//        viewModel.showReview.observe(viewLifecycleOwner) { review ->
+//            adapter.addReview(review)
+//        }
+        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
+            if (createReviewSuccessful) {
+                adapter.addReview()
+            }
         }
 
-        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
-            binding.ratingBar.setRating(averageRating)
-            binding.ratingBar.setIsIndicator(true)
-        }
+//        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
+//            binding.ratingBar.setRating(averageRating)
+////            binding.ratingBar.setIsIndicator(true)
+//        }
 
-        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
-            binding.detailsData.text = detailsData
-        }
+//        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
+//            binding.detailsData.text = detailsData
+//        }
 
         initReviewsRecycler()
+
+        viewModel.loadShowDetails(args.showId)
+        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
+            if (showDetailsSuccessful) {
+                viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
+                    binding.ratingBar.setRating(showDetails.averageRating)
+                    binding.detailsData.text =
+                        showDetails.noOfReviews.toString() + " reviews, " +
+                                String.format("%.2f", showDetails.averageRating) + " average"
+                }
+            }
+        }
+
         viewModel.loadReviews(args.showId)
         viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
             if (reviewsSuccessful) {
                 recyclerViewInitialized = true
                 binding.detailsData.isVisible = true
                 binding.ratingBar.isVisible = true
+                binding.ratingBar.setIsIndicator(true)
                 binding.detailsRecycler.isVisible = true
                 binding.detailsReviewsMessage.isVisible = false
-                viewModel.getResponseLiveData().observe(viewLifecycleOwner) { reviews ->
+                viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
                     adapter.getAllReviews(reviews)
                 }
             } else {
@@ -101,17 +120,22 @@ class ShowDetailsFragment : Fragment() {
             dialog.setContentView(bottomSheetBinding.root)
 
             bottomSheetBinding.submitButton.setOnClickListener {
+                viewModel.onSubmitButtonClicked(
+                    args.showId,
+                    bottomSheetBinding.dialogRating.getRating().toInt(),
+                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+                )
                 if (!recyclerViewInitialized) {
                     initReviewsRecycler()
                 }
 
-                viewModel.createNewReview(
-                    "100",
-                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                    bottomSheetBinding.dialogRating.getRating().toInt(),
-                    args.showId,
-                    User("100", email, "")
-                )
+//                viewModel.createNewReview(
+//                    "100",
+//                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+//                    bottomSheetBinding.dialogRating.getRating().toInt(),
+//                    args.showId,
+//                    User("100", email, "")
+//                )
 
                 dialog.dismiss()
                 updateRating()

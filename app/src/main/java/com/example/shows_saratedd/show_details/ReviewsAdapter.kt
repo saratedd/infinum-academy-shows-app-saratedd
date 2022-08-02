@@ -27,6 +27,10 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
+    fun addReview() {
+//        notifyItemInserted()
+    }
+
     fun getReviews(): List<Review> {
         return items
     }

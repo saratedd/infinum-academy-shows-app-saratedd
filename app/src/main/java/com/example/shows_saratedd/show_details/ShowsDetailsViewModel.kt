@@ -5,8 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shows_saratedd.ApiModule
-import com.example.shows_saratedd.R
-import com.example.shows_saratedd.shows.ShowsResponse
+import com.example.shows_saratedd.RegisterResponse
+import com.example.shows_saratedd.register.RegisterRequest
+import com.example.shows_saratedd.shows.Show
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,7 +23,7 @@ class ShowsDetailsViewModel : ViewModel() {
     private val _averageRating = MutableLiveData<Float>()
     val averageRating: LiveData<Float> = _averageRating
 
-    private val responseLiveData: MutableLiveData<List<Review>> by lazy {
+    private val reviewsResponseLiveData: MutableLiveData<List<Review>> by lazy {
         MutableLiveData<List<Review>>()
     }
 
@@ -30,10 +31,37 @@ class ShowsDetailsViewModel : ViewModel() {
         MutableLiveData<Boolean>()
     }
 
+    private val showResponseLiveData: MutableLiveData<Show> by lazy {
+        MutableLiveData<Show>()
+    }
+
+    private val showResultLiveData: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    private val createReviewResultLiveData: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
     fun getReviewsResultLiveData(): LiveData<Boolean> {
         return reviewsResultLiveData
     }
 
+    fun getShowResultLiveData(): LiveData<Boolean> {
+        return showResultLiveData
+    }
+
+    fun getReviewsResponseLiveData(): LiveData<List<Review>> {
+        return reviewsResponseLiveData
+    }
+
+    fun getShowResponseLiveData(): LiveData<Show> {
+        return showResponseLiveData
+    }
+
+    fun getCreateReviewResultLiveData(): LiveData<Boolean> {
+        return createReviewResultLiveData
+    }
 
     fun createNewReview(id: String, comment: String, rating: Int, showId: String, user: User) {
         _showReview.value = Review(
@@ -46,10 +74,6 @@ class ShowsDetailsViewModel : ViewModel() {
             user
         // fali user
         )
-    }
-
-    fun getResponseLiveData(): LiveData<List<Review>> {
-        return responseLiveData
     }
 
     fun updateRating(items: List<Review>) {
@@ -65,12 +89,43 @@ class ShowsDetailsViewModel : ViewModel() {
             .enqueue(object : Callback<ReviewResponse> {
                 override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
                     reviewsResultLiveData.value = response.isSuccessful
-                    responseLiveData.value = response.body()?.reviews
+                    reviewsResponseLiveData.value = response.body()?.reviews
+                }
+
+                override fun onFailure(call: Call<ReviewResponse>, t: Throwable) { }
+            })
+    }
+
+    fun loadShowDetails(showId: String) {
+        ApiModule.retrofit.displayShow(showId)
+            .enqueue(object : Callback<Show> {
+                override fun onResponse(call: Call<Show>, response: Response<Show>) {
+                    showResultLiveData.value = response.isSuccessful
+                    showResponseLiveData.value = response.body()
+                }
+
+                override fun onFailure(call: Call<Show>, t: Throwable) { }
+
+            })
+    }
+
+    fun onSubmitButtonClicked(showId: String, rating: Int, comment: String) {
+        val reviewRequest = ReviewRequest(
+            rating = rating,
+            comment = comment,
+            showId = showId.toInt()
+        )
+
+        ApiModule.retrofit.createReview(reviewRequest)
+            .enqueue(object: Callback<ReviewResponse> {
+                override fun onResponse(call: Call<ReviewResponse>, response: Response<ReviewResponse>) {
+                    createReviewResultLiveData.value = response.isSuccessful
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-                    Log.d("shows", "onfailure: " + t.message)
+                    createReviewResultLiveData.value = false
                 }
+
             })
     }
 }
