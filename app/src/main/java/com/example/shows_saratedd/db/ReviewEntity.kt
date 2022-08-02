@@ -3,7 +3,7 @@ package com.example.shows_saratedd.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.shows_saratedd.show_details.User
+//import com.example.shows_saratedd.show_details.User
 
 @Entity(tableName = "review")
 data class ReviewEntity(
@@ -11,7 +11,10 @@ data class ReviewEntity(
     @ColumnInfo(name = "comment") val comment: String,
     @ColumnInfo(name = "rating") val rating: Int,
     @ColumnInfo(name = "show_id") val showId: Int,
-    @ColumnInfo(name = "user") val user: User
+//    @ColumnInfo(name = "user") val user: User
+    @ColumnInfo(name = "user_id") val userId: String,
+    @ColumnInfo(name = "email") val email: String,
+    @ColumnInfo(name = "image_url") val imageUrl: String
 )
 
 //@Serializable

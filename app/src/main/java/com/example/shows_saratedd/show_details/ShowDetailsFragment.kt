@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.shows_saratedd.ApiModule
+import com.example.shows_saratedd.MainActivity
 import com.example.shows_saratedd.R
 import com.example.shows_saratedd.ShowsApplication
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
@@ -24,7 +25,7 @@ import com.example.shows_saratedd.shows.ShowsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsFragment : Fragment() {
-//    lateinit var binding: ActivityShowDetailsBinding
+
     private var _binding: FragmentShowDetailsBinding? = null
     private val binding get() = _binding!!
     lateinit var adapter: ReviewsAdapter

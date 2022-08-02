@@ -25,9 +25,13 @@ class ShowsViewModel: ViewModel() {
 
     private val showsLiveData: MutableLiveData<List<Show>> by lazy {
         MutableLiveData<List<Show>>()
-}
+    }
 
     private val showsResultLiveData: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
+
+    private val internetLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
@@ -39,10 +43,9 @@ class ShowsViewModel: ViewModel() {
         return showsLiveData
     }
 
-
-//    init {
-//        _showsLiveData.value = shows
-//    }
+    fun checkInternetConnection() : LiveData<Boolean> {
+        return internetLiveData
+    }
 
     fun onLoadShowsButtonClicked () {
         ApiModule.retrofit.getShowsAlpha()

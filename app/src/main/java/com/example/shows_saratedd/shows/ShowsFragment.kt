@@ -95,7 +95,6 @@ class ShowsFragment : Fragment() {
         initLoadShowsButton()
     }
 
-
     private fun initShowsRecycler(email: String) {
 
         adapter = ShowsAdapter(emptyList()) { show ->
@@ -115,6 +114,7 @@ class ShowsFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
+
     private fun initUserButton(email: String) {
         binding.showsUser.setOnClickListener {
 
@@ -174,7 +174,16 @@ class ShowsFragment : Fragment() {
 
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
+
+//            viewModel.checkInternetConnection().observe() {
+//
+//            }
+
+
             binding.showsProgressBar.isVisible = true
+
+
+
             viewModel.onLoadShowsButtonClicked()
             // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
             // ako je failure onda drugu (failurelivedata)
