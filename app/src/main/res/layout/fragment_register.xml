@@ -50,7 +50,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTextField"
-        style="@style/customOutlinedBox"
+        style="@style/customOutlinedBoxWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -69,7 +69,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextField"
-        style="@style/customOutlinedBox"
+        style="@style/customOutlinedBoxWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -89,7 +89,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/repeatPasswordTextField"
-        style="@style/customOutlinedBox"
+        style="@style/customOutlinedBoxWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"

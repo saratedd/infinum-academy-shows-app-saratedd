@@ -32,4 +32,5 @@
     <string name="no_net_reviews">There is no internet connection. Please turn on your internet to write a review.</string>
     <string name="no_net_picture">There is no internet connection. Please turn on your internet to change your profile picture.</string>
     <string name="no_net">There is no internet connection. Please check your internet connection and try again.</string>
+    <string name="comment">Comment</string>
 </resources>

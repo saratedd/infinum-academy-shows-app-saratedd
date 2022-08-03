@@ -62,7 +62,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/emailTextField"
-        style="@style/customOutlinedBox"
+        style="@style/customOutlinedBoxWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
@@ -75,20 +75,19 @@
             android:id="@+id/emailEditTextField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColorHint="#FFFFFF" />
+            />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordTextField"
-        style="@style/customOutlinedBox"
+        style="@style/customOutlinedBoxWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="8dp"
         android:hint="@string/password"
         app:endIconMode="password_toggle"
-
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/emailTextField">
 
