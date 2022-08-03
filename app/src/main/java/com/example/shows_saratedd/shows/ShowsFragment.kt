@@ -3,6 +3,7 @@ package com.example.shows_saratedd.shows
 import android.app.AlertDialog
 import android.content.*
 import android.content.ContentValues.TAG
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -129,8 +131,15 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
-                getCameraImage.launch(uri)
-                dialog.dismiss()
+                if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+                    getCameraImage.launch(uri)
+                    dialog.dismiss()
+                } else {
+//                    Toast.makeText(requireContext(), getString(R.string.no_net_picture), Toast.LENGTH_LONG).show()
+//                    Toast.makeText(requireContext(), getString(R.string.no_net), Toast.LENGTH_LONG).show()
+                    // ako uzimam iz strings.xml onda mi izbaci 'welcome kao tekst (uncomment linija 139)
+                    Toast.makeText(requireContext(), "There is no internet connection. Please check your internet connection and try again.", Toast.LENGTH_LONG).show()
+                }
             }
 
             bottomSheetBinding.userLogout.setOnClickListener {

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -161,18 +162,18 @@ class ShowDetailsFragment : Fragment() {
 
     private fun initDialog(email: String) {
         binding.detailsReviewsButton.setOnClickListener {
-            val dialog = BottomSheetDialog(requireContext())
-            val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
-            dialog.setContentView(bottomSheetBinding.root)
+            if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+                val dialog = BottomSheetDialog(requireContext())
+                val bottomSheetBinding = DialogAddReviewBinding.inflate(layoutInflater)
+                dialog.setContentView(bottomSheetBinding.root)
 
-            val file = FileUtil.getImageFile(requireContext())
-            file?.let {
-                uri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", it)
-            }
+                val file = FileUtil.getImageFile(requireContext())
+                file?.let {
+                    uri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", it)
+                }
 
-            bottomSheetBinding.submitButton.setOnClickListener {
+                bottomSheetBinding.submitButton.setOnClickListener {
 
-                if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
                     viewModel.onSubmitButtonClicked(
                         args.showId,
                         bottomSheetBinding.dialogRating.getRating().toInt(),
@@ -197,24 +198,14 @@ class ShowDetailsFragment : Fragment() {
 
                     dialog.dismiss()
                     updateRating()
-
-                } else {
-                    viewModel.insertReviewToDB(ReviewEntity(
-                        "123",
-                        bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                        bottomSheetBinding.dialogRating.getRating().toInt(),
-                        args.showId.toInt(),
-                        "123",
-                        args.email,
-                        uri.toString()
-                    ))
-                    if (!recyclerViewInitialized) {
-                        initReviewsRecycler()
-                    }
-                    dialog.dismiss()
                 }
+                dialog.show()
+            } else {
+//                Toast.makeText(requireContext(), getString(R.string.no_net_reviews), Toast.LENGTH_LONG).show()
+//                Toast.makeText(requireContext(), getString(R.string.no_net), Toast.LENGTH_LONG).show()
+                // ako uzimam iz strings.xml onda mi izbaci 'write a review' kao tekst (uncomment linija 205)
+                Toast.makeText(requireContext(), "There is no internet connection. Please check your internet connection and try again.", Toast.LENGTH_LONG).show()
             }
-            dialog.show()
         }
     }
 
