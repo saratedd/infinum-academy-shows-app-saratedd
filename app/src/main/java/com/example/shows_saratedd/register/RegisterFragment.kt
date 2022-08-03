@@ -18,7 +18,7 @@ import com.example.shows_saratedd.login.LoginFragment
 
 class RegisterFragment : Fragment() {
     companion object {
-        const val REGISTRATION = "REGISTRATION"
+//        const val REGISTRATION = "REGISTRATION"
         const val IS_REGISTRATION = "IS_REGISTRATION"
     }
 
