@@ -27,14 +27,27 @@
 
     <ImageView
         android:id="@+id/logoImage"
-        android:src="@drawable/logo_horizontal_white"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:src="@drawable/ic_triangle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="48dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/leftImage"
         app:layout_constraintBottom_toTopOf="@id/loginText"/>
-<!--        android:layout_marginTop="184dp"-->
+
+    <TextView
+        android:id="@+id/logoText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/shows"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/logoImage"
+        app:layout_constraintTop_toBottomOf="@id/leftImage"
+        app:layout_constraintBottom_toTopOf="@id/loginText"
+        />
 
     <TextView
         android:id="@+id/loginText"
