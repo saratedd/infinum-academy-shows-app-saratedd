@@ -78,5 +78,5 @@ dependencies {
     testImplementation "androidx.room:room-testing:$room_version"
 
     // Spash Screen
-
+//    implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 }
