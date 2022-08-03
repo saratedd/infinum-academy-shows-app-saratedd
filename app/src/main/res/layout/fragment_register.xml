@@ -110,17 +110,12 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/registerButton"
+        style="@style/whiteButton"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/selector_login_button_bg"
         android:enabled="false"
         android:text="@string/register"
-        android:textAllCaps="false"
-        android:textColor="@color/selector_login_button_text"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:cornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
