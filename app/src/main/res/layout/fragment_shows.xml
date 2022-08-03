@@ -87,14 +87,11 @@
         <!--        android:visibility="gone"-->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/loadButton"
+            style="@style/purpleButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_margin="16dp"
-            android:backgroundTint="@color/purple"
             android:text="@string/load_shows_text"
-            android:textAllCaps="false"
-            android:textSize="16sp"
-            app:cornerRadius="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
