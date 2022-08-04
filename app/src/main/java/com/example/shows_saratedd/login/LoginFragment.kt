@@ -7,6 +7,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -47,6 +48,8 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        animateShowIcon()
 
         ApiModule.initRetrofit(requireContext())
 
@@ -122,6 +125,14 @@ class LoginFragment : Fragment() {
                 putBoolean(IS_REMEMBER_ME, isChecked)
             }
         }
+    }
+
+    private fun animateShowIcon() {
+        binding.logoImage
+            .animate()
+            .translationY(0f)
+            .setDuration(5000)
+            .setInterpolator(OvershootInterpolator()).start()
     }
 
     override fun onDestroyView() {
