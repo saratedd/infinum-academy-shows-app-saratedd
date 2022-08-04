@@ -100,7 +100,7 @@ class LoginFragment : Fragment() {
             viewModel.onLoginButtonClicked(
                 username = binding.emailEditTextField.text.toString(),
                 password = binding.passwordEditTextField.text.toString(),
-                requireContext()
+                sharedPreferences
             )
 
             viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
