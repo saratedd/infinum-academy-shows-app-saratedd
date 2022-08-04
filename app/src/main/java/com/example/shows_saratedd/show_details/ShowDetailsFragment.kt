@@ -51,8 +51,6 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiModule.initRetrofit(requireContext())
-
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
         Glide
