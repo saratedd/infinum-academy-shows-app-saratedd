@@ -64,14 +64,15 @@ class LoginFragment : Fragment() {
             findNavController().navigate(directions)
         }
 
-        initTextListers()
+        initTextListeners()
         initRememberMe()
         initLogin()
         initRegisterListener()
+        initObserveLogin()
 
     }
 
-    private fun initTextListers() {
+    private fun initTextListeners() {
         binding.emailEditTextField.doAfterTextChanged {
             val regex = Patterns.EMAIL_ADDRESS.toRegex()
             emailBool = regex.matches(binding.emailEditTextField.text.toString())
@@ -98,20 +99,22 @@ class LoginFragment : Fragment() {
                 password = binding.passwordEditTextField.text.toString(),
                 requireContext()
             )
+        }
+    }
 
-            viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
-                if (loginSuccessful) {
-                    val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-                    sharedPreferences.edit {
-                        putString(USER, user)
-                    }
-
-                    val directions = LoginFragmentDirections.toShowsFragment(user)
-                    findNavController().navigate(directions)
-
-                } else {
-                    // dati feedback korisniku
+    private fun initObserveLogin() {
+        viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
+            if (loginSuccessful) {
+                val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+                sharedPreferences.edit {
+                    putString(USER, user)
                 }
+
+                val directions = LoginFragmentDirections.toShowsFragment(user)
+                findNavController().navigate(directions)
+
+            } else {
+                // dati feedback korisniku
             }
         }
     }

@@ -98,6 +98,12 @@ class ShowsFragment : Fragment() {
 
         initUserButton(email)
         initLoadShowsButton()
+        if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+            initObserveDataInternet()
+        } else {
+            initObserveDataNoInternet()
+        }
+
     }
 
     private fun initShowsRecycler(email: String) {
@@ -185,51 +191,49 @@ class ShowsFragment : Fragment() {
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
 
-            if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
-                binding.showsProgressBar.isVisible = true
+            binding.showsProgressBar.isVisible = true
 
-                viewModel.onLoadShowsButtonClicked()
-                // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
-                // ako je failure onda drugu (failurelivedata)
-                viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-                    if (showsSuccessful) {
-                        binding.showsProgressBar.isVisible = false
-                    }
-                }
-                viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
-                    adapter.addAllShows(shows)
-                    viewModel.insertAllShowsToDB(shows.map { show ->
-                        ShowEntity(
-                            show.id,
-                            show.averageRating,
-                            show.description,
-                            show.imageUrl,
-                            show.noOfReviews,
-                            show.title
-                        )
-                    })
-                }
+            viewModel.onLoadShowsButtonClicked()
 
-                showUI()
+            showUI()
+        }
+    }
 
-            } else {
-                // 'no internet connection' toast
-
-                viewModel.getShowsFromDB().observe(viewLifecycleOwner) { showEntities ->
-                    adapter.addAllShows(showEntities.map { showEntity ->
-                        Show(
-                            showEntity.id,
-                            showEntity.averageRating,
-                            showEntity.description,
-                            showEntity.imageUrl,
-                            showEntity.noOfReviews,
-                            showEntity.title
-                        )
-                    })
-                    if (showEntities != null)
-                        showUI()
-                }
+    private fun initObserveDataInternet() {
+        viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+            if (showsSuccessful) {
+                binding.showsProgressBar.isVisible = false
             }
+        }
+        viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
+            adapter.addAllShows(shows)
+            viewModel.insertAllShowsToDB(shows.map { show ->
+                ShowEntity(
+                    show.id,
+                    show.averageRating,
+                    show.description,
+                    show.imageUrl,
+                    show.noOfReviews,
+                    show.title
+                )
+            })
+        }
+    }
+
+    private fun initObserveDataNoInternet() {
+        viewModel.getShowsFromDB().observe(viewLifecycleOwner) { showEntities ->
+            adapter.addAllShows(showEntities.map { showEntity ->
+                Show(
+                    showEntity.id,
+                    showEntity.averageRating,
+                    showEntity.description,
+                    showEntity.imageUrl,
+                    showEntity.noOfReviews,
+                    showEntity.title
+                )
+            })
+            if (showEntities != null)
+                showUI()
         }
     }
 

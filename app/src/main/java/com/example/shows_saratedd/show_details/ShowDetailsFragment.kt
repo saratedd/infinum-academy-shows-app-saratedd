@@ -156,7 +156,7 @@ class ShowDetailsFragment : Fragment() {
     private fun initBackButton(email: String) {
         binding.detailsBackButton.setOnClickListener {
             val directions = ShowDetailsFragmentDirections.toShowsFragment(email)
-            findNavController().navigate(directions)
+            findNavController().popBackStack()
         }
     }
 
