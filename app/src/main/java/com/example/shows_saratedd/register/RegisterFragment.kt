@@ -111,4 +111,3 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 }
-//bla

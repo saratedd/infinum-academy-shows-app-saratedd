@@ -22,19 +22,12 @@ class ShowsAdapter(
         holder.bind(items[position])
     }
 
-    //      the adapter needs to know how many items are there in the list (starting and ending indices)
-//    item.size
     override fun getItemCount(): Int = items.count()
 
     fun addAllShows(shows: List<Show>) {
         items = shows
         notifyDataSetChanged()
     }
-
-//    fun addShow(show: Show) {
-//        items = items + show
-//        notifyItemInserted(items.lastIndex)
-//    }
 
     inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {

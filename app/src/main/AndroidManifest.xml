@@ -17,18 +17,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Showssaratedd"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ShowDetailsFragment"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ShowsFragment"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".WelcomeActivity"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true">

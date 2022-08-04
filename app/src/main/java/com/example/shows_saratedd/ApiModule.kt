@@ -39,10 +39,6 @@ class AuthInterceptor(private val sharedPreferences: SharedPreferences): Interce
     }
     override fun intercept(chain: Interceptor.Chain ): Response {
         val builder = chain.request().newBuilder()
-//        builder.addHeader("uid", /* citam iz pref*/)
-//        builder.addHeader("access-token", "7LDzAqivNbPjTy5eXGawTA")
-//        builder.addHeader("client", "0Eqd0YnW1TlDgWV88Va9QQ")
-//        builder.addHeader("uid", "aa@aa.hr")
 
         builder.addHeader("token-type", BEARER)
         builder.addHeader("access-token",

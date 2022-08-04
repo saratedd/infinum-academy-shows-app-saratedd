@@ -27,8 +27,6 @@ class ShowsViewModel(
     private val database: ShowsDatabase
 ): ViewModel() {
 
-//    private lateinit var sharedPreferences: SharedPreferences
-
     private val showsLiveData: MutableLiveData<List<Show>> by lazy {
         MutableLiveData<List<Show>>()
     }
@@ -72,7 +70,6 @@ class ShowsViewModel(
     }
 
     fun updateUserProfilePhoto(context: Context) {
-//        sharedPreferences = context.getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
 
         val file = FileUtil.getImageFile(context)!!
 
@@ -83,14 +80,10 @@ class ShowsViewModel(
         ApiModule.retrofit.updateProfilePhoto(request)
             .enqueue(object : Callback<ProfilePhotoResponse> {
                 override fun onResponse(call: Call<ProfilePhotoResponse>, response: Response<ProfilePhotoResponse>) {
-                    if (response.isSuccessful) {
-                        //nesto
-                    } else {
-                        //nesto
-                    }
+
                 }
                 override fun onFailure(call: Call<ProfilePhotoResponse>, t: Throwable) {
-                    // nesto
+
                 }
 
             })

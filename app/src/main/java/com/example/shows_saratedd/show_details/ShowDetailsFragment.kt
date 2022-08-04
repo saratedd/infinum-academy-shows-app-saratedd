@@ -210,11 +210,6 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewsRecycler() {
-//        recyclerViewInitialized = true
-//        binding.detailsData.isVisible = true
-//        binding.ratingBar.isVisible = true
-//        binding.detailsRecycler.isVisible = true
-//        binding.detailsReviewsMessage.isVisible = false
 
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
