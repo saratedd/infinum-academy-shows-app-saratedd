@@ -7,7 +7,7 @@ For the looks of our app we were given Figma designs for each of the assignments
 - [Figma design](https://www.figma.com/file/kQ8Ch8VL4DNp6vKX0TctiP/Assignment-3) for the look of shows and show details fragments
 - [Figma design](https://www.figma.com/file/3THkJjnG5MfADEE3gxwzSS/Assignment-5) for the look of user bottom sheet
 - [Figma design](https://www.figma.com/file/XdAtAPVG8nur6YPiAqhf3y/Assignment-6) for the look of registration page
-- [Figma design](https://www.figma.com/file/FCEuutdrImNpX2VDytv9nE/Assignment-8) for the look of Tsplash screen
+- [Figma design](https://www.figma.com/file/FCEuutdrImNpX2VDytv9nE/Assignment-8) for the look of Splash screen
 
 ## Description
 In assignment6 our app was connected to the [Tv Shows API](https://tv-shows.infinum.academy/api/v1/docs/).
