@@ -27,7 +27,7 @@
 
     <ImageView
         android:id="@+id/logoImage"
-        android:src="@drawable/ic_triangle"
+        android:src="@drawable/ic_triangle_1"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"

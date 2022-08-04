@@ -30,7 +30,7 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="48dp"
-        android:src="@drawable/ic_triangle"
+        android:src="@drawable/ic_triangle_1"
         android:translationY="-208dp"
         app:layout_constraintBottom_toTopOf="@id/loginText"
         app:layout_constraintStart_toStartOf="parent"
