@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+<!--    <style name="Theme.App.Starting" parent="Theme.SplashScreen">-->
+<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_triangle</item>-->
+<!--        <item name="windowSplashScreenBackground">@color/purple</item>-->
+<!--&lt;!&ndash;        <item name="windowSplashScreenIconBackgroundColor">@color/purple</item>&ndash;&gt;-->
+<!--        <item name="windowSplashScreenAnimationDuration">1000</item>-->
+<!--        <item name="postSplashScreenTheme">@style/Theme.Showssaratedd</item>-->
+<!--    </style>-->
 </resources>
