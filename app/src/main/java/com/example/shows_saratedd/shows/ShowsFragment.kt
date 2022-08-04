@@ -65,6 +65,8 @@ class ShowsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        ApiModule.initRetrofit(requireContext())
+
         val file = FileUtil.createImageFile(requireContext())
         file?.let {
             uri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", it)
@@ -86,7 +88,6 @@ class ShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApiModule.initRetrofit(requireContext())
 
         super.onViewCreated(view, savedInstanceState)
         val email = args.email
