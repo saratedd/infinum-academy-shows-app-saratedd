@@ -45,10 +45,10 @@
     </style>
 
         <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-            <item name="windowSplashScreenAnimatedIcon">@drawable/ic_triangle</item>
+            <item name="windowSplashScreenAnimatedIcon">@drawable/ic_triangle_3</item>
             <item name="windowSplashScreenBackground">@color/purple</item>
-    <!--        <item name="windowSplashScreenIconBackgroundColor">@color/purple</item>-->
-            <item name="windowSplashScreenAnimationDuration">1000</item>
+            <item name="windowSplashScreenIconBackgroundColor">@color/purple</item>
+<!--            <item name="windowSplashScreenAnimationDuration">1000</item>-->
             <item name="postSplashScreenTheme">@style/Theme.Showssaratedd</item>
         </style>
 
