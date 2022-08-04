@@ -77,7 +77,6 @@ class ShowDetailsFragment : Fragment() {
                 }
             }
             viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
-    //                setShowUI(showDetails.averageRating, showDetails.noOfReviews)
                 binding.ratingBar.setRating(showDetails.averageRating)
                 binding.detailsData.text =
                     showDetails.noOfReviews.toString() + " reviews, " +
@@ -216,6 +215,10 @@ class ShowDetailsFragment : Fragment() {
         binding.detailsRecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
+    }
+
+    private fun initObrserveReview() {
+        
     }
 
     private fun updateRating() {
