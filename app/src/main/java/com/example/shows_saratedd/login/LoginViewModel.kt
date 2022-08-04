@@ -27,12 +27,12 @@ class LoginViewModel : ViewModel() {
         return loginResultLiveData
     }
 
-    fun onLoginButtonClicked(username: String, password: String, context: Context) {
+    fun onLoginButtonClicked(username: String, password: String, sharedPrefs: SharedPreferences) {
         val loginRequest = LoginRequest(
             email = username,
             password = password
         )
-        sharedPreferences = context.getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
+        sharedPreferences = sharedPrefs
 
         ApiModule.retrofit.login(loginRequest)
             .enqueue(object : Callback<LoginResponse> {
