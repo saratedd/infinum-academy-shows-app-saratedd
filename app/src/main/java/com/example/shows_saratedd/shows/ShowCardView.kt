@@ -17,7 +17,7 @@ class ShowCardView @JvmOverloads constructor(
     lateinit var binding: ViewShowItemBinding
 
     init {
-        binding = ViewShowItemBinding.inflate(LayoutInflater.from(context), this, false)
+        binding = ViewShowItemBinding.inflate(LayoutInflater.from(context), this)
     }
 
     fun setTitle(title: String) {
