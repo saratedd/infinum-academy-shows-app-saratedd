@@ -44,6 +44,12 @@
         <item name="colorControlActivated">@color/purple</item>
     </style>
 
-
+    <!--    <style name="Theme.App.Starting" parent="Theme.SplashScreen">-->
+    <!--        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_triangle</item>-->
+    <!--        <item name="windowSplashScreenBackground">@color/purple</item>-->
+    <!--&lt;!&ndash;        <item name="windowSplashScreenIconBackgroundColor">@color/purple</item>&ndash;&gt;-->
+    <!--        <item name="windowSplashScreenAnimationDuration">1000</item>-->
+    <!--        <item name="postSplashScreenTheme">@style/Theme.Showssaratedd</item>-->
+    <!--    </style>-->
 
 </resources>

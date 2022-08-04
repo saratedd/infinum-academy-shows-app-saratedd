@@ -50,6 +50,7 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         animateShowIcon()
+        animateShowText()
 
         ApiModule.initRetrofit(requireContext())
 
@@ -131,6 +132,14 @@ class LoginFragment : Fragment() {
         binding.logoImage
             .animate()
             .translationY(0f)
+            .setDuration(5000)
+            .setInterpolator(OvershootInterpolator()).start()
+    }
+
+    private fun animateShowText() {
+        binding.logoText
+            .animate()
+            .translationZ(0f)
             .setDuration(5000)
             .setInterpolator(OvershootInterpolator()).start()
     }
