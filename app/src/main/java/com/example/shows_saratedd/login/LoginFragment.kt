@@ -97,7 +97,7 @@ class LoginFragment : Fragment() {
             viewModel.onLoginButtonClicked(
                 username = binding.emailEditTextField.text.toString(),
                 password = binding.passwordEditTextField.text.toString(),
-                requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
+                sharedPreferences
             )
         }
     }
