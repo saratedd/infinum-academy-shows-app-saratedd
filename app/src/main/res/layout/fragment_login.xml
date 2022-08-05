@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/purple"
     tools:context=".login.LoginFragment">
+<!--    android:id="@+id/loginFragment"-->
 
     <ImageView
         android:id="@+id/leftImage"

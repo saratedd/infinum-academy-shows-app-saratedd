@@ -28,6 +28,7 @@ import com.example.shows_saratedd.db.ShowDetailsViewModelFactory
 import com.example.shows_saratedd.db.ShowsViewModelFactory
 import com.example.shows_saratedd.shows.ShowsFragment
 import com.example.shows_saratedd.shows.ShowsViewModel
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowDetailsFragment : Fragment() {
@@ -58,6 +59,11 @@ class ShowDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         ApiModule.initRetrofit(requireContext())
+
+//        binding.detailsToolbar.title = args.showName
+//        binding.detailsToolbar.setNavigationOnClickListener {
+//            findNavController().popBackStack()
+//        }
 
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
