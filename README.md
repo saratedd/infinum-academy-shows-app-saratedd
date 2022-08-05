@@ -11,7 +11,7 @@ For the looks of our app we were given Figma designs for each of the assignments
 
 ## Description
 In assignment6 our app was connected to the [Tv Shows API](https://tv-shows.infinum.academy/api/v1/docs/).
-Upon opening the app user is located on the login page. From there he can either login or register if he doesn't have an account yet. This is done through the API. User has the option of checking the _Remember me_ checkbox so next time he opens the app he will already be logged in and on the next screen.
+When user clicks the app icon ih his phone he is welcomed with the splash screen. Upon opening the app user is located on the login page. There he can see two animations. One for the shows icon and one for the shows text. From there he can either login or register if he doesn't have an account yet. This is done through the API. User has the option of checking the _Remember me_ checkbox so next time he opens the app he will already be logged in and on the next screen.
 Once user logs in he has the option of selecting the _Load shows_ button, which fetches the shows and its details from the API, or clicking top right image which displays the bottom sheet where user can choose to change his profile picture or logout.
 A spinner is displayed when the user selects to load the shows. Once the shows are loaded the user can select a show and see its details, reviews and write a review of his own.
 
