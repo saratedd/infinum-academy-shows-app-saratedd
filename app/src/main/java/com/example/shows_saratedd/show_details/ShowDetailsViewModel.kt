@@ -127,7 +127,7 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
-//                    showResultLiveData.value = false
+
                 }
 
             })
@@ -148,7 +148,7 @@ class ShowDetailsViewModel(
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-//                    createReviewResultLiveData.value = false
+
                 }
 
             })

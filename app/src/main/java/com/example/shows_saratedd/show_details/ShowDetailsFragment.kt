@@ -58,8 +58,6 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiModule.initRetrofit(requireContext())
-
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
         Glide
@@ -77,60 +75,16 @@ class ShowDetailsFragment : Fragment() {
         }
 
         initReviewsRecycler()
+        initObrserveReview()
 
         if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
             viewModel.loadShowDetails(args.showId)
-            viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
-                if (showDetailsSuccessful) {
-                    binding.detailsProgressBar.isVisible = false
-                }
-            }
-            viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
-    //                setShowUI(showDetails.averageRating, showDetails.noOfReviews)
-                binding.ratingBar.setRating(showDetails.averageRating)
-                binding.detailsData.text =
-                    showDetails.noOfReviews.toString() + " reviews, " +
-                            String.format("%.2f", showDetails.averageRating) + " average"
-            }
-
             viewModel.loadReviews(args.showId)
-            viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
-                if (reviewsSuccessful) {
-                    setReviewsUI()
-                }
-            }
-
-            viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
-                adapter.getAllReviews(reviews)
-                viewModel.insertAllReviewsToDB(reviews.map { review ->
-                    ReviewEntity(
-                        review.id,
-                        review.comment,
-                        review.rating,
-                        review.showId,
-                        review.user.id,
-                        review.user.email,
-                        review.user.imageUrl
-                    )
-                })
-            }
+            initObserveDataInternet()
 
         } else {
             binding.detailsProgressBar.isVisible = false
-            viewModel.getShowFromDB(args.showId).observe(viewLifecycleOwner) { showEntity ->
-                setShowUI(showEntity.averageRating, showEntity.noOfReviews)
-            }
-            viewModel.getAllReviewsFromDB(args.showId.toInt()).observe(viewLifecycleOwner) { reviewEntities ->
-                adapter.getAllReviews(reviewEntities.map { reviewEntity ->
-                    Review(
-                        reviewEntity.id,
-                        reviewEntity.comment,
-                        reviewEntity.rating,
-                        reviewEntity.showId,
-                        User(reviewEntity.userId, reviewEntity.email, reviewEntity.userImageUrl)
-                    )
-                })
-            }
+            initObserveDataNoInternet()
             setReviewsUI()
 
         }
@@ -163,7 +117,6 @@ class ShowDetailsFragment : Fragment() {
     private fun initBackButton(email: String) {
         binding.detailsBackButton.setOnClickListener {
             val directions = ShowDetailsFragmentDirections.toShowsFragment(email)
-//            findNavController().navigate(directions)
             findNavController().popBackStack()
         }
     }
@@ -181,25 +134,12 @@ class ShowDetailsFragment : Fragment() {
                 }
 
                 bottomSheetBinding.submitButton.setOnClickListener {
-
                     viewModel.onSubmitButtonClicked(
                         args.showId,
                         bottomSheetBinding.dialogRating.getRating().toInt(),
                         bottomSheetBinding.dialogCommentInputEdit.text.toString(),
                     )
-                    viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
-                        adapter.addReview(review)
-                        viewModel.insertReviewToDB(
-                            ReviewEntity(
-                            review.id,
-                            review.comment,
-                            review.rating,
-                            review.showId,
-                            review.user.id,
-                            review.user.email,
-                            review.user.imageUrl
-                        ))
-                    }
+
                     if (!recyclerViewInitialized) {
                         initReviewsRecycler()
                     }
@@ -218,12 +158,6 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewsRecycler() {
-//        recyclerViewInitialized = true
-//        binding.detailsData.isVisible = true
-//        binding.ratingBar.isVisible = true
-//        binding.detailsRecycler.isVisible = true
-//        binding.detailsReviewsMessage.isVisible = false
-
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
@@ -231,6 +165,74 @@ class ShowDetailsFragment : Fragment() {
         binding.detailsRecycler.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
+    }
+
+    private fun initObrserveReview() {
+        viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
+            adapter.addReview(review)
+            viewModel.insertReviewToDB(
+                ReviewEntity(
+                    review.id,
+                    review.comment,
+                    review.rating,
+                    review.showId,
+                    review.user.id,
+                    review.user.email,
+                    review.user.imageUrl
+                ))
+        }
+    }
+
+    private fun initObserveDataInternet() {
+        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
+            if (showDetailsSuccessful) {
+                binding.detailsProgressBar.isVisible = false
+            }
+        }
+        viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
+            binding.ratingBar.setRating(showDetails.averageRating)
+            binding.detailsData.text =
+                showDetails.noOfReviews.toString() + " reviews, " +
+                        String.format("%.2f", showDetails.averageRating) + " average"
+        }
+
+        viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
+            if (reviewsSuccessful) {
+                setReviewsUI()
+            }
+        }
+
+        viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
+            adapter.getAllReviews(reviews)
+            viewModel.insertAllReviewsToDB(reviews.map { review ->
+                ReviewEntity(
+                    review.id,
+                    review.comment,
+                    review.rating,
+                    review.showId,
+                    review.user.id,
+                    review.user.email,
+                    review.user.imageUrl
+                )
+            })
+        }
+    }
+
+    private fun initObserveDataNoInternet() {
+        viewModel.getShowFromDB(args.showId).observe(viewLifecycleOwner) { showEntity ->
+            setShowUI(showEntity.averageRating, showEntity.noOfReviews)
+        }
+        viewModel.getAllReviewsFromDB(args.showId.toInt()).observe(viewLifecycleOwner) { reviewEntities ->
+            adapter.getAllReviews(reviewEntities.map { reviewEntity ->
+                Review(
+                    reviewEntity.id,
+                    reviewEntity.comment,
+                    reviewEntity.rating,
+                    reviewEntity.showId,
+                    User(reviewEntity.userId, reviewEntity.email, reviewEntity.userImageUrl)
+                )
+            })
+        }
     }
 
     private fun updateRating() {

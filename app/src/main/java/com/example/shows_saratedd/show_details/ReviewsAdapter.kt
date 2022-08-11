@@ -27,10 +27,6 @@ class ReviewsAdapter(
         notifyItemInserted(items.lastIndex)
     }
 
-//    fun addReview() {
-//        notifyItemInserted()
-//    }
-
     fun getReviews(): List<Review> {
         return items
     }
@@ -39,7 +35,6 @@ class ReviewsAdapter(
         items = reviews
         notifyDataSetChanged()
     }
-
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
