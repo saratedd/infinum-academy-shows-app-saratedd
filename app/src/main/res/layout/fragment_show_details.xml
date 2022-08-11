@@ -12,30 +12,6 @@
         android:background="@color/white"
         tools:context=".show_details.ShowDetailsFragment">
 
-        <!--        <com.google.android.material.appbar.AppBarLayout-->
-        <!--            android:id="@+id/detailsAppBar"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:backgroundTint="@color/white"-->
-        <!--            app:liftOnScroll="true"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent">-->
-
-<!--        <com.google.android.material.appbar.MaterialToolbar-->
-<!--            android:id="@+id/detailsToolbar"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="?attr/actionBarSize"-->
-<!--            app:navigationIcon="@drawable/ic_back_vector"-->
-<!--            app:titleTextColor="@color/black"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            tools:title="The Office" />-->
-
-        <!--        </com.google.android.material.appbar.AppBarLayout>-->
-
-
         <ImageView
             android:id="@+id/detailsBackButton"
             android:layout_width="0dp"

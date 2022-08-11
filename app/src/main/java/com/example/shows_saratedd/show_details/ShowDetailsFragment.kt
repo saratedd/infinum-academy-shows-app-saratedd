@@ -60,11 +60,6 @@ class ShowDetailsFragment : Fragment() {
 
         ApiModule.initRetrofit(requireContext())
 
-//        binding.detailsToolbar.title = args.showName
-//        binding.detailsToolbar.setNavigationOnClickListener {
-//            findNavController().popBackStack()
-//        }
-
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
         Glide
