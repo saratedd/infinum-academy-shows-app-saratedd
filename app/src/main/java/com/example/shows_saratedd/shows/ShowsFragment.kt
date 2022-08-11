@@ -40,11 +40,11 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowsFragment : Fragment() {
     companion object {
-        const val EXTRA_SHOW_NAME = "showName"
-        const val EXTRA_SHOW_DESC = "showDesc"
-        const val EXTRA_SHOW_IMAGE = "showImage"
-        const val EXTRA_USER = "user"
-        const val REQUEST_IMAGE_CAPTURE = 1
+//        const val EXTRA_SHOW_NAME = "showName"
+//        const val EXTRA_SHOW_DESC = "showDesc"
+//        const val EXTRA_SHOW_IMAGE = "showImage"
+//        const val EXTRA_USER = "user"
+//        const val REQUEST_IMAGE_CAPTURE = 1
     }
 
     private lateinit var adapter: ShowsAdapter

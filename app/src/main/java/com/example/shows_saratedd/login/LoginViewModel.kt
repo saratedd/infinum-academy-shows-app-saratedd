@@ -27,6 +27,7 @@ class LoginViewModel : ViewModel() {
         return loginResultLiveData
     }
 
+
     fun onLoginButtonClicked(username: String, password: String, sharedPrefs: SharedPreferences) {
         val loginRequest = LoginRequest(
             email = username,

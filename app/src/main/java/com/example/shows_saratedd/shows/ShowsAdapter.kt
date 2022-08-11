@@ -1,5 +1,6 @@
 package com.example.shows_saratedd.shows
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -14,8 +15,8 @@ class ShowsAdapter(
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
-        val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ShowViewHolder(binding)
+//        val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context), parent)
+        return ShowViewHolder(ShowCardView(parent.context))
     }
 
     override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {
@@ -29,18 +30,15 @@ class ShowsAdapter(
         notifyDataSetChanged()
     }
 
-    inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        fun bind(show: Show) {
-            binding.showTitle.text = show.title
-            Glide
-                .with(binding.root)
-                .load(show.imageUrl)
-                .placeholder(R.drawable.ic_office)
-                .into(binding.showImage)
-            binding.showDesc.text = show.description
+    inner class ShowViewHolder(private var binding: ShowCardView) :
+        RecyclerView.ViewHolder(binding) {
 
-            binding.cardConatiner.setOnClickListener {
+        fun bind(show: Show) {
+            binding.setTitle(show.title)
+            binding.setDesc(show.description)
+            binding.setImage(show.imageUrl)
+
+            binding.setOnClickListener {
 //                treba prikazati podatke o showu
                 onItemClickCallback(show)
             }
