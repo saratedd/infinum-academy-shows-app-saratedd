@@ -34,7 +34,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- recycleview -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/showsRecycler"
         android:layout_width="0dp"
@@ -44,7 +43,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/showsText"
         tools:listitem="@layout/view_show_item" />
-    <!--empty state-->
+
     <ImageView
         android:id="@+id/emptyStateIcon"
         android:layout_width="0dp"
@@ -54,7 +53,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <ProgressBar
         android:id="@+id/showsProgressBar"
@@ -80,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emptyStateIcon" />
-    
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/loadButton"
         style="@style/purpleButton"
@@ -91,6 +89,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    
 
 </androidx.constraintlayout.widget.ConstraintLayout>
