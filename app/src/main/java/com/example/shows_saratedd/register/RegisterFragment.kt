@@ -46,7 +46,6 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiModule.initRetrofit(requireContext())
 
         viewModel.getRegistrationResultLiveData().observe(viewLifecycleOwner) { registrationSuccessful ->
             displayRegistrationMessage(registrationSuccessful)
@@ -111,4 +110,3 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 }
-//bla
