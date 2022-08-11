@@ -1,6 +1,5 @@
 package com.example.shows_saratedd.show_details
 
-//import androidx.annotation.DrawableRes
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

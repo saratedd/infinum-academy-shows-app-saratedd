@@ -149,8 +149,6 @@ class LoginFragment : Fragment() {
             .setDuration(500)
             .setStartDelay(1200)
             .setInterpolator(BounceInterpolator()).start()
-
-//            .translationZ(0f)
     }
 
     override fun onDestroyView() {
