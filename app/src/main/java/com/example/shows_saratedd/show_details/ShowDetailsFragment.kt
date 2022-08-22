@@ -1,7 +1,6 @@
 package com.example.shows_saratedd.show_details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -52,7 +51,6 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
-
         // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
         // ako je failure onda drugu (failurelivedata)
         viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
@@ -85,6 +83,7 @@ class ShowDetailsFragment : Fragment() {
                 binding.detailsRecycler.isVisible = true
                 binding.detailsReviewsMessage.isVisible = false
             }
+
         }
 
         viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
@@ -111,8 +110,9 @@ class ShowDetailsFragment : Fragment() {
                 viewModel.onSubmitButtonClicked(
                     args.showId,
                     bottomSheetBinding.dialogRating.getRating().toInt(),
-                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
+                    bottomSheetBinding.dialogCommentInputEdit.text.toString()
                 )
+
                 viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
                     adapter.addReview(review)
                 }

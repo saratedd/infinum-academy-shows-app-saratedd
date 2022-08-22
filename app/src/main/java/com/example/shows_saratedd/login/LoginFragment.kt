@@ -32,8 +32,8 @@ class LoginFragment : Fragment() {
     private lateinit var sharedPreferences: SharedPreferences
     private val viewModel: LoginViewModel by viewModels()
 
-    var emailBool = false
-    var passBool = false
+    private var emailBool = false
+    private var passBool = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +60,7 @@ class LoginFragment : Fragment() {
         }
 
         if (isUser != null && isRememberMe) {
-            var directions = LoginFragmentDirections.toShowsFragment(isUser)
+            val directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }
 
