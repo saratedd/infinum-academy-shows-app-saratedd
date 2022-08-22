@@ -21,4 +21,9 @@
     <string name="login_note_text">In order to continue please log in.</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="remember_me">Remember me</string>
+    <string name="change_profile_photo">Change profile photo</string>
+    <string name="logout">Logout</string>
+    <string name="cancel">Cancel</string>
+    <string name="logout_alert_message">Are you sure you want to logout?</string>
 </resources>
