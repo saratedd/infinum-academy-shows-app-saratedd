@@ -7,6 +7,7 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.content.edit
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
@@ -18,7 +19,6 @@ import com.example.shows_saratedd.login.LoginFragment
 
 class RegisterFragment : Fragment() {
     companion object {
-        const val REGISTRATION = "REGISTRATION"
         const val IS_REGISTRATION = "IS_REGISTRATION"
     }
 
@@ -36,6 +36,10 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().popBackStack()
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
@@ -46,7 +50,6 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiModule.initRetrofit(requireContext())
 
         viewModel.getRegistrationResultLiveData().observe(viewLifecycleOwner) { registrationSuccessful ->
             displayRegistrationMessage(registrationSuccessful)
@@ -111,4 +114,3 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 }
-//bla

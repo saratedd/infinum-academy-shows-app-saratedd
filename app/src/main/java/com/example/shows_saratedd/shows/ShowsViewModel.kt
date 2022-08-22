@@ -6,9 +6,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.room.Database
 import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.FileUtil
 import com.example.shows_saratedd.R
+import com.example.shows_saratedd.db.ShowEntity
+import com.example.shows_saratedd.db.ShowsDatabase
 import com.example.shows_saratedd.login.LoginFragment
 import com.example.shows_saratedd.login.ProfilePhotoResponse
 import okhttp3.MediaType.Companion.toMediaType
@@ -18,14 +21,15 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.http.Tag
+import java.util.concurrent.Executors
 
-class ShowsViewModel: ViewModel() {
-
-    private lateinit var sharedPreferences: SharedPreferences
+class ShowsViewModel(
+    private val database: ShowsDatabase
+): ViewModel() {
 
     private val showsLiveData: MutableLiveData<List<Show>> by lazy {
         MutableLiveData<List<Show>>()
-}
+    }
 
     private val showsResultLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
@@ -39,10 +43,15 @@ class ShowsViewModel: ViewModel() {
         return showsLiveData
     }
 
+    fun getShowsFromDB(): LiveData<List<ShowEntity>> {
+        return database.showDao().getAllShows()
+    }
 
-//    init {
-//        _showsLiveData.value = shows
-//    }
+    fun insertAllShowsToDB(shows: List<ShowEntity>) {
+        Executors.newSingleThreadExecutor().execute {
+            database.showDao().insertAllShows(shows)
+        }
+    }
 
     fun onLoadShowsButtonClicked () {
         ApiModule.retrofit.getShowsAlpha()
@@ -61,31 +70,20 @@ class ShowsViewModel: ViewModel() {
     }
 
     fun updateUserProfilePhoto(context: Context) {
-        sharedPreferences = context.getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
 
         val file = FileUtil.getImageFile(context)!!
-        val email = sharedPreferences.getString(LoginFragment.USER, "").toString()
 
         val request = MultipartBody
             .Part
-//            .Builder()
-//            .setType(MultipartBody.FORM)
-//            .addFormDataPart("email", email)
-//            .addFormDataPart("image", "avatar.jpg", file.asRequestBody("multipart/form-data".toMediaType()))
             .createFormData("image", "avatar.jpg", file.asRequestBody("multipart/form-data".toMediaType()))
-//            .build()
 
         ApiModule.retrofit.updateProfilePhoto(request)
             .enqueue(object : Callback<ProfilePhotoResponse> {
                 override fun onResponse(call: Call<ProfilePhotoResponse>, response: Response<ProfilePhotoResponse>) {
-                    if (response.isSuccessful) {
-                        //nesto
-                    } else {
-                        //nesto
-                    }
+
                 }
                 override fun onFailure(call: Call<ProfilePhotoResponse>, t: Throwable) {
-                    // nesto
+
                 }
 
             })

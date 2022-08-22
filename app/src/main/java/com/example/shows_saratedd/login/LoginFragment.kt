@@ -7,6 +7,9 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateInterpolator
+import android.view.animation.BounceInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.core.content.edit
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -38,6 +41,7 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
+        ApiModule.initRetrofit(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
@@ -48,7 +52,8 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ApiModule.initRetrofit(requireContext())
+        animateShowIcon()
+        animateShowText()
 
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
@@ -64,14 +69,15 @@ class LoginFragment : Fragment() {
             findNavController().navigate(directions)
         }
 
-        initTextListers()
+        initTextListeners()
         initRememberMe()
         initLogin()
         initRegisterListener()
+        initObserveLogin()
 
     }
 
-    private fun initTextListers() {
+    private fun initTextListeners() {
         binding.emailEditTextField.doAfterTextChanged {
             val regex = Patterns.EMAIL_ADDRESS.toRegex()
             emailBool = regex.matches(binding.emailEditTextField.text.toString())
@@ -96,22 +102,24 @@ class LoginFragment : Fragment() {
             viewModel.onLoginButtonClicked(
                 username = binding.emailEditTextField.text.toString(),
                 password = binding.passwordEditTextField.text.toString(),
-                requireContext()
+                sharedPreferences
             )
+        }
+    }
 
-            viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
-                if (loginSuccessful) {
-                    val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-                    sharedPreferences.edit {
-                        putString(USER, user)
-                    }
-
-                    val directions = LoginFragmentDirections.toShowsFragment(user)
-                    findNavController().navigate(directions)
-
-                } else {
-                    // dati feedback korisniku
+    private fun initObserveLogin() {
+        viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
+            if (loginSuccessful) {
+                val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+                sharedPreferences.edit {
+                    putString(USER, user)
                 }
+
+                val directions = LoginFragmentDirections.toShowsFragment(user)
+                findNavController().navigate(directions)
+
+            } else {
+                // dati feedback korisniku
             }
         }
     }
@@ -122,6 +130,25 @@ class LoginFragment : Fragment() {
                 putBoolean(IS_REMEMBER_ME, isChecked)
             }
         }
+    }
+
+    private fun animateShowIcon() {
+        binding.logoImage
+            .animate()
+            .translationY(0f)
+            .setDuration(700)
+            .setStartDelay(500)
+            .setInterpolator(OvershootInterpolator()).start()
+    }
+
+    private fun animateShowText() {
+        binding.logoText
+            .animate()
+            .scaleX(1f)
+            .scaleY(1f)
+            .setDuration(500)
+            .setStartDelay(1200)
+            .setInterpolator(BounceInterpolator()).start()
     }
 
     override fun onDestroyView() {

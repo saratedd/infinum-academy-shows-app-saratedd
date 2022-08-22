@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.shows_saratedd">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
+        android:name=".ShowsApplication"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
@@ -15,20 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Showssaratedd"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".MainActivity"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ShowDetailsFragment"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".ShowsFragment"-->
-<!--            android:exported="false" />-->
-<!--        <activity-->
-<!--            android:name=".WelcomeActivity"-->
-<!--            android:exported="false" />-->
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.App.Starting"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

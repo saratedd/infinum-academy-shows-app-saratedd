@@ -6,14 +6,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shows_saratedd.ApiModule
 import com.example.shows_saratedd.RegisterResponse
+import com.example.shows_saratedd.db.ReviewEntity
+import com.example.shows_saratedd.db.ShowEntity
+import com.example.shows_saratedd.db.ShowsDatabase
 import com.example.shows_saratedd.register.RegisterRequest
 import com.example.shows_saratedd.shows.Show
 import com.example.shows_saratedd.shows.ShowResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.Executors
 
-class ShowsDetailsViewModel : ViewModel() {
+class ShowDetailsViewModel(
+    private val database: ShowsDatabase
+) : ViewModel() {
 
     private val _showReview = MutableLiveData<Review>()
     val showReview: LiveData<Review> = _showReview
@@ -72,18 +78,25 @@ class ShowsDetailsViewModel : ViewModel() {
         return createReviewResponseLiveData
     }
 
-//    fun createNewReview(id: String, comment: String, rating: Int, showId: String, user: User) {
-//        _showReview.value = Review(
-//            id,
-//            comment,
-//            rating,
-//            showId.toInt(),
-////            email.substringBefore("@", ""),
-////            R.drawable.ic_profile_placeholder
-//            user
-//        // fali user
-//        )
-//    }
+    fun getAllReviewsFromDB(showId: Int): LiveData<List<ReviewEntity>> {
+        return database.reviewDao().getAllReviews(showId)
+    }
+
+    fun insertAllReviewsToDB(reviews: List<ReviewEntity>) {
+        Executors.newSingleThreadExecutor().execute {
+            database.reviewDao().insertAllReviews(reviews)
+        }
+    }
+
+    fun insertReviewToDB(review: ReviewEntity) {
+        Executors.newSingleThreadExecutor().execute {
+            database.reviewDao().createNewReview(review)
+        }
+    }
+
+    fun getShowFromDB(showId: String): LiveData<ShowEntity> {
+        return database.showDao().getShow(showId)
+    }
 
     fun updateRating(items: List<Review>) {
         var sum = 0f
@@ -101,7 +114,7 @@ class ShowsDetailsViewModel : ViewModel() {
                     reviewsResponseLiveData.value = response.body()?.reviews
                 }
 
-                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) { }
+                override fun onFailure(call: Call<ReviewsResponse>, t: Throwable) {  }
             })
     }
 
@@ -114,7 +127,7 @@ class ShowsDetailsViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
-                    showResultLiveData.value = true
+
                 }
 
             })
@@ -135,9 +148,10 @@ class ShowsDetailsViewModel : ViewModel() {
                 }
 
                 override fun onFailure(call: Call<ReviewResponse>, t: Throwable) {
-                    createReviewResultLiveData.value = false
+
                 }
 
             })
     }
 }
+

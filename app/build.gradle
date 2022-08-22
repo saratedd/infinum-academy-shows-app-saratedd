@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'androidx.navigation.safeargs.kotlin'
     id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'kotlin-kapt'
 
 //    koristit cemo ove pluginove u projektu
 //    module build
@@ -66,10 +67,17 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:4.10.0"
     implementation "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
-    //Chucker
+    // Chucker
     debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
     releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
 
-//    implementation "androidx.activity:activity-ktx:1.5.1"
-//    implementation "androidx.fragment:fragment-ktx:1.5.1"
+    // Room
+    def room_version = "2.4.2"
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    // Spash Screen
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
 }

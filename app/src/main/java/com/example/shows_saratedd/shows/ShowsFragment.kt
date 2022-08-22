@@ -3,6 +3,7 @@ package com.example.shows_saratedd.shows
 import android.app.AlertDialog
 import android.content.*
 import android.content.ContentValues.TAG
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -11,8 +12,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -24,24 +27,24 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.shows_saratedd.ApiModule
-import com.example.shows_saratedd.BuildConfig
-import com.example.shows_saratedd.FileUtil
-import com.example.shows_saratedd.R
+import com.example.shows_saratedd.*
 import com.example.shows_saratedd.login.LoginFragment.Companion.LOGIN
 import com.example.shows_saratedd.databinding.DialogUserBinding
 import com.example.shows_saratedd.databinding.FragmentShowsBinding
+import com.example.shows_saratedd.db.ShowEntity
+import com.example.shows_saratedd.db.ShowsDatabase
+import com.example.shows_saratedd.db.ShowsViewModelFactory
 import com.example.shows_saratedd.login.LoginFragment
 import com.example.shows_saratedd.register.RegisterFragment
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ShowsFragment : Fragment() {
     companion object {
-        const val EXTRA_SHOW_NAME = "showName"
-        const val EXTRA_SHOW_DESC = "showDesc"
-        const val EXTRA_SHOW_IMAGE = "showImage"
-        const val EXTRA_USER = "user"
-        const val REQUEST_IMAGE_CAPTURE = 1
+//        const val EXTRA_SHOW_NAME = "showName"
+//        const val EXTRA_SHOW_DESC = "showDesc"
+//        const val EXTRA_SHOW_IMAGE = "showImage"
+//        const val EXTRA_USER = "user"
+//        const val REQUEST_IMAGE_CAPTURE = 1
     }
 
     private lateinit var adapter: ShowsAdapter
@@ -52,7 +55,10 @@ class ShowsFragment : Fragment() {
     lateinit var uri: Uri
 
     private val args by navArgs<ShowsFragmentArgs>()
-    private val viewModel by viewModels<ShowsViewModel>()
+    private val viewModel: ShowsViewModel by viewModels {
+        ShowsViewModelFactory((activity?.application as ShowsApplication).database)
+    }
+
 
     private lateinit var sharedPreferences: SharedPreferences
 
@@ -80,7 +86,6 @@ class ShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ApiModule.initRetrofit(requireContext())
 
         super.onViewCreated(view, savedInstanceState)
         val email = args.email
@@ -91,15 +96,18 @@ class ShowsFragment : Fragment() {
 
         initUserButton(email)
         initLoadShowsButton()
-    }
+        if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+            initObserveDataInternet()
+        } else {
+            initObserveDataNoInternet()
+        }
 
+    }
 
     private fun initShowsRecycler(email: String) {
 
         adapter = ShowsAdapter(emptyList()) { show ->
             val directions = ShowsFragmentDirections.toShowDetailsFragment(
-//                show.name, show.description, show.imageResourceID, email
-//                show.title, show.description, R.drawable.ic_office, email
                 show.title, show.description, show.imageUrl, email, show.id
             )
             findNavController().navigate(directions)
@@ -113,6 +121,7 @@ class ShowsFragment : Fragment() {
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         )
     }
+
     private fun initUserButton(email: String) {
         binding.showsUser.setOnClickListener {
 
@@ -125,8 +134,15 @@ class ShowsFragment : Fragment() {
             bottomSheetBinding.userEmail.text = email
 
             bottomSheetBinding.userChangePicture.setOnClickListener {
-                getCameraImage.launch(uri)
-                dialog.dismiss()
+                if (InternetConnectionUtil.checkInternetConnection(requireContext())) {
+                    getCameraImage.launch(uri)
+                    dialog.dismiss()
+                } else {
+//                    Toast.makeText(requireContext(), getString(R.string.no_net_picture), Toast.LENGTH_LONG).show()
+//                    Toast.makeText(requireContext(), getString(R.string.no_net), Toast.LENGTH_LONG).show()
+                    // ako uzimam iz strings.xml onda mi izbaci 'welcome kao tekst (uncomment linija 139)
+                    Toast.makeText(requireContext(), "There is no internet connection. Please check your internet connection and try again.", Toast.LENGTH_LONG).show()
+                }
             }
 
             bottomSheetBinding.userLogout.setOnClickListener {
@@ -172,24 +188,58 @@ class ShowsFragment : Fragment() {
 
     private fun initLoadShowsButton() {
         binding.loadButton.setOnClickListener {
+
             binding.showsProgressBar.isVisible = true
+
             viewModel.onLoadShowsButtonClicked()
-            // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
-            // ako je failure onda drugu (failurelivedata)
-            viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
-                if (showsSuccessful) {
-                    binding.showsProgressBar.isVisible = false
-                }
-            }
-            viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
-                adapter.addAllShows(shows)
-            }
-            binding.showsRecycler.isVisible = true
-            binding.emptyStateIcon.isVisible = false
-            binding.emptyStateText.isVisible = false
-            binding.loadButton.isVisible = false
-//            binding.showsProgressBar.isVisible = false
+
+            showUI()
         }
+    }
+
+    private fun initObserveDataInternet() {
+        viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
+            if (showsSuccessful) {
+                binding.showsProgressBar.isVisible = false
+            }
+        }
+        viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
+            adapter.addAllShows(shows)
+            viewModel.insertAllShowsToDB(shows.map { show ->
+                ShowEntity(
+                    show.id,
+                    show.averageRating,
+                    show.description,
+                    show.imageUrl,
+                    show.noOfReviews,
+                    show.title
+                )
+            })
+        }
+    }
+
+    private fun initObserveDataNoInternet() {
+        viewModel.getShowsFromDB().observe(viewLifecycleOwner) { showEntities ->
+            adapter.addAllShows(showEntities.map { showEntity ->
+                Show(
+                    showEntity.id,
+                    showEntity.averageRating,
+                    showEntity.description,
+                    showEntity.imageUrl,
+                    showEntity.noOfReviews,
+                    showEntity.title
+                )
+            })
+            if (showEntities != null)
+                showUI()
+        }
+    }
+
+    private fun showUI() {
+        binding.showsRecycler.isVisible = true
+        binding.emptyStateIcon.isVisible = false
+        binding.emptyStateText.isVisible = false
+        binding.loadButton.isVisible = false
     }
 
     override fun onDestroyView() {

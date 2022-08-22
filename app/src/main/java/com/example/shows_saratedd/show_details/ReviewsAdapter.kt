@@ -37,7 +37,6 @@ class ReviewsAdapter(
 
     }
 
-
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(review: Review) {

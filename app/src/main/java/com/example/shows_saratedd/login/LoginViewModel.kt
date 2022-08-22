@@ -17,31 +17,23 @@ class LoginViewModel : ViewModel() {
 
     companion object {
         private const val BEARER = "Bearer"
-
     }
 
     private val loginResultLiveData: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>()
     }
 
-//    private val responseLiveData: MutableLiveData<Response<LoginResponse>> by lazy {
-//        MutableLiveData<Response<LoginResponse>>()
-//    }
-
     fun getLoginResultLiveData(): LiveData<Boolean> {
         return loginResultLiveData
     }
 
-//    fun getResponseLiveData(): LiveData<Response<LoginResponse>> {
-//        return responseLiveData
-//    }
 
-    fun onLoginButtonClicked(username: String, password: String, context: Context) {
+    fun onLoginButtonClicked(username: String, password: String, sharedPrefs: SharedPreferences) {
         val loginRequest = LoginRequest(
             email = username,
             password = password
         )
-        sharedPreferences = context.getSharedPreferences(LoginFragment.LOGIN, Context.MODE_PRIVATE)
+        sharedPreferences = sharedPrefs
 
         ApiModule.retrofit.login(loginRequest)
             .enqueue(object : Callback<LoginResponse> {
@@ -53,7 +45,6 @@ class LoginViewModel : ViewModel() {
                         putString("client", response.headers()["client"])
                         putString("uid", response.headers()["uid"])
                     }
-//                    responseLiveData.value = response
                 }
 
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
