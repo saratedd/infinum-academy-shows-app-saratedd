@@ -34,6 +34,7 @@ class ReviewsAdapter(
     fun getAllReviews(reviews: List<Review>) {
         items = reviews
         notifyDataSetChanged()
+
     }
 
     inner class ReviewViewHolder(private var binding: ItemReviewBinding) :

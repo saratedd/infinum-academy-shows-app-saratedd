@@ -69,6 +69,8 @@ class ShowDetailsFragment : Fragment() {
         val email = args.email
         initBackButton(email)
 
+        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+        // ako je failure onda drugu (failurelivedata)
         viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
             if (createReviewSuccessful) {
             }
@@ -131,6 +133,7 @@ class ShowDetailsFragment : Fragment() {
                 val file = FileUtil.getImageFile(requireContext())
                 file?.let {
                     uri = FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", it)
+
                 }
 
                 bottomSheetBinding.submitButton.setOnClickListener {
