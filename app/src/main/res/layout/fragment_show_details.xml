@@ -11,13 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ShowDetailsFragment">
+        tools:context=".show_details.ShowDetailsFragment">
 
         <ImageView
             android:id="@+id/detailsBackButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="24dp"
+            android:padding="24dp"
             android:src="@drawable/ic_back_vector"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -64,6 +64,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/detailsCard"
             tools:text="The Office is an American mockumentary sitcom television series that depicts the everyday work lives of office employees in the Scranton, Pennsylvania, branch of the fictional Dunder Mifflin Paper Company. It aired on NBC from March 24, 2005, to May 16, 2013, lasting a total of nine seasons." />
+
+        <ProgressBar
+            android:id="@+id/detailsProgressBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:outlineAmbientShadowColor="@color/purple"
+            android:outlineSpotShadowColor="@color/purple"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+<!--            android:visibility="gone"-->
 
         <TextView
             android:id="@+id/detailsReviewsTitle"
@@ -121,6 +134,7 @@
             android:id="@+id/detailsReviewsMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="24dp"
             android:gravity="center"
             android:text="@string/no_reviews_yet"
             android:textColor="@color/dark_grey"
@@ -138,7 +152,7 @@
             android:layout_height="56dp"
             android:layout_margin="16dp"
             android:backgroundTint="@color/purple"
-            android:text="@string/write_a_review_button"
+            android:text="@string/write_a_review"
             android:textAllCaps="false"
             android:textSize="16sp"
             app:cornerRadius="100dp"

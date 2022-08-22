@@ -1,47 +1,43 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.login
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.edit
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.shows_saratedd.ApiModule
+import com.example.shows_saratedd.R
+import com.example.shows_saratedd.register.RegisterFragment
 //import com.example.shows_saratedd.databinding.ActivityLoginBinding
 import com.example.shows_saratedd.databinding.FragmentLoginBinding
 
 class LoginFragment : Fragment() {
     companion object {
-//        const val EXTRA_EMAIL = "email"
-        const val REMEMBER_ME = "remember_me"
+        const val LOGIN = "LOGIN"
         const val IS_REMEMBER_ME = "IS_REMEMBER_ME"
         const val USER = "USER"
-//        const val PICTURE = "PICTURE"
     }
-//zasto nam treba ovo ? = null
-//    !! sta?
-//    _binding i binding difference?
+
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var sharedPreferences: SharedPreferences
+    private val viewModel: LoginViewModel by viewModels()
 
     private var emailBool = false
     private var passBool = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        sharedPreferences = requireContext().getSharedPreferences(REMEMBER_ME, Context.MODE_PRIVATE)
+        sharedPreferences = requireContext().getSharedPreferences(LOGIN, Context.MODE_PRIVATE)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
@@ -52,16 +48,26 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ApiModule.initRetrofit(requireContext())
+
         val isRememberMe = sharedPreferences.getBoolean(IS_REMEMBER_ME, false)
         val isUser = sharedPreferences.getString(USER, null)
+        val isRegistration = sharedPreferences.getBoolean(RegisterFragment.IS_REGISTRATION, false)
+
+        if (isRegistration) {
+            binding.loginText.text = getString(R.string.registration_successful)
+            binding.registerButton.isVisible = false
+        }
 
         if (isUser != null && isRememberMe) {
             val directions = LoginFragmentDirections.toShowsFragment(isUser)
             findNavController().navigate(directions)
         }
+
         initTextListers()
         initRememberMe()
         initLogin()
+        initRegisterListener()
 
     }
 
@@ -78,16 +84,35 @@ class LoginFragment : Fragment() {
         }
     }
 
+    private fun initRegisterListener() {
+        binding.registerButton.setOnClickListener {
+            var directions = LoginFragmentDirections.toRegisterFragment()
+            findNavController().navigate(directions)
+        }
+    }
 
     private fun initLogin() {
         binding.loginButton.setOnClickListener {
-            val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
-            sharedPreferences.edit {
-                putString(USER, user)
-            }
+            viewModel.onLoginButtonClicked(
+                username = binding.emailEditTextField.text.toString(),
+                password = binding.passwordEditTextField.text.toString(),
+                requireContext()
+            )
 
-            val directions = LoginFragmentDirections.toShowsFragment(user)
-            findNavController().navigate(directions)
+            viewModel.getLoginResultLiveData().observe(viewLifecycleOwner) { loginSuccessful ->
+                if (loginSuccessful) {
+                    val user = binding.emailEditTextField.text.toString()//.substringBefore("@", "")
+                    sharedPreferences.edit {
+                        putString(USER, user)
+                    }
+
+                    val directions = LoginFragmentDirections.toShowsFragment(user)
+                    findNavController().navigate(directions)
+
+                } else {
+                    // dati feedback korisniku
+                }
+            }
         }
     }
 
@@ -104,4 +129,3 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 }
-//bla

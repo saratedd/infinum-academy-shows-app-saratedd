@@ -1,4 +1,4 @@
-package com.example.shows_saratedd
+package com.example.shows_saratedd.show_details
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,11 +11,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.example.shows_saratedd.ApiModule
+import com.example.shows_saratedd.R
 //import com.example.shows_saratedd.databinding.ActivityShowDetailsBinding
 import com.example.shows_saratedd.databinding.DialogAddReviewBinding
 import com.example.shows_saratedd.databinding.FragmentShowDetailsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import show.ReviewsAdapter
 
 class ShowDetailsFragment : Fragment() {
 //    lateinit var binding: ActivityShowDetailsBinding
@@ -28,30 +30,6 @@ class ShowDetailsFragment : Fragment() {
 
     var recyclerViewInitialized = false
 
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//
-//        binding = ActivityShowDetailsBinding.inflate(layoutInflater)
-//
-//        setContentView(binding.root)
-//
-//        binding.detailsTitle.text = intent.extras?.getString(ShowsFragment.EXTRA_SHOW_NAME)
-//        intent.extras?.getInt(ShowsFragment.EXTRA_SHOW_IMAGE)
-//            ?.let { binding.detailsImg.setImageResource(it) }
-////        binding.detailsImg.setImageResource(intent.extras?.getInt("showImage"))
-//        binding.detailsDesc.text = intent.extras?.getString(ShowsFragment.EXTRA_SHOW_DESC)
-//        val username = intent.extras?.getString(ShowsFragment.EXTRA_USER)
-//
-//        binding.detailsBackButton.setOnClickListener {
-//            val intentBack = Intent(this, ShowsFragment::class.java)
-//            startActivity(intentBack)
-//        }
-//        if (username != null) {
-//            initDialog(username)
-//        } else {
-//            initDialog("anoniman")
-//        }
-//    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentShowDetailsBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,40 +38,64 @@ class ShowDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        ApiModule.initRetrofit(requireContext())
+
         binding.detailsTitle.text = args.showName
         binding.detailsDesc.text = args.showDescription
-        binding.detailsImg.setImageResource(args.showImage)
+        Glide
+            .with(binding.root)
+            .load(args.showImage)
+            .placeholder(R.drawable.ic_office)
+            .into(binding.detailsImg)
 
         val email = args.email
         initBackButton(email)
 
-        viewModel.showReview.observe(viewLifecycleOwner) { review ->
-            adapter.addReview(review)
+        // u viewmodelu ako je success onda pozvat jednu stvar (successLiveData)
+        // ako je failure onda drugu (failurelivedata)
+        viewModel.getCreateReviewResultLiveData().observe(viewLifecycleOwner) { createReviewSuccessful ->
+            if (createReviewSuccessful) {
+            }
         }
 
-        viewModel.averageRating.observe(viewLifecycleOwner) { averageRating ->
-            binding.ratingBar.setRating(averageRating)
-            binding.ratingBar.setIsIndicator(true)
+        initReviewsRecycler()
+
+        viewModel.loadShowDetails(args.showId)
+        viewModel.getShowResultLiveData().observe(viewLifecycleOwner) { showDetailsSuccessful ->
+            if (showDetailsSuccessful) {
+                binding.detailsProgressBar.isVisible = false
+            }
+        }
+        viewModel.getShowResponseLiveData().observe(viewLifecycleOwner) { showDetails ->
+            binding.ratingBar.setRating(showDetails.averageRating)
+            binding.detailsData.text =
+                showDetails.noOfReviews.toString() + " reviews, " +
+                        String.format("%.2f", showDetails.averageRating) + " average"
         }
 
-        viewModel.detailsData.observe(viewLifecycleOwner) { detailsData ->
-            binding.detailsData.text = detailsData
+        viewModel.loadReviews(args.showId)
+        viewModel.getReviewsResultLiveData().observe(viewLifecycleOwner) { reviewsSuccessful ->
+            if (reviewsSuccessful) {
+                recyclerViewInitialized = true
+                binding.detailsData.isVisible = true
+                binding.ratingBar.isVisible = true
+                binding.ratingBar.setIsIndicator(true)
+                binding.detailsRecycler.isVisible = true
+                binding.detailsReviewsMessage.isVisible = false
+            }
+
         }
 
-
-//        maknuti if?
-        if (email != null) {
-            initDialog(email)
-        } else {
-            initDialog("anoniman")
+        viewModel.getReviewsResponseLiveData().observe(viewLifecycleOwner) { reviews ->
+            adapter.getAllReviews(reviews)
         }
+
+        initDialog(email)
     }
 
     private fun initBackButton(email: String) {
         binding.detailsBackButton.setOnClickListener {
-//            val intentBack = Intent(this, ShowsFragment::class.java)
-//            startActivity(intentBack)
-            var directions = ShowDetailsFragmentDirections.toShowsFragment(email)
+            val directions = ShowDetailsFragmentDirections.toShowsFragment(email)
             findNavController().navigate(directions)
         }
     }
@@ -105,20 +107,19 @@ class ShowDetailsFragment : Fragment() {
             dialog.setContentView(bottomSheetBinding.root)
 
             bottomSheetBinding.submitButton.setOnClickListener {
+                viewModel.onSubmitButtonClicked(
+                    args.showId,
+                    bottomSheetBinding.dialogRating.getRating().toInt(),
+                    bottomSheetBinding.dialogCommentInputEdit.text.toString()
+                )
+
+                viewModel.getCreateReviewResponseLiveData().observe(viewLifecycleOwner) { review ->
+                    adapter.addReview(review)
+                }
                 if (!recyclerViewInitialized) {
                     initReviewsRecycler()
-                    recyclerViewInitialized = true
-                    binding.detailsData.isVisible = true
-                    binding.ratingBar.isVisible = true
-                    binding.detailsRecycler.isVisible = true
-                    binding.detailsReviewsMessage.isVisible = false
                 }
 
-                viewModel.createNewReview(
-                    email,
-                    bottomSheetBinding.dialogCommentInputEdit.text.toString(),
-                    bottomSheetBinding.dialogRating.getRating().toInt()
-                )
                 dialog.dismiss()
                 updateRating()
             }
@@ -127,9 +128,14 @@ class ShowDetailsFragment : Fragment() {
     }
 
     private fun initReviewsRecycler() {
+//        recyclerViewInitialized = true
+//        binding.detailsData.isVisible = true
+//        binding.ratingBar.isVisible = true
+//        binding.detailsRecycler.isVisible = true
+//        binding.detailsReviewsMessage.isVisible = false
+
         adapter = ReviewsAdapter(emptyList())
         binding.detailsRecycler.layoutManager =
-//            zasto ovdje radi samo 'context' a na 91 treba 'requierConetxt()'
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         binding.detailsRecycler.adapter = adapter
         binding.detailsRecycler.addItemDecoration(

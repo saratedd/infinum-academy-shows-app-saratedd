@@ -14,7 +14,7 @@
     <string name="load_shows_text">Load shows</string>
     <string name="reviews">Reviews</string>
     <string name="no_reviews_yet">No reviews yet.</string>
-    <string name="write_a_review_button">Write a review</string>
+<!--    <string name="write_a_review_button">Write a review</string>-->
     <string name="write_a_review">Write a review</string>
     <string name="submit">Submit</string>
     <string name="login">Login</string>
@@ -26,4 +26,7 @@
     <string name="logout">Logout</string>
     <string name="cancel">Cancel</string>
     <string name="logout_alert_message">Are you sure you want to logout?</string>
+    <string name="register">Register</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="registration_successful">Registration successful!</string>
 </resources>

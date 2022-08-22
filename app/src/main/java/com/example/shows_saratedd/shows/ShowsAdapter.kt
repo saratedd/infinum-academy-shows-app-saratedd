@@ -1,8 +1,10 @@
-package show
+package com.example.shows_saratedd.shows
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.shows_saratedd.R
 import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
 class ShowsAdapter(
@@ -12,17 +14,11 @@ class ShowsAdapter(
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
-//        layout inflation = xml -> kotlin/java code
-//        every view has a context
-//        ??? parent.context
-        val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context))
-//            zasto predajemo binding
+        val binding = ViewShowItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ShowViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ShowViewHolder, position: Int) {
-//        retrieve the correct show from the list and send it to the viewholder
-//        which knows how to connect the view with the data
         holder.bind(items[position])
     }
 
@@ -35,17 +31,21 @@ class ShowsAdapter(
         notifyDataSetChanged()
     }
 
-    fun addShow(show: Show) {
-        items = items + show
-        notifyItemInserted(items.lastIndex)
-    }
+//    fun addShow(show: Show) {
+//        items = items + show
+//        notifyItemInserted(items.lastIndex)
+//    }
 
     inner class ShowViewHolder(private var binding: ViewShowItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(show: Show) {
-            binding.showTitle.text = show.name
+            binding.showTitle.text = show.title
+            Glide
+                .with(binding.root)
+                .load(show.imageUrl)
+                .placeholder(R.drawable.ic_office)
+                .into(binding.showImage)
             binding.showDesc.text = show.description
-            binding.showImage.setImageResource(show.imageResourceID)
 
             binding.cardConatiner.setOnClickListener {
 //                treba prikazati podatke o showu

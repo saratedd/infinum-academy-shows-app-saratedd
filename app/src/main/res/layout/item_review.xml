@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/reviewProfileImg"
-        android:layout_width="0dp"
+        android:layout_width="56dp"
         android:layout_height="64dp"
         android:layout_margin="24dp"
         android:src="@drawable/ic_profile_placeholder"
