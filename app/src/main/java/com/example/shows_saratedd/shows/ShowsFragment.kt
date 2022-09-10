@@ -110,7 +110,7 @@ class ShowsFragment : Fragment() {
 
     private fun initShowsRecycler(email: String) {
 
-        adapter = ShowsAdapter(emptyList(), emptyList()) { show ->
+        adapter = ShowsAdapter(emptyList()) { show ->
             val directions = ShowsFragmentDirections.toShowDetailsFragment(
                 show.title, show.description, show.imageUrl, email, show.id
             )
@@ -202,7 +202,6 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initObserveDataInternet() {
-        var filteredShows = emptyList<Show>()
 
         viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
             if (showsSuccessful) {
@@ -221,6 +220,7 @@ class ShowsFragment : Fragment() {
                     if (text == null)
                         adapter.addAllShows(shows)
                     else {
+                        var filteredShows = emptyList<Show>()
                         for (show in shows) {
                             if (show.title.lowercase().contains(text.lowercase())) {
                                 filteredShows = filteredShows + show
