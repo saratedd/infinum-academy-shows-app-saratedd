@@ -10,6 +10,7 @@ import com.example.shows_saratedd.databinding.ViewShowItemBinding
 
 class ShowsAdapter(
     private var items: List<Show>,
+    private var filteredItems: List<Show>,
     private val onItemClickCallback: (Show) -> Unit
 //    adapter treba viewholder
 ) : RecyclerView.Adapter<ShowsAdapter.ShowViewHolder>() {
@@ -27,6 +28,16 @@ class ShowsAdapter(
 
     fun addAllShows(shows: List<Show>) {
         items = shows
+        notifyDataSetChanged()
+    }
+
+    fun filterList(text: String) {
+        for (show in items) {
+            if (show.title.lowercase().contains(text.lowercase())) {
+                filteredItems = filteredItems + show
+            }
+        }
+        items = filteredItems
         notifyDataSetChanged()
     }
 

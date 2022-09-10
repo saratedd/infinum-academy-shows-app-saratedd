@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.core.content.edit
 import androidx.core.view.isVisible
@@ -50,6 +51,7 @@ class ShowsFragment : Fragment() {
     private lateinit var adapter: ShowsAdapter
     private var _binding: FragmentShowsBinding? = null
     private val binding get() = _binding!!
+    private lateinit var searchView: SearchView
 
     private lateinit var getCameraImage: ActivityResultLauncher<Uri>
     lateinit var uri: Uri
@@ -89,6 +91,8 @@ class ShowsFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
         val email = args.email
+        searchView = binding.search
+        searchView.clearFocus()
 
         initShowsRecycler(email)
 
@@ -106,7 +110,7 @@ class ShowsFragment : Fragment() {
 
     private fun initShowsRecycler(email: String) {
 
-        adapter = ShowsAdapter(emptyList()) { show ->
+        adapter = ShowsAdapter(emptyList(), emptyList()) { show ->
             val directions = ShowsFragmentDirections.toShowDetailsFragment(
                 show.title, show.description, show.imageUrl, email, show.id
             )
@@ -198,6 +202,8 @@ class ShowsFragment : Fragment() {
     }
 
     private fun initObserveDataInternet() {
+        var filteredShows = emptyList<Show>()
+
         viewModel.getShowsResultLiveData().observe(viewLifecycleOwner) { showsSuccessful ->
             if (showsSuccessful) {
                 binding.showsProgressBar.isVisible = false
@@ -205,6 +211,28 @@ class ShowsFragment : Fragment() {
         }
         viewModel.getShowsLiveData().observe(viewLifecycleOwner) { shows ->
             adapter.addAllShows(shows)
+
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return false
+                }
+
+                override fun onQueryTextChange(text: String?): Boolean {
+                    if (text == null)
+                        adapter.addAllShows(shows)
+                    else {
+                        for (show in shows) {
+                            if (show.title.lowercase().contains(text.lowercase())) {
+                                filteredShows = filteredShows + show
+                            }
+                        }
+                        adapter.addAllShows(filteredShows)
+                    }
+                    return true
+                }
+
+            })
+            //adapter.addAllShows(shows)
             viewModel.insertAllShowsToDB(shows.map { show ->
                 ShowEntity(
                     show.id,
