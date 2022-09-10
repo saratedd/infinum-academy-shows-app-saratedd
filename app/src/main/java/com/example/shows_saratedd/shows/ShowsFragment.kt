@@ -236,6 +236,7 @@ class ShowsFragment : Fragment() {
     }
 
     private fun showUI() {
+        binding.search.isVisible = true
         binding.showsRecycler.isVisible = true
         binding.emptyStateIcon.isVisible = false
         binding.emptyStateText.isVisible = false
