@@ -217,15 +217,16 @@ class ShowsFragment : Fragment() {
                 }
 
                 override fun onQueryTextChange(text: String?): Boolean {
-                    if (text == null)
+                    if (text == null) {
                         adapter.addAllShows(shows)
-                    else {
+                    } else {
                         var filteredShows = emptyList<Show>()
                         for (show in shows) {
                             if (show.title.lowercase().contains(text.lowercase())) {
                                 filteredShows = filteredShows + show
                             }
                         }
+                        binding.noResults.isVisible = filteredShows.isEmpty()
                         adapter.addAllShows(filteredShows)
                     }
                     return true
