@@ -28,7 +28,7 @@ class ShowCardView @JvmOverloads constructor(
         Glide
             .with(binding.root)
             .load(imageUrl)
-            .placeholder(R.drawable.ic_office)
+            //.placeholder(R.drawable.ic_office)
             .into(binding.showImage)
     }
 
